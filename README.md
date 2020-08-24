@@ -2,23 +2,41 @@
 > Integrators integrate your information in the pod. They import your data from external services (gmail, whatsapp, icloud, facebook etc.), enrich your data with indexers (face recognition, spam detection, duplicate photo detection), and execute actions (sending mails, automatically share selected photo's with your family).
 
 
-Integrators for memri have a single repo per language. This repo contains all python integrators. This repo is build with [nbdev](https://github.com/fastai/nbdev). 
+Integrators for memri have a single repo per language, this repo the one for python. This repo is build with [nbdev](https://github.com/fastai/nbdev) and therefore all code/documentation/tests are written in one place as jupyter notebooks and exported to a python-package/jekyll-website/unit-tests.
 
 ## Install
 
 `pip install -e integrators`
 
-## How to use
+## How to develop with nbdev
 
-Fill me in please! Don't forget code examples:
+The [nbdev website](https://github.com/fastai/nbdev) obviously contains great docs that will help you understand how to develop with it. If you don't want to read that, the most important things to get you started are:
 
-```python
-1+1
-```
+- Add `#export` flags to the cells that define the functions you want to include in your python modules.
+- Add `#default_exp <packagename>.<modulename>` to the top of your notebook to define the python module to export to.
 
+When you are done writing your code in notebooks, call `nbdev_build_lib` to convert the notebooks to code, docs and tests.
 
+### Run tests
 
+Every cell without the `#export` flag will be a test. So make sure that the code in notebooks runs fast and without errors. You can run all tests by calling.
 
-    2
+`nbdev_test_nbs`
 
+## Docs
 
+If you want to hide certain functionality in the docs, you can use the `# hide` flag in the top of a cell
+
+### Render docs locally
+
+First install Jekyll:
+
+`gem install bundler jekyll`
+
+`bundle install`
+
+Then, run the Jekyll server:
+
+`cd docs`
+
+`bundle exec jekyll serve`
