@@ -1,6 +1,6 @@
 {
-  "nbdev_template": {
+  "integrators": {
     "Overview": "/",
-    "module name here": "/core"
+    "Title": "basic.html"
   }
 }

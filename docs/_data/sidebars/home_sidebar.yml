@@ -10,9 +10,9 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: module name here
-      url: /core
+      title: Title
+      url: basic.html
     output: web
-    title: nbdev_template
+    title: integrators
   output: web
   title: Sidebar
