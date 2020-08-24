@@ -11,7 +11,7 @@ entries:
       url: /
     - output: web,pdf
       title: Title
-      url: basic.html
+      url: /basic
     output: web
     title: integrators
   output: web
