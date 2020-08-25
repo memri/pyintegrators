@@ -1,7 +1,7 @@
 repository: thomas.capelle/nbdev_template
 output: web
-topnav_title: nbdev_template
-site_title: nbdev_template
+topnav_title: integrators
+site_title: memri integrators
 company_name: SteadySun
 description: A description of your project
 # Set to false to disable KaTeX math
