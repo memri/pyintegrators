@@ -7,6 +7,7 @@ sidebar: home_sidebar
 
 summary: "Integrators integrate your information in the pod. They import your data from external services (gmail, whatsapp, icloud, facebook etc.), enrich your data with indexers (face recognition, spam detection, duplicate photo detection), and execute actions (sending mails, automatically share selected photo's with your family)."
 description: "Integrators integrate your information in the pod. They import your data from external services (gmail, whatsapp, icloud, facebook etc.), enrich your data with indexers (face recognition, spam detection, duplicate photo detection), and execute actions (sending mails, automatically share selected photo's with your family)."
+nb_path: "nbs/index.ipynb"
 ---
 <!--
 
@@ -29,7 +30,7 @@ description: "Integrators integrate your information in the pod. They import you
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Integrators for memri have a single repo per language. This repo contains all python integrators. This repo is build with <a href="https://github.com/fastai/nbdev">nbdev</a>.</p>
+<p>Integrators for memri have a single repo per language, this repo the one for python. This repo is build with <a href="https://github.com/fastai/nbdev">nbdev</a> and therefore all code/documentation/tests are written in one place as jupyter notebooks and exported to a python-package/jekyll-website/unit-tests.</p>
 
 </div>
 </div>
@@ -49,50 +50,67 @@ description: "Integrators integrate your information in the pod. They import you
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="How-to-use">How to use<a class="anchor-link" href="#How-to-use"> </a></h2>
+<h2 id="How-to-develop-with-nbdev">How to develop with nbdev<a class="anchor-link" href="#How-to-develop-with-nbdev"> </a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Fill me in please! Don't forget code examples:</p>
+<p>The <a href="https://github.com/fastai/nbdev">nbdev website</a> obviously contains great docs that will help you understand how to develop with it. If you don't want to read that, the most important things to get you started are:</p>
+<ul>
+<li>Add <code>#export</code> flags to the cells that define the functions you want to include in your python modules.</li>
+<li>Add <code>#default_exp &lt;packagename&gt;.&lt;modulename&gt;</code> to the top of your notebook to define the python module to export to.</li>
+</ul>
+<p>When you are done writing your code in notebooks, call <code>nbdev_build_lib</code> to convert the notebooks to code, docs and tests.</p>
 
 </div>
 </div>
 </div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span>
-</pre></div>
-
-    </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Run-tests">Run tests<a class="anchor-link" href="#Run-tests"> </a></h3>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>2</pre>
 </div>
-
-</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Every cell without the <code>#export</code> flag will be a test. So make sure that the code in notebooks runs fast and without errors. You can run all tests by calling.</p>
+<p><code>nbdev_test_nbs</code></p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Docs">Docs<a class="anchor-link" href="#Docs"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If you want to hide certain functionality in the docs, you can use the <code># hide</code> flag in the top of a cell</p>
 
 </div>
-    {% endraw %}
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Render-docs-locally">Render docs locally<a class="anchor-link" href="#Render-docs-locally"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First install Jekyll:</p>
+<p><code>gem install bundler jekyll</code></p>
+<p><code>bundle install</code></p>
+<p>Then, run the Jekyll server:</p>
+<p><code>cd docs</code></p>
+<p><code>bundle exec jekyll serve</code></p>
 
+</div>
+</div>
+</div>
 </div>
  
 
