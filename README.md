@@ -8,6 +8,10 @@ Integrators for memri have a single repo per language, this repo the one for pyt
 
 `pip install -e integrators`
 
+`nbdev_install_git_hooks`
+
+This last command clears your notebooks of unnecessary metadata
+
 ## How to develop with nbdev
 
 The [nbdev website](https://github.com/fastai/nbdev) obviously contains great docs that will help you understand how to develop with it. If you don't want to read that, the most important things to get you started are:
@@ -15,7 +19,7 @@ The [nbdev website](https://github.com/fastai/nbdev) obviously contains great do
 - Add `#export` flags to the cells that define the functions you want to include in your python modules.
 - Add `#default_exp <packagename>.<modulename>` to the top of your notebook to define the python module to export to.
 
-When you are done writing your code in notebooks, call `nbdev_build_lib` to convert the notebooks to code, docs and tests.
+When you are done writing your code in notebooks, call `nbdev_build_lib` to convert the notebooks to code and tests.
 
 ### Run tests
 

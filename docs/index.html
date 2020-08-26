@@ -7,7 +7,6 @@ sidebar: home_sidebar
 
 summary: "Integrators integrate your information in the pod. They import your data from external services (gmail, whatsapp, icloud, facebook etc.), enrich your data with indexers (face recognition, spam detection, duplicate photo detection), and execute actions (sending mails, automatically share selected photo's with your family)."
 description: "Integrators integrate your information in the pod. They import your data from external services (gmail, whatsapp, icloud, facebook etc.), enrich your data with indexers (face recognition, spam detection, duplicate photo detection), and execute actions (sending mails, automatically share selected photo's with your family)."
-nb_path: "nbs/index.ipynb"
 ---
 <!--
 
@@ -44,6 +43,14 @@ nb_path: "nbs/index.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><code>pip install -e integrators</code></p>
+<p><code>nbdev_install_git_hooks</code></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This last command clears your notebooks of unnecessary metadata</p>
 
 </div>
 </div>
@@ -61,7 +68,7 @@ nb_path: "nbs/index.ipynb"
 <li>Add <code>#export</code> flags to the cells that define the functions you want to include in your python modules.</li>
 <li>Add <code>#default_exp &lt;packagename&gt;.&lt;modulename&gt;</code> to the top of your notebook to define the python module to export to.</li>
 </ul>
-<p>When you are done writing your code in notebooks, call <code>nbdev_build_lib</code> to convert the notebooks to code, docs and tests.</p>
+<p>When you are done writing your code in notebooks, call <code>nbdev_build_lib</code> to convert the notebooks to code and tests.</p>
 
 </div>
 </div>

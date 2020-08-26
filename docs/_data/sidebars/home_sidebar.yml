@@ -10,8 +10,14 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: Title
-      url: basic.html
+      title: Basic
+      url: /basic
+    - output: web,pdf
+      title: Itembase
+      url: /itembase
+    - output: web,pdf
+      title: Pod Client
+      url: /pod.client
     output: web
     title: integrators
   output: web
