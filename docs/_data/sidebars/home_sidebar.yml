@@ -11,13 +11,13 @@ entries:
       url: /
     - output: web,pdf
       title: Basic
-      url: /basic
+      url: basic.html
     - output: web,pdf
       title: Itembase
-      url: /itembase
+      url: itembase.html
     - output: web,pdf
       title: Pod Client
-      url: /pod.client
+      url: pod.client.html
     output: web
     title: integrators
   output: web

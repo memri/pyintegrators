@@ -1,8 +1,8 @@
 {
   "integrators": {
     "Overview": "/",
-    "Basic": "/basic",
-    "Itembase": "/itembase",
-    "Pod Client": "/pod.client"
+    "Basic": "basic.html",
+    "Itembase": "itembase.html",
+    "Pod Client": "pod.client.html"
   }
 }
