@@ -15,6 +15,7 @@ class podClient:
 
     def __init__(self, url=API_URL, database_key=None, owner_key=None):
         self.url = url
+        self.base_url = f"{url}/{owner_key}"
         self.test_connection()
         self.database_key=database_key
         self.owner_key=owner_key
@@ -23,35 +24,31 @@ class podClient:
     def test_connection(self):
         try:
             res = requests.get(self.url)
+            return True
         except requests.exceptions.RequestException as e:
             print("Could no connect to backend")
             return False
 
-    def uid(self):
-        # TODO: REFACTOR
-        return int(1e5 + random.randint(0, 1e5))
+#     def uid(self):
+#         # TODO: REFACTOR
+#         return int(1e5 + random.randint(0, 1e5))
 
-    def _get_item_with_properties(uid):
+    def create(self, node):
+        if node.uid is None:
+            print(f"Error, node {node} has no uid, not creating")
         try:
-            result = requests.get(f"{self.url}/items/{uid}")
+            body = {  "databaseKey": self.database_key, "payload":self.get_properties_json(node) }
+
+            result = requests.post(f"{self.base_url}/create_item",
+                                   json=body)
             if result.status_code != 200:
                 print(result, result.content)
-                return None
+                return False
             else:
-                json = result.json()
-                if json == []:
-                    return None
-                else:
-                    return json
+                return True
         except requests.exceptions.RequestException as e:
             print(e)
-            return None
-
-    def get(self, uid, expanded=True):
-        if not expanded:
-            return self._get_item_with_properties(uid)
-        else:
-            return self._get_item_expanded(uid)
+            return False
 
     def create_edges(self, edges):
         """Create edges between nodes, edges should be of format [{"_type": "friend", "_source": 1, "_target": 2}]"""
@@ -71,75 +68,38 @@ class podClient:
 
             edges_data.append(data)
 
-        edges_data = {"createItems": [], "updateItems": [], "createEdges": edges_data}
+        edges_data = {"databaseKey": self.database_key, "payload": {
+                            "createItems": [], "updateItems": [], "createEdges": edges_data}}
 
         try:
-            result = requests.post(f"{self.url}/bulk_action",
+            result = requests.post(f"{self.base_url}/bulk_action",
                                    json=edges_data)
             if result.status_code != 200:
                 if "UNIQUE constraint failed" in str(result.content):
                     print(result.status_code, "Edge already exists")
                 else:
                     print(result, result.content)
-        except requests.exceptions.RequestException as e:
-            return None
-
-    def create(self, node):
-        if node.uid is None:
-            print("Error, node has no uid, not creating")
-        try:
-            body = {  "databaseKey": self.database_key, "payload":self.get_properties_json(node) }
-
-            result = requests.post(f"{self.url}/{self.owner_key}/create_item",
-                                   json=body)
-            if result.status_code != 200:
-                print(result, result.content)
+                return False
+            else:
+                return True
         except requests.exceptions.RequestException as e:
             print(e)
+            return False
 
-    def get_properties_json(self, node):
-        res = dict()
-        for k,v in node.__dict__.items():
-            if k[:1] != '_' and not (isinstance(v, list) and len(v)>0 and isinstance(v[0], Edge)) and v is not None:
-                res[k] = v
-        res["_type"] = node.__class__.__name__
-        return res
+    def create_edge(self, edge):
+        return self.create_edges([edge])
 
-    def put(self, node):
-        data = self.get_properties_json(node)
-        uid = data["uid"]
-
-        try:
-            result = requests.put(f"{self.url}/items/{uid}",
-                                  json=data)
-            if result.status_code != 200:
-                print(result, result.content)
-        except requests.exceptions.RequestException as e:
-            print(e)
-
-    def search_by_fields(self, fields_data):
-
-        body = {"payload": fields_data,
-                "databaseKey": self.database_key}
-        try:
-            result = requests.post(f"{self.url}/{self.owner_key}/search_by_fields",
-                                   json=body)
-            json =  result.json()
-            return [self.item_from_json(item) for item in json]
-        except requests.exceptions.RequestException as e:
-            return None
-
-    def item_from_json(self, json):
-        indexer_class = json.get("indexerClass", None)
-        constructor = get_constructor(json["_type"], indexer_class)
-        return constructor.from_json(json)
+    def get(self, uid, expanded=True):
+        if not expanded:
+            return self._get_item_with_properties(uid)
+        else:
+            return self._get_item_expanded(uid)
 
     def _get_item_expanded(self, uid):
-
         body = {"payload": [uid],
                 "databaseKey": self.database_key}
         try:
-            result = requests.post(f"{self.url}/{self.owner_key}/get_items_with_edges",
+            result = requests.post(f"{self.base_url}/get_items_with_edges",
                                     json=body)
             if result.status_code != 200:
                 print(result, result.content)
@@ -152,6 +112,61 @@ class podClient:
         except requests.exceptions.RequestException as e:
             print(e)
             return None
+
+    def _get_item_with_properties(uid):
+        try:
+            result = requests.get(f"{self.base_url}/items/{uid}")
+            if result.status_code != 200:
+                print(result, result.content)
+                return None
+            else:
+                json = result.json()
+                if json == []:
+                    return None
+                else:
+                    return json
+        except requests.exceptions.RequestException as e:
+            print(e)
+            return None
+
+    def get_properties_json(self, node):
+        res = dict()
+        for k,v in node.__dict__.items():
+            if k[:1] != '_' and not (isinstance(v, list) and len(v)>0 and isinstance(v[0], Edge)) and v is not None:
+                res[k] = v
+        res["_type"] = node.__class__.__name__
+        return res
+
+    def update_item(self, node):
+        data = self.get_properties_json(node)
+        uid = data["uid"]
+        body = {"payload": data,
+                "databaseKey": self.database_key}
+
+        try:
+            result = requests.post(f"{self.base_url}/update_item",
+                                  json=body)
+            if result.status_code != 200:
+                print(result, result.content)
+        except requests.exceptions.RequestException as e:
+            print(e)
+
+    def search_by_fields(self, fields_data):
+
+        body = {"payload": fields_data,
+                "databaseKey": self.database_key}
+        try:
+            result = requests.post(f"{self.base_url}/search_by_fields",
+                                   json=body)
+            json =  result.json()
+            return [self.item_from_json(item) for item in json]
+        except requests.exceptions.RequestException as e:
+            return None
+
+    def item_from_json(self, json):
+        indexer_class = json.get("indexerClass", None)
+        constructor = get_constructor(json["_type"], indexer_class)
+        return constructor.from_json(json)
 
     def get_properties(self, expanded):
         properties = copy(expanded)
@@ -166,10 +181,8 @@ class podClient:
 
         print(body)
 
-        url = f"{self.url}/{self.owner_key}/run_importer"
-
         try:
-            res = requests.post(url, json=body)
+            res = requests.post(f"{self.base_url}/run_importer", json=body)
             # res = requests.post(self.url)
             if res.status_code != 200:
                 print(f"Failed to start importer on {url}:\n{res.status_code}: {res.text}")
