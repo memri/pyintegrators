@@ -14,7 +14,7 @@ index = {"read_file": "basic.ipynb",
          "Edge": "itembase.ipynb",
          "ItemBase": "itembase.ipynb",
          "API_URL": "pod.client.ipynb",
-         "podClient": "pod.client.ipynb"}
+         "PodClient": "pod.client.ipynb"}
 
 modules = ["basic.py",
            "itembase.py",
