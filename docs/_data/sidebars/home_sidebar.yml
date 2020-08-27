@@ -10,15 +10,30 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: Basic
-      url: basic.html
-    - output: web,pdf
-      title: Itembase
+      title: ItemBase
       url: itembase.html
     - output: web,pdf
       title: Pod Client
       url: pod.client.html
     output: web
-    title: integrators
+    title: Getting Started
+  - folderitems:
+    - output: web,pdf
+      title: Overview
+      url: indexers.indexer.html
+    output: web
+    title: Importers
+  - folderitems:
+    - output: web,pdf
+      title: Overview
+      url: indexers.indexer.html
+    output: web
+    title: Indexers
+  - folderitems:
+    - output: web,pdf
+      title: Overview
+      url: indexers.indexer.html
+    output: web
+    title: Downloaders
   output: web
   title: Sidebar

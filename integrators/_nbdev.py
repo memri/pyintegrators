@@ -6,6 +6,7 @@ index = {"read_file": "basic.ipynb",
          "read_json": "basic.ipynb",
          "write_json": "basic.ipynb",
          "Path.ls": "basic.ipynb",
+         "Indexer": "indexers.indexer.ipynb",
          "ALL_EDGES": "itembase.ipynb",
          "UID_GEN": "itembase.ipynb",
          "generate_uid": "itembase.ipynb",
@@ -17,6 +18,7 @@ index = {"read_file": "basic.ipynb",
          "PodClient": "pod.client.ipynb"}
 
 modules = ["basic.py",
+           "indexers/indexer.py",
            "itembase.py",
            "pod/client.py"]
 

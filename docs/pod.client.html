@@ -122,7 +122,7 @@ nb_path: "nbs/pod.client.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now that we have access to the pod, we can create items here and upload them to the pod.</p>
+<p>Now that we have access to the pod, we can create items here and upload them to the pod. All items are defined in the memri <a href="https://gitlab.memri.io/memri/schema">schema</a>. When the schema is changed it automatically generates all the class definitions for the different languages used in memri, the python schema file lives in <a href="https://gitlab.memri.io/memri/pyintegrators/-/blob/master/integrators/schema.py">schema.py</a> in the integrators package. When Initializing an Item, always make sure to use the from_data classmethod to initialize.</p>
 
 </div>
 </div>
@@ -307,7 +307,7 @@ nb_path: "nbs/pod.client.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Sometimes, we might not know the uids of the items we want to fetch. We can also search by a certain property. A usage examples is when we want to query all items from a particular type</p>
+<p>Sometimes, we might not know the uids of the items we want to fetch. We can also search by a certain property. We can use this for instance when we want to query all items from a particular type to perform some indexing on.</p>
 
 </div>
 </div>

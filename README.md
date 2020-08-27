@@ -2,7 +2,7 @@
 > Integrators integrate your information in the pod. They import your data from external services (gmail, whatsapp, icloud, facebook etc.), enrich your data with indexers (face recognition, spam detection, duplicate photo detection), and execute actions (sending mails, automatically share selected photo's with your family).
 
 
-Integrators for memri have a single repo per language, this repo the one for python. This repo is build with [nbdev](https://github.com/fastai/nbdev) and therefore all code/documentation/tests are written in one place as jupyter notebooks and exported to a python-package/jekyll-website/unit-tests.
+Integrators for memri have a single repo per language, this repo the one for python, but other repo's exist for [node](https://gitlab.memri.io/memri/nodeintegrators) and in the future for rust. This repo is build with [nbdev](https://github.com/fastai/nbdev) and therefore all code/documentation/tests are written in one place as jupyter notebooks and exported to a python-package/jekyll-website/unit-tests.
 
 ## Install
 
