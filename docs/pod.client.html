@@ -135,7 +135,40 @@ nb_path: "nbs/pod.client.ipynb"
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">email_item</span> <span class="o">=</span> <span class="n">EmailMessage</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">&quot;example content field&quot;</span><span class="p">)</span>
-<span class="n">success</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">email_item</span><span class="p">)</span>
+<span class="n">email_item</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>EmailMessage (#None)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">success</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">email_item</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">success</span>
 <span class="n">email_item</span>
 </pre></div>
@@ -152,7 +185,7 @@ nb_path: "nbs/pod.client.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>EmailMessage (#279001)</pre>
+<pre>EmailMessage (#917040)</pre>
 </div>
 
 </div>
@@ -199,7 +232,7 @@ nb_path: "nbs/pod.client.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Person (#279002) --author-&gt; EmailMessage (#279001)</pre>
+<pre>Person (#917041) --author-&gt; EmailMessage (#917040)</pre>
 </div>
 
 </div>
@@ -234,6 +267,7 @@ nb_path: "nbs/pod.client.ipynb"
 <span class="n">client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">person_item</span><span class="p">)</span>
 <span class="n">person_from_db</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">person_item</span><span class="o">.</span><span class="n">uid</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">person_from_db</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<span class="k">assert</span> <span class="n">person_from_db</span> <span class="o">==</span> <span class="n">person_item</span>
 <span class="n">person_from_db</span>
 </pre></div>
 
@@ -249,7 +283,7 @@ nb_path: "nbs/pod.client.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Person (#279003)</pre>
+<pre>Person (#917042)</pre>
 </div>
 
 </div>
@@ -294,7 +328,7 @@ nb_path: "nbs/pod.client.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Person (#279003)</pre>
+<pre>Person (#917042)</pre>
 </div>
 
 </div>

@@ -3,7 +3,7 @@
 __all__ = ['API_URL', 'PodClient']
 
 # Cell
-from ..itembase import Edge
+from ..itembase import Edge, ItemBase
 from ..schema import *
 from ..imports import *
 
@@ -19,7 +19,6 @@ class PodClient:
         self.test_connection(verbose=False)
         self.database_key=database_key
         self.owner_key=owner_key
-        # self.local_db = DB()
 
     def test_connection(self, verbose=True):
         try:
@@ -30,13 +29,9 @@ class PodClient:
             print("Could no connect to backend")
             return False
 
-#     def uid(self):
-#         # TODO: REFACTOR
-#         return int(1e5 + random.randint(0, 1e5))
-
     def create(self, node):
-        if node.uid is None:
-            print(f"Error, node {node} has no uid, not creating")
+#         if node.uid is None:
+#             print(f"Error, node {node} has no uid, not creating")
         try:
             body = {  "databaseKey": self.database_key, "payload":self.get_properties_json(node) }
 
@@ -46,6 +41,9 @@ class PodClient:
                 print(result, result.content)
                 return False
             else:
+                uid = int(result.json())
+                node.uid = uid
+                ItemBase.add_to_db(node)
                 return True
         except requests.exceptions.RequestException as e:
             print(e)
@@ -167,7 +165,15 @@ class PodClient:
     def item_from_json(self, json):
         indexer_class = json.get("indexerClass", None)
         constructor = get_constructor(json["_type"], indexer_class)
-        return constructor.from_json(json)
+        new_item = constructor.from_json(json)
+        existing = ItemBase.global_db.get(new_item.uid)
+        # TODO: cleanup
+        if existing is not None:
+            if not existing.is_expanded() and new_item.is_expanded():
+                existing.edges = new_item.edges
+            return existing
+        else:
+            return item
 
     def get_properties(self, expanded):
         properties = copy(expanded)
