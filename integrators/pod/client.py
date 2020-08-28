@@ -3,8 +3,8 @@
 __all__ = ['API_URL', 'PodClient']
 
 # Cell
-from ..itembase import Edge
-from ..schema import *
+from ..data.itembase import Edge
+from ..data.schema import *
 from ..imports import *
 
 # Cell

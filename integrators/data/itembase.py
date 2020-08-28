@@ -4,7 +4,7 @@ __all__ = ['ALL_EDGES', 'UID_GEN', 'generate_uid', 'DB', 'parse_base_item_json',
 
 # Cell
 # hide
-from .imports import *
+from ..imports import *
 
 ALL_EDGES = "allEdges"
 SOURCE, TARGET, TYPE, EDGE_TYPE, LABEL, SEQUENCE = "_source", "_target", "_type", "_type", "label", "sequence"
