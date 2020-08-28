@@ -1,9 +1,9 @@
-repository: thomas.capelle/nbdev_template
+repository: https://gitlab.memri.io/memri/pyintegrators
 output: web
-topnav_title: nbdev_template
-site_title: nbdev_template
-company_name: SteadySun
-description: A description of your project
+topnav_title: integrators
+site_title: memri integrators
+company_name: memri
+description: memri integrators, integrating your information
 # Set to false to disable KaTeX math
 use_math: true
 # Add Google analytics id if you have one and want to use it here
@@ -58,7 +58,6 @@ defaults:
 
 sidebars:
 - home_sidebar
-permalink: pretty
 
 theme: jekyll-theme-cayman
-baseurl: /integrators
+baseurl: /integrators/
