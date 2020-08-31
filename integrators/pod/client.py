@@ -6,11 +6,13 @@ __all__ = ['API_URL', 'PodClient']
 from ..itembase import Edge, ItemBase
 from ..schema import *
 from ..imports import *
+import hashlib
 
 # Cell
 API_URL = "http://localhost:3030/v2"
 
 # Cell
+
 class PodClient:
 
     def __init__(self, url=API_URL, database_key=None, owner_key=None):
@@ -20,59 +22,79 @@ class PodClient:
         self.database_key=database_key
         self.owner_key=owner_key
 
-    def test_connection(self, verbose=True):
-        try:
-            res = requests.get(self.url)
-            if verbose: print("Succesfully connected to pod")
-            return True
-        except requests.exceptions.RequestException as e:
-            print("Could no connect to backend")
-            return False
+    # PRIMITIVE FUNCTIONS
+    def version(self):
+        result = requests.get(f'{self.url}/version',
+                      verify=False)
+        print(result.content)
 
-    def create(self, node):
-#         if node.uid is None:
-#             print(f"Error, node {node} has no uid, not creating")
-        try:
-            body = {  "databaseKey": self.database_key, "payload":self.get_properties_json(node) }
+    def get_item(self, uid):
+        wrapped_item = {
+            'databaseKey': self.database_key,
+            'payload': uid,
+        }
+        result = requests.post(f'{self.base_url}/get_item',
+                      json=wrapped_item,
+                      verify=False)
 
-            result = requests.post(f"{self.base_url}/create_item",
-                                   json=body)
+        if result.ok:
+            # TODO: get_item actually returns a list
+            return result.json()
+        else:
+            # TODO: better exception handling
+            raise Exception(result.status_code, result.text)
+
+    def get_all_items(self):
+        NotImplementedError()
+
+    def create_item(self, item, item_type=None):
+        # TODO: unify with create_item once https/http difference is resolved
+        if item_type != None:
+            item['_type'] = item_type
+
+        wrapped_item = {
+            'databaseKey': self.database_key,
+            'payload': item,
+        }
+        result = requests.post(f'{self.base_url}/create_item',
+                      json=wrapped_item,
+                      verify=False)
+
+        if result.ok:
+            return result.json()
+        else:
+            # TODO: better exception handling
+            raise Exception(result.status_code, result.text)
+
+    def update_item(self, item):
+        wrapped_item = {"databaseKey": self.database_key,
+                        "payload": item}
+
+        try:
+            result = requests.post(f"{self.base_url}/update_item",
+                                  json=wrapped_item)
             if result.status_code != 200:
                 print(result, result.content)
-                return False
-            else:
-                uid = int(result.json())
-                node.uid = uid
-                ItemBase.add_to_db(node)
-                return True
         except requests.exceptions.RequestException as e:
             print(e)
-            return False
 
-    def create_edges(self, edges):
-        """Create edges between nodes, edges should be of format [{"_type": "friend", "_source": 1, "_target": 2}]"""
-        edges_data = []
-        for e in edges:
-            src, target = e.source.uid, e.target.uid
-            data = {"_source": src, "_target": target, "_type": e._type}
-            if e.label is not None: data[LABEL] = e.label
-            if e.sequence is not None: data[SEQUENCE] = e.sequence
+    def delete_item(self, item):
+        NotImplementedError()
 
-            if e.reverse:
-                data2 = copy(data)
-                data2["_source"] = target
-                data2["_target"] = src
-                data2["_type"] = "~" + data2["_type"]
-                edges_data.append(data2)
-
-            edges_data.append(data)
-
-        edges_data = {"databaseKey": self.database_key, "payload": {
-                            "createItems": [], "updateItems": [], "createEdges": edges_data}}
+    def bulk_action(self, create_items, update_items, delete_items, create_edges, delete_edges):
+        edges_data = {"databaseKey": self.database_key,
+                      "payload": {
+                          "createItems": create_items,
+                          "updateItems": update_items,
+                          "deleteItems": delete_items,
+                          "createEdges": create_edges,
+                          "deleteEdges": delete_edges
+                      }}
 
         try:
             result = requests.post(f"{self.base_url}/bulk_action",
-                                   json=edges_data)
+                                   json=edges_data,
+                                   verify=False)
             if result.status_code != 200:
                 if "UNIQUE constraint failed" in str(result.content):
                     print(result.status_code, "Edge already exists")
@@ -85,25 +107,30 @@ class PodClient:
             print(e)
             return False
 
-    def create_edge(self, edge):
-        return self.create_edges([edge])
+    def search_by_fields(self, fields_data):
+        body = {"databaseKey": self.database_key,
+                "payload": fields_data}
+        try:
+            result = requests.post(f"{self.base_url}/search_by_fields",
+                                   json=body)
+            json =  result.json()
+            return [self.item_from_json(item) for item in json]
+        except requests.exceptions.RequestException as e:
+            return None
 
-    def get(self, uid, expanded=True):
-        if not expanded:
-            return self._get_item_with_properties(uid)
-        else:
-            return self._get_item_expanded(uid)
+    def get_items_with_edges(self, item_uids):
+        body = {"databaseKey": self.database_key,
+                "payload": item_uids,}
 
-    def _get_item_expanded(self, uid):
-        body = {"payload": [uid],
-                "databaseKey": self.database_key}
         try:
             result = requests.post(f"{self.base_url}/get_items_with_edges",
-                                    json=body)
+                                    json=body,
+                                    verify=False)
             if result.status_code != 200:
                 print(result, result.content)
                 return None
             else:
+                print(result.json())
                 json = result.json()[0]
                 res =  self.item_from_json(json)
                 return res
@@ -112,55 +139,81 @@ class PodClient:
             print(e)
             return None
 
-    def _get_item_with_properties(uid):
+    def upload_file(self, file, hash):
+        result = requests.post(f'{self.base_url}/upload_file/{self.database_key}/{hash}',
+                               file,
+                               verify=False)
+        print(result.status_code)
+
+        if result.ok:
+            return True
+        else:
+            if result.status_code == 409:
+                return False
+            raise Exception(result.status_code, result.text)
+
+    def get_file(self, hash):
+        wrapped_item = {
+            'databaseKey': self.database_key,
+            'payload': {
+                'sha256': hash,
+            }
+        }
+
+        result = requests.post(f'{self.base_url}/get_file',
+                               json=wrapped_item,
+                               verify=False)
+
+        if result.ok:
+            return result.content
+        else:
+            raise Exception(result.status_code, result.text)
+
+    # END OF PRIMITIVE FUNCTIONS
+
+    def test_connection(self, verbose=True):
+        # TODO: change this function, remove get-request
         try:
-            result = requests.get(f"{self.base_url}/items/{uid}")
-            if result.status_code != 200:
-                print(result, result.content)
-                return None
-            else:
-                json = result.json()
-                if json == []:
-                    return None
-                else:
-                    return json
+            res = requests.get(self.url, verify=False)
+            if verbose: print("Succesfully connected to pod")
+            return True
         except requests.exceptions.RequestException as e:
-            print(e)
-            return None
+            print("Could no connect to backend")
+            return False
 
-    def get_properties_json(self, node):
-        res = dict()
-        for k,v in node.__dict__.items():
-            if k[:1] != '_' and not (isinstance(v, list) and len(v)>0 and isinstance(v[0], Edge)) and v is not None:
-                res[k] = v
-        res["_type"] = node.__class__.__name__
-        return res
+    def create(self, node):
+        self.create_item(node.to_dict())
 
-    def update_item(self, node):
-        data = self.get_properties_json(node)
-        uid = data["uid"]
-        body = {"payload": data,
-                "databaseKey": self.database_key}
+        # todo: ItemBase.add_to_db(node) if succesful
 
-        try:
-            result = requests.post(f"{self.base_url}/update_item",
-                                  json=body)
-            if result.status_code != 200:
-                print(result, result.content)
-        except requests.exceptions.RequestException as e:
-            print(e)
+    def create_edges(self, edges):
+        """Create edges between nodes, edges should be of format [{"_type": "friend", "_source": 1, "_target": 2}]"""
+        edges_data = []
+        for e in edges:
+            src, target = e.source.uid, e.target.uid
+            data = {"_source": src, "_target": target, "_type": e._type}
+            if e.label is not None: data[LABEL] = e.label
+            if e.sequence is not None: data[SEQUENCE] = e.sequence
 
-    def search_by_fields(self, fields_data):
+            edges_data.append(data)
 
-        body = {"payload": fields_data,
-                "databaseKey": self.database_key}
-        try:
-            result = requests.post(f"{self.base_url}/search_by_fields",
-                                   json=body)
-            json =  result.json()
-            return [self.item_from_json(item) for item in json]
-        except requests.exceptions.RequestException as e:
-            return None
+            if e.reverse:
+                data2 = copy(data)
+                data2["_source"] = target
+                data2["_target"] = src
+                data2["_type"] = "~" + data2["_type"]
+                edges_data.append(data2)
+
+        self.bulk_action([], [], [], edges_data, [])
+
+    def create_edge(self, edge):
+        return self.create_edges([edge])
+
+    def get(self, uid, expanded=True):
+        if not expanded:
+            return self.get_item(uid)
+        else:
+            return self.get_items_with_edges([uid])
 
     def item_from_json(self, json):
         indexer_class = json.get("indexerClass", None)
@@ -197,3 +250,19 @@ class PodClient:
                 print("Starting importer")
         except requests.exceptions.RequestException as e:
             print("Error with calling importer {e}")
+
+    def upload_and_create_file(self, file):
+        hash = hashlib.sha256(file).hexdigest()
+
+        # TODO: check if creation was succesful
+        file_item = {
+            'sha256': hash
+        }
+        self.create_item(file_item, item_type='File')
+#         file_item = Item()
+#         file_item.sha256 = hash
+#         self.create(file_item)
+
+        self.upload_file(file, hash)
+
+        return file_item

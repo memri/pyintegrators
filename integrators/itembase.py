@@ -172,6 +172,14 @@ class ItemBase():
             for e in self.get_all_edges():
                 e.update(api)
 
+    def to_dict(self):
+        res = dict()
+        for k,v in self.__dict__.items():
+            if k[:1] != '_' and not (isinstance(v, list) and len(v)>0 and isinstance(v[0], Edge)) and v is not None:
+                res[k] = v
+        res["_type"] = self.__class__.__name__
+        return res
+
     def exists(self, api):
         res = api.search_by_fields({"uid": self.uid})
         return len(res) == 1
