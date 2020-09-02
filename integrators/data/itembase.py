@@ -4,7 +4,7 @@ __all__ = ['ALL_EDGES', 'UID_GEN', 'DB', 'parse_base_item_json', 'Edge', 'ItemBa
 
 # Cell
 # hide
-from .imports import *
+from ..imports import *
 
 ALL_EDGES = "allEdges"
 SOURCE, TARGET, TYPE, EDGE_TYPE, LABEL, SEQUENCE = "_source", "_target", "_type", "_type", "label", "sequence"
@@ -136,10 +136,11 @@ class ItemBase():
         self.__setattr__(name, res)
 
     def is_expanded(self):
-        if "_expanded" in self.__dict__:
-            return self._expanded
-        else:
-            return False
+        return len(self.get_all_edges()) > 0
+#         if "_expanded" in self.__dict__:
+#             return self._expanded
+#         else:
+#             return False
 
     # def __setattr__(self, name, val):
     #     if isinstance(val, ItemBase) or self.attr_is_edge(val):
@@ -155,6 +156,9 @@ class ItemBase():
     def get_all_edge_names(self):
         return [k for k,v in self.__dict__.items() if self.attr_is_edge(v)]
 
+    def get_property_names(self):
+        return [k for k, v in self.__dict__.items() if not type(v) == list]
+
     @staticmethod
     def attr_is_edge(attr):
         return isinstance(attr, list) and len(attr)>0 and isinstance(attr[0], Edge)
@@ -166,7 +170,7 @@ class ItemBase():
             api.create(self)
         else:
             print(f"updating {self}")
-            api.put(self)
+            api.update_item(self)
 
         if edges:
             for e in self.get_all_edges():
@@ -174,6 +178,7 @@ class ItemBase():
 
     def exists(self, api):
         res = api.search_by_fields({"uid": self.uid})
+        if res is None: return False
         return len(res) == 1
 
     def expand(self, api):

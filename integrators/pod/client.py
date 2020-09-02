@@ -3,8 +3,8 @@
 __all__ = ['API_URL', 'PodClient']
 
 # Cell
-from ..itembase import Edge, ItemBase
-from ..schema import *
+from ..data.itembase import Edge, ItemBase
+from ..data.schema import *
 from ..imports import *
 
 # Cell
@@ -15,10 +15,14 @@ class PodClient:
 
     def __init__(self, url=API_URL, database_key=None, owner_key=None):
         self.url = url
-        self.base_url = f"{url}/{owner_key}"
         self.test_connection(verbose=False)
-        self.database_key=database_key
-        self.owner_key=owner_key
+        self.database_key=database_key if database_key is not None else self.generate_random_key()
+        self.owner_key=owner_key if owner_key is not None else self.generate_random_key()
+        self.base_url = f"{url}/{self.owner_key}"
+
+    @staticmethod
+    def generate_random_key():
+        return "".join([str(random.randint(0, 9)) for i in range(64)])
 
     def test_connection(self, verbose=True):
         try:
@@ -30,8 +34,6 @@ class PodClient:
             return False
 
     def create(self, node):
-#         if node.uid is None:
-#             print(f"Error, node {node} has no uid, not creating")
         try:
             body = {  "databaseKey": self.database_key, "payload":self.get_properties_json(node) }
 
@@ -51,9 +53,13 @@ class PodClient:
 
     def create_edges(self, edges):
         """Create edges between nodes, edges should be of format [{"_type": "friend", "_source": 1, "_target": 2}]"""
-        edges_data = []
+        create_edges = []
         for e in edges:
             src, target = e.source.uid, e.target.uid
+
+            if src is None or target is None:
+                print(f"Could not create edge {e} missing source or target uid")
+                return False
             data = {"_source": src, "_target": target, "_type": e._type}
             if e.label is not None: data[LABEL] = e.label
             if e.sequence is not None: data[SEQUENCE] = e.sequence
@@ -63,13 +69,28 @@ class PodClient:
                 data2["_source"] = target
                 data2["_target"] = src
                 data2["_type"] = "~" + data2["_type"]
-                edges_data.append(data2)
+                create_edges.append(data2)
 
-            edges_data.append(data)
+            create_edges.append(data)
 
+        return self.bulk_action(create_items=[], update_items=[],create_edges=create_edges)
+
+    def delete_items(self, items):
+        uids = [i.uid for i in items]
+        return self.bulk_action(delete_items=uids)
+
+    def delete_all(self):
+        items = self.get_all_items()
+        self.delete_items(items)
+
+    def bulk_action(self, create_items=None, update_items=None, create_edges=None, delete_items=None):
+        create_items = create_items if create_items is not None else []
+        update_items = update_items if update_items is not None else []
+        create_edges = create_edges if create_edges is not None else []
+        delete_items = delete_items if delete_items is not None else []
         edges_data = {"databaseKey": self.database_key, "payload": {
-                            "createItems": [], "updateItems": [], "createEdges": edges_data}}
-
+                    "createItems": create_items, "updateItems": update_items,
+                    "createEdges": create_edges, "deleteItems": delete_items}}
         try:
             result = requests.post(f"{self.base_url}/bulk_action",
                                    json=edges_data)
@@ -90,9 +111,33 @@ class PodClient:
 
     def get(self, uid, expanded=True):
         if not expanded:
-            return self._get_item_with_properties(uid)
+            res = self._get_item_with_properties(uid)
         else:
-            return self._get_item_expanded(uid)
+            res = self._get_item_expanded(uid)
+        if res.deleted == True:
+            print(f"Item with uid {uid} does not exist anymore")
+            return None
+        else:
+            return res
+
+    def get_all_items(self):
+        try:
+            body = {  "databaseKey": self.database_key, "payload":None}
+            result = requests.post(f"{self.base_url}/get_all_items", json=body)
+            if result.status_code != 200:
+                print(result, result.content)
+                return None
+            else:
+                json = result.json()
+                res =  [self.item_from_json(x) for x in json]
+                return self.filter_deleted(res)
+
+        except requests.exceptions.RequestException as e:
+            print(e)
+            return None
+
+    def filter_deleted(self, items):
+        return [i for i in items if not i.deleted == True]
 
     def _get_item_expanded(self, uid):
         body = {"payload": [uid],
@@ -133,8 +178,15 @@ class PodClient:
         for k,v in node.__dict__.items():
             if k[:1] != '_' and not (isinstance(v, list) and len(v)>0 and isinstance(v[0], Edge)) and v is not None:
                 res[k] = v
-        res["_type"] = node.__class__.__name__
+        res["_type"] = self._get_schema_type(node)
         return res
+
+    @staticmethod
+    def _get_schema_type(node):
+        for cls in node.__class__.mro():
+            if cls.__module__ == "integrators.data.schema" and cls.__name__ != "ItemBase":
+                return cls.__name__
+        raise ValueError
 
     def update_item(self, node):
         data = self.get_properties_json(node)
@@ -158,7 +210,8 @@ class PodClient:
             result = requests.post(f"{self.base_url}/search_by_fields",
                                    json=body)
             json =  result.json()
-            return [self.item_from_json(item) for item in json]
+            res = [self.item_from_json(item) for item in json]
+            return self.filter_deleted(res)
         except requests.exceptions.RequestException as e:
             return None
 
@@ -170,10 +223,17 @@ class PodClient:
         # TODO: cleanup
         if existing is not None:
             if not existing.is_expanded() and new_item.is_expanded():
-                existing.edges = new_item.edges
+                for edge_name in new_item.get_all_edge_names():
+                    edges = new_item.get_edges(edge_name)
+                    for e in edges:
+                        e.source = existing
+                    existing.__setattr__(edge_name, edges)
+
+            for prop_name in new_item.get_property_names():
+                existing.__setattr__(prop_name, new_item.__getattribute__(prop_name))
             return existing
         else:
-            return item
+            return new_item
 
     def get_properties(self, expanded):
         properties = copy(expanded)
