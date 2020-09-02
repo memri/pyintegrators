@@ -2,8 +2,7 @@ topnav:
 - title: Topnav
   items:
     - title: gitlab
-      external_url: https://gitlab.com/thomas.capelle/nbdev_template/tree/master/
-
+      external_url: https://gitlab.memri.io/memri/pyintegrators
 #Topnav dropdowns
 topnav_dropdowns:
 - title: Topnav dropdowns

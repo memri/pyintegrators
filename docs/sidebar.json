@@ -1,6 +1,16 @@
 {
-  "integrators": {
+  "Getting Started": {
     "Overview": "/",
-    "Title": "basic.html"
+    "ItemBase": "itembase.html",
+    "Pod Client": "pod.client.html"
+  },
+  "Importers": {
+    "Overview": "indexers.indexer.html"
+  },
+  "Indexers": {
+    "Overview": "indexers.indexer.html"
+  },
+  "Downloaders": {
+    "Overview": "indexers.indexer.html"
   }
 }

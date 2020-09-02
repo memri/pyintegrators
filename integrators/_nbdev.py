@@ -2,11 +2,30 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"Client": "basic.ipynb"}
+index = {"read_file": "basic.ipynb",
+         "read_json": "basic.ipynb",
+         "write_json": "basic.ipynb",
+         "Path.ls": "basic.ipynb",
+         "GeoIndexer": "indexers.GeoIndexer.ipynb",
+         "LOCATION_EDGE": "indexers.GeoIndexer.ipynb",
+         "IndexerBase": "indexers.indexer.ipynb",
+         "get_indexer_run_data": "indexers.indexer.ipynb",
+         "ALL_EDGES": "itembase.ipynb",
+         "UID_GEN": "itembase.ipynb",
+         "DB": "itembase.ipynb",
+         "parse_base_item_json": "itembase.ipynb",
+         "Edge": "itembase.ipynb",
+         "ItemBase": "itembase.ipynb",
+         "API_URL": "pod.client.ipynb",
+         "PodClient": "pod.client.ipynb"}
 
-modules = ["pod/client.py"]
+modules = ["data/basic.py",
+           "indexers/geo/geo_indexer.py",
+           "indexers/indexer.py",
+           "data/itembase.py",
+           "pod/client.py"]
 
-doc_url = "//integrators"
+doc_url = "//integrators/"
 
 git_url = "https://gitlab.memri.io/memri/integrators/tree/master/"
 
