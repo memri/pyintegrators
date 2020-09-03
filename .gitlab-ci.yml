@@ -1,6 +1,7 @@
 default: 
   image: python:3.6 
   before_script:
+  - apt-get install -y libsqlcipher-dev
   - pip install nbdev jupyter
   - pip install -e .
 
@@ -25,7 +26,7 @@ check if there is diff library/nbs:
 run tests:
   stage: test
   script:
-  - nbdev_test_nbs
+  - ./tools/test_in_ci.sh
 
 pages:
   inherit:
