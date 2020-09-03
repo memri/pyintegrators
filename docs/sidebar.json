@@ -1,14 +1,21 @@
 {
   "Getting Started": {
     "Overview": "/",
-    "ItemBase": "itembase.html",
-    "Pod Client": "pod.client.html"
+    "Pod Client": "pod.client.html",
+    "ItemBase": "itembase.html"
   },
   "Importers": {
     "Overview": "indexers.indexer.html"
   },
   "Indexers": {
-    "Overview": "indexers.indexer.html"
+    "Overview": "indexers.indexer.html",
+    "GeoIndexer": "indexers.GeoIndexer.html",
+    "": {
+      "NoteListIndexer": {
+        "Parser": "indexers.NoteListIndexer.Parser.html",
+        "Data": "indexers.NoteListIndexer.NoteList.html"
+      }
+    }
   },
   "Downloaders": {
     "Overview": "indexers.indexer.html"
