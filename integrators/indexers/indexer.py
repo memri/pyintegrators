@@ -28,6 +28,10 @@ class IndexerData():
         for k, v in kwargs.items():
             self.__setattr__(k, v)
 
+    def __repr__(self):
+        return f"IndexerData \n{self.__dict__}"
+
+
 def get_indexer_run_data(client, indexer_run):
     if indexer_run.targetDataType is None:
         print("No targetDataType defined")
