@@ -11,6 +11,6 @@ RUST_LOG=pod=debug,info \
   --insecure-http-headers \
   "$@" &
 
-pid=$$
+pid=$!
 nbdev_test_nbs
 kill $pid
