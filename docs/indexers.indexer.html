@@ -54,7 +54,7 @@ nb_path: "nbs/indexers.indexer.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="IndexerBase" class="doc_header"><code>class</code> <code>IndexerBase</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L10" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IndexerBase</code>(<strong><code>indexerClass</code></strong>=<em><code>None</code></em>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>) :: <code>Indexer</code></p>
+<h2 id="IndexerBase" class="doc_header"><code>class</code> <code>IndexerBase</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L20" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IndexerBase</code>(<strong><code>indexerClass</code></strong>=<em><code>None</code></em>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>) :: <code>Indexer</code></p>
 </blockquote>
 <p>Provides a base class for all items. All items in the schema inherit from this class, and it provides some
 basic functionality for consistency and to enable easier usage.</p>
@@ -80,7 +80,7 @@ basic functionality for consistency and to enable easier usage.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="IndexerData" class="doc_header"><code>class</code> <code>IndexerData</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L26" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IndexerData</code>(<strong>**<code>kwargs</code></strong>)</p>
+<h2 id="IndexerData" class="doc_header"><code>class</code> <code>IndexerData</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L36" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IndexerData</code>(<strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -104,7 +104,7 @@ basic functionality for consistency and to enable easier usage.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_indexer_run_data" class="doc_header"><code>get_indexer_run_data</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L31" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_indexer_run_data</code>(<strong><code>client</code></strong>, <strong><code>indexer_run</code></strong>)</p>
+<h4 id="get_indexer_run_data" class="doc_header"><code>get_indexer_run_data</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L45" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_indexer_run_data</code>(<strong><code>client</code></strong>, <strong><code>indexer_run</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -128,7 +128,7 @@ basic functionality for consistency and to enable easier usage.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="test_registration" class="doc_header"><code>test_registration</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L40" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_registration</code>(<strong><code>integrator</code></strong>)</p>
+<h4 id="test_registration" class="doc_header"><code>test_registration</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L54" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_registration</code>(<strong><code>integrator</code></strong>)</p>
 </blockquote>
 <p>Check whether an integrator is registred. Registration is necessary to be able to load the right indexer
 when retrieving it from the database.</p>
@@ -167,32 +167,22 @@ when retrieving it from the database.</p>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">PodClient</span><span class="p">()</span>
 
-<span class="n">location</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">latitude</span><span class="o">=-</span><span class="mf">37.81</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mf">144.96</span><span class="p">)</span>
-<span class="n">address</span> <span class="o">=</span> <span class="n">Address</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
-<span class="n">indexer</span> <span class="o">=</span> <span class="n">Indexer</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">indexerClass</span><span class="o">=</span><span class="s2">&quot;GeoIndexer&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GeoIndexer&quot;</span><span class="p">)</span>
-<span class="n">indexer_run</span> <span class="o">=</span> <span class="n">IndexerRun</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">targetDataType</span><span class="o">=</span><span class="s2">&quot;Address&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">create_toy_dataset</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">latitude</span><span class="o">=-</span><span class="mf">37.81</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mf">144.96</span><span class="p">)</span>
+    <span class="n">address</span> <span class="o">=</span> <span class="n">Address</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
+    <span class="n">indexer</span> <span class="o">=</span> <span class="n">Indexer</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">indexerClass</span><span class="o">=</span><span class="s2">&quot;GeoIndexer&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GeoIndexer&quot;</span><span class="p">)</span>
+    <span class="n">indexer_run</span> <span class="o">=</span> <span class="n">IndexerRun</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">targetDataType</span><span class="o">=</span><span class="s2">&quot;Address&quot;</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">location</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">]:</span> <span class="n">client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-</pre></div>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">location</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">]:</span> <span class="n">client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        
+    <span class="n">edge_success</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_edge</span><span class="p">(</span><span class="n">Edge</span><span class="p">(</span><span class="n">indexer_run</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="s2">&quot;indexer&quot;</span><span class="p">))</span>
+    <span class="n">edge_success2</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_edge</span><span class="p">(</span><span class="n">Edge</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">))</span>
 
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
+    <span class="k">assert</span> <span class="n">edge_success</span> <span class="ow">and</span> <span class="n">edge_success2</span>
     
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">edge_success</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_edge</span><span class="p">(</span><span class="n">Edge</span><span class="p">(</span><span class="n">indexer_run</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="s2">&quot;indexer&quot;</span><span class="p">))</span>
-<span class="n">edge_success2</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_edge</span><span class="p">(</span><span class="n">Edge</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">))</span>
-
-<span class="k">assert</span> <span class="n">edge_success</span> <span class="ow">and</span> <span class="n">edge_success2</span>
+    <span class="k">return</span> <span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">address</span>
+    
+<span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">create_toy_dataset</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -273,6 +263,7 @@ when retrieving it from the database.</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">indexer</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">)</span>
+<span class="n">data</span>
 </pre></div>
 
     </div>
@@ -288,6 +279,17 @@ when retrieving it from the database.</p>
 <pre>1 items found to index
 </pre>
 </div>
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>IndexerData 
+{&#39;items_with_location&#39;: [Address (#2)]}</pre>
+</div>
+
 </div>
 
 </div>
@@ -351,6 +353,158 @@ updating IndexerRun (#4)
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>creating Country (#None)
 updating Address (#2)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">delete_all</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Running-the-full-Indexer-pipeline">Running the full Indexer pipeline<a class="anchor-link" href="#Running-the-full-Indexer-pipeline"> </a></h1>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="run_integrator" class="doc_header"><code>run_integrator</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L78" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>run_integrator</code>(<strong><code>environ</code></strong>=<em><code>None</code></em>, <strong><code>pod_full_address</code></strong>=<em><code>None</code></em>, <strong><code>integrator_run_uid</code></strong>=<em><code>None</code></em>, <strong><code>database_key</code></strong>=<em><code>None</code></em>, <strong><code>owner_key</code></strong>=<em><code>None</code></em>)</p>
+</blockquote>
+<p>Runs an integrator, you can either provide the run settings as parameters to this function (for local testing)
+or via environment variables (this is how the pod communicates with integrators).</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Running an indexer by providing parameters as variables</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">create_toy_dataset</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="n">run_integrator</span><span class="p">(</span><span class="n">pod_full_address</span><span class="o">=</span><span class="n">DEFAULT_POD_ADDRESS</span><span class="p">,</span> <span class="n">integrator_run_uid</span><span class="o">=</span><span class="n">indexer_run</span><span class="o">.</span><span class="n">uid</span><span class="p">,</span>
+               <span class="n">database_key</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">database_key</span><span class="p">,</span> <span class="n">owner_key</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">owner_key</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">delete_all</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 items found to index
+indexing 1 items
+updating IndexerRun (#9)
+creating Country (#None)
+updating Address (#7)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Running an indexer by providing environment variables</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">create_toy_dataset</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="n">DATABASE_KEY_ENV</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">database_key</span><span class="p">,</span>
+               <span class="n">OWNER_KEY_ENV</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">owner_key</span><span class="p">})</span>
+              
+<span class="n">env</span> <span class="o">=</span> <span class="p">{</span><span class="n">POD_FULL_ADDRESS_ENV</span><span class="p">:</span> <span class="n">DEFAULT_POD_ADDRESS</span><span class="p">,</span>
+       <span class="n">RUN_UID_ENV</span><span class="p">:</span> <span class="n">indexer_run</span><span class="o">.</span><span class="n">uid</span><span class="p">,</span>
+       <span class="n">POD_SERVICE_PAYLOAD_ENV</span><span class="p">:</span> <span class="n">payload</span><span class="p">}</span>
+<span class="n">run_integrator</span><span class="p">(</span><span class="n">environ</span><span class="o">=</span> <span class="n">env</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">delete_all</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 items found to index
+indexing 1 items
+updating IndexerRun (#19)
+creating Country (#None)
+updating Address (#17)
 </pre>
 </div>
 </div>
