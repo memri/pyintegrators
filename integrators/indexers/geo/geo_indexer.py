@@ -6,7 +6,7 @@ __all__ = ['GeoIndexer', 'LOCATION_EDGE']
 from ...data.schema import *
 from ...data.itembase import *
 from ...pod.client import PodClient
-from ..indexer import IndexerBase, get_indexer_run_data
+from ..indexer import IndexerBase, get_indexer_run_data, IndexerData, test_registration
 from .. import *
 import pycountry, requests
 import reverse_geocoder as rg
@@ -25,7 +25,6 @@ class GeoIndexer(IndexerBase):
         city_name = geo_result["name"]
         country_name = pycountry.countries.get(alpha_2=geo_result["cc"]).name
         return city_name, country_name
-
 
     def get_country_by_name(self, api, name):
         data = api.search_by_fields({"_type": "Country", "name": name})
@@ -49,12 +48,15 @@ class GeoIndexer(IndexerBase):
 
         return latlong, False
 
-    def index(self, api, indexer_run):
+    def get_data(self, api, indexer_run):
         items_expanded      = [d.expand(api) for d in get_indexer_run_data(api, indexer_run)]
-        items_with_location = [x for x in items_expanded
-         if any([loc.latitude is not None for loc in x.location])]
-
+        items_with_location = [x for x in items_expanded if any([loc.latitude is not None for loc in x.location])]
         print(f"{len(items_with_location)} items found to index")
+        return IndexerData(items_with_location=items_with_location)
+
+    def index(self, data, indexer_run, api=None):
+        items_with_location = data.items_with_location
+        print(f"indexing {len(items_with_location)} items")
 
         new_nodes = []
         for n, item in enumerate(items_with_location):
@@ -68,7 +70,7 @@ class GeoIndexer(IndexerBase):
             # add information to indexer objects
             item.city = city_name
             # item.add_property("city", city_name)
-            country = self.get_country_by_name(api, country_name)
+            country = self.get_country_by_name(api, country_name) if api is not None else None
 
             if country is None:
                 country = Country(name=country_name)
@@ -82,7 +84,7 @@ class GeoIndexer(IndexerBase):
             progress = int(n+1 / len(items_with_location) * 100)
 
             indexer_run.progress=progress
-            indexer_run.update(api, edges=False)
+            if api is not None: indexer_run.update(api, edges=False)
 
             # indexer_run.set_progress(api, progress)
 
