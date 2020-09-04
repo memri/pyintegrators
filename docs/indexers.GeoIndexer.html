@@ -56,6 +56,8 @@ nb_path: "nbs/indexers.GeoIndexer.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="GeoIndexer" class="doc_header"><code>class</code> <code>GeoIndexer</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/geo/geo_indexer.py#L18" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GeoIndexer</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>) :: <a href="/integrators/indexers.indexer.html#IndexerBase"><code>IndexerBase</code></a></p>
 </blockquote>
+<p>Provides a base class for all items. All items in the schema inherit from this class, and it provides some
+basic functionality for consistency and to enable easier usage.</p>
 
 </div>
 
@@ -69,7 +71,7 @@ nb_path: "nbs/indexers.GeoIndexer.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="create-a-toy-dataset">create a toy dataset<a class="anchor-link" href="#create-a-toy-dataset"> </a></h1>
+<h1 id="Create-a-toy-dataset">Create a toy dataset<a class="anchor-link" href="#Create-a-toy-dataset"> </a></h1>
 </div>
 </div>
 </div>
@@ -81,48 +83,83 @@ nb_path: "nbs/indexers.GeoIndexer.ipynb"
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">PodClient</span><span class="p">()</span>
-</pre></div>
 
-    </div>
-</div>
-</div>
+<span class="n">location</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">latitude</span><span class="o">=-</span><span class="mf">37.81</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mf">144.96</span><span class="p">)</span>
+<span class="n">address</span> <span class="o">=</span> <span class="n">Address</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
+<span class="n">indexer</span> <span class="o">=</span> <span class="n">GeoIndexer</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
+<span class="n">indexer_run</span> <span class="o">=</span> <span class="n">IndexerRun</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">targetDataType</span><span class="o">=</span><span class="s2">&quot;Address&quot;</span><span class="p">)</span>
 
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">node1</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">latitude</span><span class="o">=-</span><span class="mf">37.81</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mf">144.96</span><span class="p">)</span>
-<span class="n">node2</span> <span class="o">=</span> <span class="n">Address</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
-
-<span class="n">node2</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="n">node1</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexer</span> <span class="o">=</span> <span class="n">Indexer</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">indexerClass</span><span class="o">=</span><span class="s2">&quot;GeoIndexer&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GeoIndexer&quot;</span><span class="p">)</span>
-<span class="n">indexer_run</span> <span class="o">=</span> <span class="n">IndexerRun</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">targetDataType</span><span class="o">=</span><span class="s2">&quot;Address&quot;</span><span class="p">)</span>
 <span class="n">indexer_run</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;indexer&quot;</span><span class="p">,</span> <span class="n">indexer</span><span class="p">)</span>
+<span class="n">address</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_registration</span><span class="p">(</span><span class="n">GeoIndexer</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">IndexerData</span><span class="p">(</span><span class="n">items_with_location</span><span class="o">=</span> <span class="p">[</span><span class="n">address</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">updated_items</span><span class="p">,</span> <span class="n">new_items</span> <span class="o">=</span> <span class="n">indexer</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">new_items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Australia&quot;</span> <span class="ow">and</span> <span class="n">updated_items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">city</span> <span class="o">==</span> <span class="s2">&quot;Melbourne&quot;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>indexing 1 items
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
