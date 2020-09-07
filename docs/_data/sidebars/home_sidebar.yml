@@ -10,11 +10,11 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: ItemBase
-      url: itembase.html
-    - output: web,pdf
       title: Pod Client
       url: pod.client.html
+    - output: web,pdf
+      title: ItemBase
+      url: itembase.html
     output: web
     title: Getting Started
   - folderitems:
@@ -27,6 +27,19 @@ entries:
     - output: web,pdf
       title: Overview
       url: indexers.indexer.html
+    - output: web,pdf
+      title: GeoIndexer
+      url: indexers.GeoIndexer.html
+      subfolders:
+      - output: web
+        subfolderitems:
+        - output: web,pdf
+          title: Parser
+          url: indexers.NoteListIndexer.Parser.html
+        - output: web,pdf
+          title: Data
+          url: indexers.NoteListIndexer.NoteList.html
+        title: NoteListIndexer
     output: web
     title: Indexers
   - folderitems:

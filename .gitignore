@@ -9,6 +9,7 @@
 _tmp*
 tmp*
 tags
+pod_docker
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
