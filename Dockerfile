@@ -1,7 +1,5 @@
-FROM ubuntu:latest as memri-pyintegrators
+FROM python:3 as memri-pyintegrators
 ENV DEBIAN_FRONTEND=noninteractive
-
-RUN apt update && apt install -y python3-pip
 
 COPY ./ /usr/src/pyintegrators
 WORKDIR /usr/src/pyintegrators
