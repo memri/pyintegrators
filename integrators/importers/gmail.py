@@ -15,6 +15,12 @@ from email import policy
 class IMAPClient():
 
     def __init__(self, username, app_pw, host='imap.gmail.com', inbox='"[Gmail]/All Mail"'):
+        # Quick fix to support Google's threading method
+        if host == 'imap.gmail.com':
+            self.x_gm_thrid_support = True
+        else:
+            self.x_gm_thrid_support = False
+
         self.client = imaplib.IMAP4_SSL(host)
         self.client.login(username, app_pw)
         self.client.select(inbox) # connect to inbox.
@@ -27,21 +33,29 @@ class IMAPClient():
         return data[0].split()
 
     def get_mail(self, uid):
-        result, data = self.client.uid('fetch', uid, '(RFC822)')
-        raw_email = data[0][1]
-        return raw_email
-
-    def get_all_mails(self, uids):
-        res = []
-        for uid in tqdm(uids):
+        if self.x_gm_thrid_support:
+            # Use Google's threading method, in which every thread has an ID
+            result, data = self.client.uid('fetch', uid, '(RFC822 X-GM-THRID)')
+            thread_id = data[0][0].decode("utf-8").split(" ")[2]
+            raw_email = data[0][1]
+            return (raw_email, thread_id)
+        else:
+            # Threading not yet implemented for IMAP threading
             result, data = self.client.uid('fetch', uid, '(RFC822)')
             raw_email = data[0][1]
-            res.append(raw_email)
-        return res
+            return (raw_email, None)
 
-    def get_x_gm_thrid(self, uid):
-        result, data = self.client.uid('fetch', uid, '(X-GM-THRID X-GM-MSGID)')
-        return data[0].decode("utf-8").split(" ")[2]
+#     def get_all_mails(self, uids):
+#         res = []
+#         for uid in tqdm(uids):
+#             result, data = self.client.uid('fetch', uid, '(RFC822)')
+#             raw_email = data[0][1]
+#             res.append(raw_email)
+#         return res
+
+#     def get_x_gm_thrid(self, uid):
+#         result, data = self.client.uid('fetch', uid, '(X-GM-THRID X-GM-MSGID)')
+#         return data[0].decode("utf-8").split(" ")[2]
 
 # # @staticmethod
 # def part_to_str(part):
@@ -82,13 +96,15 @@ def get_message_content(message):
 #     # TODO: proper escaping here
 #     content = content.replace("=3D", "=")
 
-# USED FOR DOWNLOADING ATTACHMENTS
-#     for i, x in enumerate(message.iter_attachments()):
-#         f = open(f"tmp/gmail/{i}.png", 'wb')
-#         f.write(x.get_content())
-#         f.close()
-    content = message.get_body().get_content()
     attachments = []
+# USED FOR DOWNLOADING ATTACHMENTS
+    for i, x in enumerate(message.iter_attachments()):
+        attachments.append(x)
+        #f = open(f"tmp/gmail/{i}.png", 'wb')
+        #f.write(x.get_content())
+        #f.close()
+    content = message.get_body().get_content()
+
     return (content, attachments)
 
 def get_addresses_from_message(message, field):
@@ -115,12 +131,14 @@ def create_item_from_mail(mail, thread_id=None):
     subject = message["subject"]
     timestamp = get_timestamp_from_message(message)
 
-    from_tuples = parse_addresses(message,'from')
-    to_tuples = parse_addresses(message,'to')
-    reply_to_tuples = parse_addresses(message,'reply-to')
+    from_tuples = get_addresses_from_message(message,'from')
+    to_tuples = get_addresses_from_message(message,'to')
+    reply_to_tuples = get_addresses_from_message(message,'reply-to')
+
+    # TODO: verbose option?
+    # print(f'{[address for name, address in from_tuples]} - {subject} [{thread_id}]')
 
     (content, attachments) = get_message_content(message)
-    # importJson = mail_utf8
 
     # TODO: is dateSent the right way to go? Might differ for whether you're sender or receiver
     # TODO: importJson
@@ -156,9 +174,9 @@ def download_mails(imap_client, gmail_ids, stop_at):
             print(f"stopped early at {stop_at}")
             break
 
-        mail = imap_client.get_mail(gmail_id)
+        mail, thread_id = imap_client.get_mail(gmail_id)
 
-        thread_id = imap_client.get_x_gm_thrid(gmail_id)
+        # thread_id = imap_client.get_x_gm_thrid(gmail_id)
         item = create_item_from_mail(mail, thread_id=thread_id)
         all_mails.append(item)
 
@@ -197,7 +215,7 @@ class GmailImporter(IndexerBase):
                                  app_pw=importer_run.password,
                                  host=imap_host)
         gmail_ids = imap_client.get_all_mail_uids()
-        all_mails = download_mails(imap_client, gmail_ids, None)
+        all_mails = download_mails(imap_client, gmail_ids, 10)
 
         # Merge email accounts/messageChannels here
         # TODO: create better way to do this
@@ -207,7 +225,8 @@ class GmailImporter(IndexerBase):
         all_thread_ids = set()
         for email_item in all_mails:
             pod_client.create(email_item)
-            all_thread_ids.add(email_item.messageChannel[0].externalId)
+            for message_channel in email_item.messageChannel:
+                all_thread_ids.add(message_channel.externalId)
         for (external_id, item) in all_accounts.items():
             pod_client.create(item)
 
