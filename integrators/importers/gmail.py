@@ -14,14 +14,14 @@ from email import policy
 
 class IMAPClient():
 
-    def __init__(self, username, app_pw, host='imap.gmail.com', inbox='"[Gmail]/All Mail"'):
+    def __init__(self, username, app_pw, host='imap.gmail.com', port=993, inbox='"[Gmail]/All Mail"'):
         # Quick fix to support Google's threading method
         if host == 'imap.gmail.com':
             self.x_gm_thrid_support = True
         else:
             self.x_gm_thrid_support = False
 
-        self.client = imaplib.IMAP4_SSL(host)
+        self.client = imaplib.IMAP4_SSL(host, port=port)
         self.client.login(username, app_pw)
         self.client.select(inbox) # connect to inbox.
 
@@ -97,7 +97,7 @@ def get_message_content(message):
 #     content = content.replace("=3D", "=")
 
     attachments = []
-# USED FOR DOWNLOADING ATTACHMENTS
+    # SEPARATE THE ATTACHMENTS
     for i, x in enumerate(message.iter_attachments()):
         attachments.append(x)
         #f = open(f"tmp/gmail/{i}.png", 'wb')
@@ -213,7 +213,8 @@ class GmailImporter(IndexerBase):
 
         imap_client = IMAPClient(username=importer_run.username,
                                  app_pw=importer_run.password,
-                                 host=imap_host)
+                                 host=imap_host,
+                                 port=993)
         gmail_ids = imap_client.get_all_mail_uids()
         all_mails = download_mails(imap_client, gmail_ids, 10)
 
