@@ -16,6 +16,7 @@ import reverse_geocoder as rg
 LOCATION_EDGE = "hasLocation"
 
 class GeoIndexer(IndexerBase):
+    """Adds Countries and Cities to items with a location."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -26,13 +27,11 @@ class GeoIndexer(IndexerBase):
         country_name = pycountry.countries.get(alpha_2=geo_result["cc"]).name
         return city_name, country_name
 
-    def get_country_by_name(self, api, name):
-        data = api.search_by_fields({"_type": "Country", "name": name})
+    def get_country_by_name(self, client, name):
+        data = client.search_by_fields({"_type": "Country", "name": name})
         if data == None or data == []: return None
         else:
             return data[0]
-            # props = data[0]
-            # return api.create_local(Node(props))
 
     def get_lat_long(self, item):
         locations = item.location
@@ -48,13 +47,13 @@ class GeoIndexer(IndexerBase):
 
         return latlong, False
 
-    def get_data(self, api, indexer_run):
-        items_expanded      = [d.expand(api) for d in get_indexer_run_data(api, indexer_run)]
+    def get_data(self, client, indexer_run):
+        items_expanded      = [d.expand(client) for d in get_indexer_run_data(client, indexer_run)]
         items_with_location = [x for x in items_expanded if any([loc.latitude is not None for loc in x.location])]
         print(f"{len(items_with_location)} items found to index")
         return IndexerData(items_with_location=items_with_location)
 
-    def index(self, data, indexer_run, api=None):
+    def index(self, data, indexer_run, client=None):
         items_with_location = data.items_with_location
         print(f"indexing {len(items_with_location)} items")
 
@@ -70,7 +69,7 @@ class GeoIndexer(IndexerBase):
             # add information to indexer objects
             item.city = city_name
             # item.add_property("city", city_name)
-            country = self.get_country_by_name(api, country_name) if api is not None else None
+            country = self.get_country_by_name(client, country_name) if client is not None else None
 
             if country is None:
                 country = Country(name=country_name)
@@ -84,8 +83,8 @@ class GeoIndexer(IndexerBase):
             progress = int(n+1 / len(items_with_location) * 100)
 
             indexer_run.progress=progress
-            if api is not None: indexer_run.update(api, edges=False)
+            if client is not None: indexer_run.update(client, edges=False)
 
-            # indexer_run.set_progress(api, progress)
+            # indexer_run.set_progress(client, progress)
 
         return items_with_location, new_nodes

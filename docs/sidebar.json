@@ -10,6 +10,7 @@
   "Indexers": {
     "Overview": "indexers.indexer.html",
     "GeoIndexer": "indexers.GeoIndexer.html",
+    "FaceRecognitionIndexer": "indexers.FaceRecognitionIndexer.html",
     "": {
       "NoteListIndexer": {
         "Parser": "indexers.NoteListIndexer.Parser.html",

@@ -13,38 +13,7 @@ from .itembase import ItemBase, Edge
 def get_constructor(_type, indexer_class=None):
     import integrators.indexers as models
     from integrators.indexers.indexer import IndexerBase
-    # from integrators.indexers import __all__
-
-
-    # import ipdb
-    # ipdb.set_trace()
     import integrators.integrator_registry
-
-    # getattr(integrators.integrator_registry, "name")
-
-    # def get_indexer_dict():
-    #     # res = dict()
-    #     # for cls in IndexerBase.subclasses:
-    #     #     res[cls.__name__] = cls
-
-    #     # print(IndexerBase.subclasses)
-    #     # return res
-    #     # for cls in IndexerBase.subclasses:
-
-
-    #     res = dict()
-    #     print(dir(models))
-    #     import ipdb
-    #     ipdb.set_trace()
-    #     for x in dir(models):
-    #         imported = getattr(__import__("integrators.indexers", fromlist=[x]), x)
-    #         print(imported)
-
-    #         if isinstance(imported, (type, )) and issubclass(imported, Indexer) and imported != Indexer:
-    #             res[imported.__name__] = imported
-    #     return res
-    
-    # indexer_dict = get_indexer_dict()
 
     if _type == "Indexer" and indexer_class is not None and hasattr(integrators.integrator_registry, indexer_class):
         return getattr(integrators.integrator_registry, indexer_class)
