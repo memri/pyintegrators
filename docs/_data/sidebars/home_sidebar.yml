@@ -30,6 +30,9 @@ entries:
     - output: web,pdf
       title: GeoIndexer
       url: indexers.GeoIndexer.html
+    - output: web,pdf
+      title: FaceRecognitionIndexer
+      url: indexers.FaceRecognitionIndexer.html
       subfolders:
       - output: web
         subfolderitems:
