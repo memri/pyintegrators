@@ -10,6 +10,7 @@ from .parser import *
 from ...data.schema import *
 from ...data.basic import *
 from ...imports import *
+from ...pod.client import PodClient
 
 # Cell
 import spacy
@@ -21,10 +22,12 @@ class NotesListIndexer(Indexer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def index(self, api, indexer_run):
-        """Run indexer"""
-        notes  = [d.expand(api) for d in indexer_run.get_data(api)]
+    def get_data(self, client):
+        notes  = [d.expand(client) for d in indexer_run.get_data(client)]
+        return notes
 
+    def index(self, client, indexer_run, notes):
+        """Run indexer"""
         predictor = ListTypePredictor()
         for note in notes:
             parser = HTMLListParser()
