@@ -2,7 +2,8 @@
 
 __all__ = ['IndexerBase', 'IndexerData', 'get_indexer_run_data', 'test_registration', 'POD_FULL_ADDRESS_ENV',
            'RUN_UID_ENV', 'POD_SERVICE_PAYLOAD_ENV', 'DATABASE_KEY_ENV', 'OWNER_KEY_ENV', 'run_indexer',
-           'run_integrator_from_run_uid', 'run_integrator']
+           'run_integrator_from_run_uid', 'run_integrator', 'run_indexer', 'run_integrator_from_run_uid',
+           'run_integrator']
 
 # Cell
 from ..data.schema import *
@@ -99,6 +100,48 @@ def run_integrator(environ=None, pod_full_address=None, integrator_run_uid=None,
         for name, val in [("pod_full_address", pod_full_address), ("integrator_run_uid", integrator_run_uid),
                   ("database_key", database_key), ("owner_key", owner_key)]:
             print(f"{name}={val}")
+
+    client = PodClient(url=pod_full_address, database_key=database_key, owner_key=owner_key)
+    run_integrator_from_run_uid(integrator_run_uid, client)
+
+
+# Cell
+# export
+def run_indexer(indexer_run, client):
+    indexer = indexer_run.indexer[0]
+    data = indexer.get_data(client, indexer_run)
+    updated_items, new_items = indexer.index(data, indexer_run, client)
+    indexer.populate(client, updated_items, new_items)
+
+def run_integrator_from_run_uid(run_uid, client):
+    run = client.get(run_uid)
+
+    if isinstance(run, IndexerRun):
+        run_indexer(run, client)
+    else:
+        raise NotImplementedError
+
+# Cell
+
+def run_integrator(environ=None, pod_full_address=None, integrator_run_uid=None, database_key=None, owner_key=None):
+    """Runs an integrator, you can either provide the run settings as parameters to this function (for local testing)
+    or via environment variables (this is how the pod communicates with integrators)."""
+    params = [pod_full_address, integrator_run_uid, database_key, owner_key]
+
+    if all([p is None for p in params]):
+        try:
+            pod_full_address    = environ.get(POD_FULL_ADDRESS_ENV, DEFAULT_POD_ADDRESS)
+            integrator_run_uid  = environ[RUN_UID_ENV]
+            pod_service_payload = json.loads(environ[POD_SERVICE_PAYLOAD_ENV])
+
+            database_key = pod_service_payload[DATABASE_KEY_ENV]
+            owner_key    = pod_service_payload[OWNER_KEY_ENV]
+
+        except KeyError as e:
+            print(f"Environmentvariable {e} not found, exiting")
+            return
+    else:
+        assert not (None in params), f"Defined some params to run indexer, but not all. Missing {[p for p in params if p is None]}"
 
     client = PodClient(url=pod_full_address, database_key=database_key, owner_key=owner_key)
     run_integrator_from_run_uid(integrator_run_uid, client)
