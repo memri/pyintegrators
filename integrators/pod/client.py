@@ -114,7 +114,10 @@ class PodClient:
             res = self._get_item_with_properties(uid)
         else:
             res = self._get_item_expanded(uid)
-        if res.deleted == True:
+        if res is None:
+            return None
+
+        elif res.deleted == True:
             print(f"Item with uid {uid} does not exist anymore")
             return None
         else:

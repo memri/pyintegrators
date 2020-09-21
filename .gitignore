@@ -10,6 +10,7 @@ _tmp*
 tmp*
 tags
 pod_docker
+tools/example_run.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
