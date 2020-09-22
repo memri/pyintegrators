@@ -8,7 +8,7 @@ from ..data.schema import *
 from ..imports import *
 
 # Cell
-DEFAULT_POD_ADDRESS = "http://localhost:3030/v2"
+DEFAULT_POD_ADDRESS = "http://localhost:3030"
 POD_VERSION = "v2"
 
 # Cell

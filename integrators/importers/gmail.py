@@ -201,9 +201,9 @@ def merge_duplicate_items(all_mails):
 
 from ..data.schema import *
 from ..imports import *
-from ..indexers.indexer import IndexerBase, test_registration
+from ..indexers.indexer import ImporterBase, test_registration
 
-class GmailImporter(IndexerBase):
+class GmailImporter(ImporterBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -225,6 +225,7 @@ class GmailImporter(IndexerBase):
         # Create all email and account items
         all_thread_ids = set()
         for email_item in all_mails:
+            print(pod_client.get_properties_json(email_item))
             pod_client.create(email_item)
             for message_channel in email_item.messageChannel:
                 all_thread_ids.add(message_channel.externalId)
