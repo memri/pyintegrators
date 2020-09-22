@@ -55,20 +55,18 @@ class Item(ItemBase):
 class Account(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
                  externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 handle=None, displayName=None, nameQuality=None, enablePresence=None, enableReceipts=None,
-                 service=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, belongsTo=None, price=None, location=None, organization=None):
+                 handle=None, displayName=None, service=None, itemType=None, avatarUrl=None, changelog=None,
+                 label=None, genericAttribute=None, measure=None, sharedWith=None, belongsTo=None, price=None,
+                 location=None, organization=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                          version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.handle = handle
         self.displayName = displayName
-        self.nameQuality = nameQuality
-        self.enablePresence = enablePresence
-        self.enableReceipts = enableReceipts
         self.service = service
         self.itemType = itemType
+        self.avatarUrl = avatarUrl
         self.belongsTo = belongsTo if belongsTo is not None else []
         self.price = price if price is not None else []
         self.location = location if location is not None else []
@@ -89,11 +87,9 @@ class Account(Item):
         importJson = json.get("importJson", None)
         handle = json.get("handle", None)
         displayName = json.get("displayName", None)
-        nameQuality = json.get("nameQuality", None)
-        enablePresence = json.get("enablePresence", None)
-        enableReceipts = json.get("enableReceipts", None)
         service = json.get("service", None)
         itemType = json.get("itemType", None)
+        avatarUrl = json.get("avatarUrl", None)
        
         changelog = []
         label = []
@@ -130,10 +126,283 @@ class Account(Item):
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                   version=version, uid=uid, importJson=importJson, handle=handle, displayName=displayName,
-                  nameQuality=nameQuality, enablePresence=enablePresence, enableReceipts=enableReceipts,
-                  service=service, itemType=itemType, changelog=changelog, label=label,
+                  service=service, itemType=itemType, avatarUrl=avatarUrl, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, belongsTo=belongsTo,
                   price=price, location=location, organization=organization)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A postal address.
+class Address(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 latitude=None, longitude=None, city=None, postalCode=None, state=None, street=None, itemType=None,
+                 locationAutoLookupHash=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None, country=None, location=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.latitude = latitude
+        self.longitude = longitude
+        self.city = city
+        self.postalCode = postalCode
+        self.state = state
+        self.street = street
+        self.itemType = itemType
+        self.locationAutoLookupHash = locationAutoLookupHash
+        self.country = country if country is not None else []
+        self.location = location if location is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        latitude = json.get("latitude", None)
+        longitude = json.get("longitude", None)
+        city = json.get("city", None)
+        postalCode = json.get("postalCode", None)
+        state = json.get("state", None)
+        street = json.get("street", None)
+        itemType = json.get("itemType", None)
+        locationAutoLookupHash = json.get("locationAutoLookupHash", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        country = []
+        location = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "country" or edge._type == "~country": 
+                    country.append(edge)
+                elif edge._type == "location" or edge._type == "~location": 
+                    location.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, latitude=latitude, longitude=longitude, city=city,
+                  postalCode=postalCode, state=state, street=street, itemType=itemType,
+                  locationAutoLookupHash=locationAutoLookupHash, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, country=country,
+                  location=location)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# An article, for instance from a journal, magazine or newspaper.
+class Article(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
+                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
+                 writtenBy=None, file=None, recordedAt=None, review=None, comment=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.title = title
+        self.abstract = abstract
+        self.datePublished = datePublished
+        self.keyword = keyword
+        self.content = content
+        self.textContent = textContent
+        self.transcript = transcript
+        self.itemType = itemType
+        self.audio = audio if audio is not None else []
+        self.citation = citation if citation is not None else []
+        self.contentLocation = contentLocation if contentLocation is not None else []
+        self.locationCreated = locationCreated if locationCreated is not None else []
+        self.video = video if video is not None else []
+        self.writtenBy = writtenBy if writtenBy is not None else []
+        self.file = file if file is not None else []
+        self.recordedAt = recordedAt if recordedAt is not None else []
+        self.review = review if review is not None else []
+        self.comment = comment if comment is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        title = json.get("title", None)
+        abstract = json.get("abstract", None)
+        datePublished = json.get("datePublished", None)
+        keyword = json.get("keyword", None)
+        content = json.get("content", None)
+        textContent = json.get("textContent", None)
+        transcript = json.get("transcript", None)
+        itemType = json.get("itemType", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        audio = []
+        citation = []
+        contentLocation = []
+        locationCreated = []
+        video = []
+        writtenBy = []
+        file = []
+        recordedAt = []
+        review = []
+        comment = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "audio" or edge._type == "~audio": 
+                    audio.append(edge)
+                elif edge._type == "citation" or edge._type == "~citation": 
+                    citation.append(edge)
+                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
+                    contentLocation.append(edge)
+                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
+                    locationCreated.append(edge)
+                elif edge._type == "video" or edge._type == "~video": 
+                    video.append(edge)
+                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
+                    writtenBy.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
+                    recordedAt.append(edge)
+                elif edge._type == "review" or edge._type == "~review": 
+                    review.append(edge)
+                elif edge._type == "comment" or edge._type == "~comment": 
+                    comment.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
+                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
+                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
+                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review, comment=comment)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# An audio file.
+class Audio(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 bitrate=None, duration=None, endTime=None, fileLocation=None, startTime=None, caption=None,
+                 transcript=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
+                 file=None, includes=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.bitrate = bitrate
+        self.duration = duration
+        self.endTime = endTime
+        self.fileLocation = fileLocation
+        self.startTime = startTime
+        self.caption = caption
+        self.transcript = transcript
+        self.file = file if file is not None else []
+        self.includes = includes if includes is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        bitrate = json.get("bitrate", None)
+        duration = json.get("duration", None)
+        endTime = json.get("endTime", None)
+        fileLocation = json.get("fileLocation", None)
+        startTime = json.get("startTime", None)
+        caption = json.get("caption", None)
+        transcript = json.get("transcript", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        file = []
+        includes = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "includes" or edge._type == "~includes": 
+                    includes.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, bitrate=bitrate, duration=duration,
+                  endTime=endTime, fileLocation=fileLocation, startTime=startTime, caption=caption,
+                  transcript=transcript, changelog=changelog, label=label, genericAttribute=genericAttribute,
+                  measure=measure, sharedWith=sharedWith, file=file, includes=includes)
         for e in res.get_all_edges(): e.source = res
         return res
 
@@ -268,6 +537,185 @@ class CVUStoredDefinition(Item):
         return res
 
 
+# A comment.
+class Comment(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
+                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
+                 writtenBy=None, file=None, recordedAt=None, review=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.title = title
+        self.abstract = abstract
+        self.datePublished = datePublished
+        self.keyword = keyword
+        self.content = content
+        self.textContent = textContent
+        self.transcript = transcript
+        self.itemType = itemType
+        self.audio = audio if audio is not None else []
+        self.citation = citation if citation is not None else []
+        self.contentLocation = contentLocation if contentLocation is not None else []
+        self.locationCreated = locationCreated if locationCreated is not None else []
+        self.video = video if video is not None else []
+        self.writtenBy = writtenBy if writtenBy is not None else []
+        self.file = file if file is not None else []
+        self.recordedAt = recordedAt if recordedAt is not None else []
+        self.review = review if review is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        title = json.get("title", None)
+        abstract = json.get("abstract", None)
+        datePublished = json.get("datePublished", None)
+        keyword = json.get("keyword", None)
+        content = json.get("content", None)
+        textContent = json.get("textContent", None)
+        transcript = json.get("transcript", None)
+        itemType = json.get("itemType", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        audio = []
+        citation = []
+        contentLocation = []
+        locationCreated = []
+        video = []
+        writtenBy = []
+        file = []
+        recordedAt = []
+        review = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "audio" or edge._type == "~audio": 
+                    audio.append(edge)
+                elif edge._type == "citation" or edge._type == "~citation": 
+                    citation.append(edge)
+                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
+                    contentLocation.append(edge)
+                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
+                    locationCreated.append(edge)
+                elif edge._type == "video" or edge._type == "~video": 
+                    video.append(edge)
+                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
+                    writtenBy.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
+                    recordedAt.append(edge)
+                elif edge._type == "review" or edge._type == "~review": 
+                    review.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
+                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
+                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
+                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A country.
+class Country(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 latitude=None, longitude=None, name=None, changelog=None, label=None, genericAttribute=None,
+                 measure=None, sharedWith=None, flag=None, location=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.latitude = latitude
+        self.longitude = longitude
+        self.name = name
+        self.flag = flag if flag is not None else []
+        self.location = location if location is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        latitude = json.get("latitude", None)
+        longitude = json.get("longitude", None)
+        name = json.get("name", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        flag = []
+        location = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "flag" or edge._type == "~flag": 
+                    flag.append(edge)
+                elif edge._type == "location" or edge._type == "~location": 
+                    location.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, latitude=latitude, longitude=longitude, name=name,
+                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
+                  sharedWith=sharedWith, flag=flag, location=location)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
 # The most generic kind of creative work, including books, movies, photographs, software programs,
 # etc.
 class CreativeWork(Item):
@@ -380,35 +828,21 @@ class CreativeWork(Item):
         return res
 
 
-# Any kind of (video) game, typically rule-governed recreational activities.
-class Game(Item):
+# A key used in an cryptography protocol.
+class CryptoKey(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
                  externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
-                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
-                 writtenBy=None, file=None, recordedAt=None, review=None):
+                 itemType=None, role=None, key=None, active=None, name=None, changelog=None, label=None,
+                 genericAttribute=None, measure=None, sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                          version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.title = title
-        self.abstract = abstract
-        self.datePublished = datePublished
-        self.keyword = keyword
-        self.content = content
-        self.textContent = textContent
-        self.transcript = transcript
         self.itemType = itemType
-        self.audio = audio if audio is not None else []
-        self.citation = citation if citation is not None else []
-        self.contentLocation = contentLocation if contentLocation is not None else []
-        self.locationCreated = locationCreated if locationCreated is not None else []
-        self.video = video if video is not None else []
-        self.writtenBy = writtenBy if writtenBy is not None else []
-        self.file = file if file is not None else []
-        self.recordedAt = recordedAt if recordedAt is not None else []
-        self.review = review if review is not None else []
+        self.role = role
+        self.key = key
+        self.active = active
+        self.name = name
 
     @classmethod
     def from_json(cls, json):
@@ -423,29 +857,17 @@ class Game(Item):
         version = json.get("version", None)
         uid = json.get("uid", None)
         importJson = json.get("importJson", None)
-        title = json.get("title", None)
-        abstract = json.get("abstract", None)
-        datePublished = json.get("datePublished", None)
-        keyword = json.get("keyword", None)
-        content = json.get("content", None)
-        textContent = json.get("textContent", None)
-        transcript = json.get("transcript", None)
         itemType = json.get("itemType", None)
+        role = json.get("role", None)
+        key = json.get("key", None)
+        active = json.get("active", None)
+        name = json.get("name", None)
        
         changelog = []
         label = []
         genericAttribute = []
         measure = []
         sharedWith = []
-        audio = []
-        citation = []
-        contentLocation = []
-        locationCreated = []
-        video = []
-        writtenBy = []
-        file = []
-        recordedAt = []
-        review = []
         
         if all_edges is not None:
             for edge_json in all_edges:
@@ -460,66 +882,33 @@ class Game(Item):
                     measure.append(edge)
                 elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
                     sharedWith.append(edge)
-                elif edge._type == "audio" or edge._type == "~audio": 
-                    audio.append(edge)
-                elif edge._type == "citation" or edge._type == "~citation": 
-                    citation.append(edge)
-                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
-                    contentLocation.append(edge)
-                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
-                    locationCreated.append(edge)
-                elif edge._type == "video" or edge._type == "~video": 
-                    video.append(edge)
-                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
-                    writtenBy.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
-                    recordedAt.append(edge)
-                elif edge._type == "review" or edge._type == "~review": 
-                    review.append(edge)
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
-                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
-                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
-                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
-                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review)
+                  version=version, uid=uid, importJson=importJson, itemType=itemType, role=role, key=key,
+                  active=active, name=name, changelog=changelog, label=label, genericAttribute=genericAttribute,
+                  measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
         return res
 
 
-# Instructions that explain how to achieve a result by performing a sequence of steps.
-class HowTo(Item):
+# A business corporation.
+class Device(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
                  externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
-                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
-                 writtenBy=None, file=None, recordedAt=None, review=None):
+                 deviceID=None, make=None, manufacturer=None, model=None, name=None, dateAcquired=None,
+                 dateLost=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                          version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.title = title
-        self.abstract = abstract
-        self.datePublished = datePublished
-        self.keyword = keyword
-        self.content = content
-        self.textContent = textContent
-        self.transcript = transcript
-        self.itemType = itemType
-        self.audio = audio if audio is not None else []
-        self.citation = citation if citation is not None else []
-        self.contentLocation = contentLocation if contentLocation is not None else []
-        self.locationCreated = locationCreated if locationCreated is not None else []
-        self.video = video if video is not None else []
-        self.writtenBy = writtenBy if writtenBy is not None else []
-        self.file = file if file is not None else []
-        self.recordedAt = recordedAt if recordedAt is not None else []
-        self.review = review if review is not None else []
+        self.deviceID = deviceID
+        self.make = make
+        self.manufacturer = manufacturer
+        self.model = model
+        self.name = name
+        self.dateAcquired = dateAcquired
+        self.dateLost = dateLost
 
     @classmethod
     def from_json(cls, json):
@@ -534,29 +923,19 @@ class HowTo(Item):
         version = json.get("version", None)
         uid = json.get("uid", None)
         importJson = json.get("importJson", None)
-        title = json.get("title", None)
-        abstract = json.get("abstract", None)
-        datePublished = json.get("datePublished", None)
-        keyword = json.get("keyword", None)
-        content = json.get("content", None)
-        textContent = json.get("textContent", None)
-        transcript = json.get("transcript", None)
-        itemType = json.get("itemType", None)
+        deviceID = json.get("deviceID", None)
+        make = json.get("make", None)
+        manufacturer = json.get("manufacturer", None)
+        model = json.get("model", None)
+        name = json.get("name", None)
+        dateAcquired = json.get("dateAcquired", None)
+        dateLost = json.get("dateLost", None)
        
         changelog = []
         label = []
         genericAttribute = []
         measure = []
         sharedWith = []
-        audio = []
-        citation = []
-        contentLocation = []
-        locationCreated = []
-        video = []
-        writtenBy = []
-        file = []
-        recordedAt = []
-        review = []
         
         if all_edges is not None:
             for edge_json in all_edges:
@@ -571,33 +950,13 @@ class HowTo(Item):
                     measure.append(edge)
                 elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
                     sharedWith.append(edge)
-                elif edge._type == "audio" or edge._type == "~audio": 
-                    audio.append(edge)
-                elif edge._type == "citation" or edge._type == "~citation": 
-                    citation.append(edge)
-                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
-                    contentLocation.append(edge)
-                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
-                    locationCreated.append(edge)
-                elif edge._type == "video" or edge._type == "~video": 
-                    video.append(edge)
-                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
-                    writtenBy.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
-                    recordedAt.append(edge)
-                elif edge._type == "review" or edge._type == "~review": 
-                    review.append(edge)
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
-                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
-                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
-                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
-                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review)
+                  version=version, uid=uid, importJson=importJson, deviceID=deviceID, make=make,
+                  manufacturer=manufacturer, model=model, name=name, dateAcquired=dateAcquired, dateLost=dateLost,
+                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
+                  sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
         return res
 
@@ -721,6 +1080,288 @@ class Diet(Item):
                   citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
                   writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review,
                   includedProduct=includedProduct, excludedProduct=excludedProduct)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A Downloader is used to download data from an external source, to be imported using an Importer.
+class Downloader(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A single email message.
+class EmailMessage(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
+                 transcript=None, itemType=None, subject=None, dateSent=None, dateReceived=None, service=None,
+                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, audio=None,
+                 citation=None, contentLocation=None, locationCreated=None, video=None, writtenBy=None, file=None,
+                 recordedAt=None, review=None, messageChannel=None, sender=None, receiver=None, cc=None, bcc=None,
+                 replyTo=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.title = title
+        self.abstract = abstract
+        self.datePublished = datePublished
+        self.keyword = keyword
+        self.content = content
+        self.textContent = textContent
+        self.transcript = transcript
+        self.itemType = itemType
+        self.subject = subject
+        self.dateSent = dateSent
+        self.dateReceived = dateReceived
+        self.service = service
+        self.audio = audio if audio is not None else []
+        self.citation = citation if citation is not None else []
+        self.contentLocation = contentLocation if contentLocation is not None else []
+        self.locationCreated = locationCreated if locationCreated is not None else []
+        self.video = video if video is not None else []
+        self.writtenBy = writtenBy if writtenBy is not None else []
+        self.file = file if file is not None else []
+        self.recordedAt = recordedAt if recordedAt is not None else []
+        self.review = review if review is not None else []
+        self.messageChannel = messageChannel if messageChannel is not None else []
+        self.sender = sender if sender is not None else []
+        self.receiver = receiver if receiver is not None else []
+        self.cc = cc if cc is not None else []
+        self.bcc = bcc if bcc is not None else []
+        self.replyTo = replyTo if replyTo is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        title = json.get("title", None)
+        abstract = json.get("abstract", None)
+        datePublished = json.get("datePublished", None)
+        keyword = json.get("keyword", None)
+        content = json.get("content", None)
+        textContent = json.get("textContent", None)
+        transcript = json.get("transcript", None)
+        itemType = json.get("itemType", None)
+        subject = json.get("subject", None)
+        dateSent = json.get("dateSent", None)
+        dateReceived = json.get("dateReceived", None)
+        service = json.get("service", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        audio = []
+        citation = []
+        contentLocation = []
+        locationCreated = []
+        video = []
+        writtenBy = []
+        file = []
+        recordedAt = []
+        review = []
+        messageChannel = []
+        sender = []
+        receiver = []
+        cc = []
+        bcc = []
+        replyTo = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "audio" or edge._type == "~audio": 
+                    audio.append(edge)
+                elif edge._type == "citation" or edge._type == "~citation": 
+                    citation.append(edge)
+                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
+                    contentLocation.append(edge)
+                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
+                    locationCreated.append(edge)
+                elif edge._type == "video" or edge._type == "~video": 
+                    video.append(edge)
+                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
+                    writtenBy.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
+                    recordedAt.append(edge)
+                elif edge._type == "review" or edge._type == "~review": 
+                    review.append(edge)
+                elif edge._type == "messageChannel" or edge._type == "~messageChannel": 
+                    messageChannel.append(edge)
+                elif edge._type == "sender" or edge._type == "~sender": 
+                    sender.append(edge)
+                elif edge._type == "receiver" or edge._type == "~receiver": 
+                    receiver.append(edge)
+                elif edge._type == "cc" or edge._type == "~cc": 
+                    cc.append(edge)
+                elif edge._type == "bcc" or edge._type == "~bcc": 
+                    bcc.append(edge)
+                elif edge._type == "replyTo" or edge._type == "~replyTo": 
+                    replyTo.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
+                  transcript=transcript, itemType=itemType, subject=subject, dateSent=dateSent,
+                  dateReceived=dateReceived, service=service, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
+                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
+                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review, messageChannel=messageChannel,
+                  sender=sender, receiver=receiver, cc=cc, bcc=bcc, replyTo=replyTo)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# Any kind of event, for instance a music festival or a business meeting.
+class Event(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 audience=None, startTime=None, endTime=None, duration=None, eventStatus=None, changelog=None,
+                 label=None, genericAttribute=None, measure=None, sharedWith=None, location=None, review=None,
+                 subEvent=None, capacity=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.audience = audience
+        self.startTime = startTime
+        self.endTime = endTime
+        self.duration = duration
+        self.eventStatus = eventStatus
+        self.location = location if location is not None else []
+        self.review = review if review is not None else []
+        self.subEvent = subEvent if subEvent is not None else []
+        self.capacity = capacity if capacity is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        audience = json.get("audience", None)
+        startTime = json.get("startTime", None)
+        endTime = json.get("endTime", None)
+        duration = json.get("duration", None)
+        eventStatus = json.get("eventStatus", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        location = []
+        review = []
+        subEvent = []
+        capacity = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "location" or edge._type == "~location": 
+                    location.append(edge)
+                elif edge._type == "review" or edge._type == "~review": 
+                    review.append(edge)
+                elif edge._type == "subEvent" or edge._type == "~subEvent": 
+                    subEvent.append(edge)
+                elif edge._type == "capacity" or edge._type == "~capacity": 
+                    capacity.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, audience=audience, startTime=startTime,
+                  endTime=endTime, duration=duration, eventStatus=eventStatus, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, location=location,
+                  review=review, subEvent=subEvent, capacity=capacity)
         for e in res.get_all_edges(): e.source = res
         return res
 
@@ -851,16 +1492,138 @@ class ExercisePlan(Item):
         return res
 
 
-# A set of instructions for preparing a particular dish, including a list of the ingredients
-# required.
-class Recipe(Item):
+# Any file that can be stored on disk.
+class File(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 sha256=None, nonce=None, key=None, filename=None, changelog=None, label=None, genericAttribute=None,
+                 measure=None, sharedWith=None, resource=None, usedBy=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.sha256 = sha256
+        self.nonce = nonce
+        self.key = key
+        self.filename = filename
+        self.resource = resource if resource is not None else []
+        self.usedBy = usedBy if usedBy is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        sha256 = json.get("sha256", None)
+        nonce = json.get("nonce", None)
+        key = json.get("key", None)
+        filename = json.get("filename", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        resource = []
+        usedBy = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "resource" or edge._type == "~resource": 
+                    resource.append(edge)
+                elif edge._type == "usedBy" or edge._type == "~usedBy": 
+                    usedBy.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, sha256=sha256, nonce=nonce, key=key,
+                  filename=filename, changelog=changelog, label=label, genericAttribute=genericAttribute,
+                  measure=measure, sharedWith=sharedWith, resource=resource, usedBy=usedBy)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# The number of occurrences of a repeating event per measure of time.
+class Frequency(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 occurrences=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.occurrences = occurrences
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        occurrences = json.get("occurrences", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, occurrences=occurrences, changelog=changelog,
+                  label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# Any kind of (video) game, typically rule-governed recreational activities.
+class Game(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
                  externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
-                 transcript=None, itemType=None, duration=None, instructions=None, changelog=None, label=None,
-                 genericAttribute=None, measure=None, sharedWith=None, audio=None, citation=None,
-                 contentLocation=None, locationCreated=None, video=None, writtenBy=None, file=None, recordedAt=None,
-                 review=None, ingredient=None, price=None, yields=None, toolRequired=None):
+                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
+                 writtenBy=None, file=None, recordedAt=None, review=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                          version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
@@ -873,8 +1636,6 @@ class Recipe(Item):
         self.textContent = textContent
         self.transcript = transcript
         self.itemType = itemType
-        self.duration = duration
-        self.instructions = instructions
         self.audio = audio if audio is not None else []
         self.citation = citation if citation is not None else []
         self.contentLocation = contentLocation if contentLocation is not None else []
@@ -884,10 +1645,6 @@ class Recipe(Item):
         self.file = file if file is not None else []
         self.recordedAt = recordedAt if recordedAt is not None else []
         self.review = review if review is not None else []
-        self.ingredient = ingredient if ingredient is not None else []
-        self.price = price if price is not None else []
-        self.yields = yields if yields is not None else []
-        self.toolRequired = toolRequired if toolRequired is not None else []
 
     @classmethod
     def from_json(cls, json):
@@ -910,8 +1667,6 @@ class Recipe(Item):
         textContent = json.get("textContent", None)
         transcript = json.get("transcript", None)
         itemType = json.get("itemType", None)
-        duration = json.get("duration", None)
-        instructions = json.get("instructions", None)
        
         changelog = []
         label = []
@@ -927,10 +1682,6 @@ class Recipe(Item):
         file = []
         recordedAt = []
         review = []
-        ingredient = []
-        price = []
-        yields = []
-        toolRequired = []
         
         if all_edges is not None:
             for edge_json in all_edges:
@@ -963,24 +1714,1356 @@ class Recipe(Item):
                     recordedAt.append(edge)
                 elif edge._type == "review" or edge._type == "~review": 
                     review.append(edge)
-                elif edge._type == "ingredient" or edge._type == "~ingredient": 
-                    ingredient.append(edge)
-                elif edge._type == "price" or edge._type == "~price": 
-                    price.append(edge)
-                elif edge._type == "yields" or edge._type == "~yields": 
-                    yields.append(edge)
-                elif edge._type == "toolRequired" or edge._type == "~toolRequired": 
-                    toolRequired.append(edge)
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                   version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
-                  transcript=transcript, itemType=itemType, duration=duration, instructions=instructions,
+                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
+                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
+                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A generic attribute that can be referenced by an Item.
+class GenericAttribute(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 name=None, boolValue=None, datetimeValue=None, floatValue=None, intValue=None, stringValue=None,
+                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.name = name
+        self.boolValue = boolValue
+        self.datetimeValue = datetimeValue
+        self.floatValue = floatValue
+        self.intValue = intValue
+        self.stringValue = stringValue
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        name = json.get("name", None)
+        boolValue = json.get("boolValue", None)
+        datetimeValue = json.get("datetimeValue", None)
+        floatValue = json.get("floatValue", None)
+        intValue = json.get("intValue", None)
+        stringValue = json.get("stringValue", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, name=name, boolValue=boolValue,
+                  datetimeValue=datetimeValue, floatValue=floatValue, intValue=intValue, stringValue=stringValue,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
-                  sharedWith=sharedWith, audio=audio, citation=citation, contentLocation=contentLocation,
-                  locationCreated=locationCreated, video=video, writtenBy=writtenBy, file=file, recordedAt=recordedAt,
-                  review=review, ingredient=ingredient, price=price, yields=yields, toolRequired=toolRequired)
+                  sharedWith=sharedWith)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# Instructions that explain how to achieve a result by performing a sequence of steps.
+class HowTo(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
+                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
+                 writtenBy=None, file=None, recordedAt=None, review=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.title = title
+        self.abstract = abstract
+        self.datePublished = datePublished
+        self.keyword = keyword
+        self.content = content
+        self.textContent = textContent
+        self.transcript = transcript
+        self.itemType = itemType
+        self.audio = audio if audio is not None else []
+        self.citation = citation if citation is not None else []
+        self.contentLocation = contentLocation if contentLocation is not None else []
+        self.locationCreated = locationCreated if locationCreated is not None else []
+        self.video = video if video is not None else []
+        self.writtenBy = writtenBy if writtenBy is not None else []
+        self.file = file if file is not None else []
+        self.recordedAt = recordedAt if recordedAt is not None else []
+        self.review = review if review is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        title = json.get("title", None)
+        abstract = json.get("abstract", None)
+        datePublished = json.get("datePublished", None)
+        keyword = json.get("keyword", None)
+        content = json.get("content", None)
+        textContent = json.get("textContent", None)
+        transcript = json.get("transcript", None)
+        itemType = json.get("itemType", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        audio = []
+        citation = []
+        contentLocation = []
+        locationCreated = []
+        video = []
+        writtenBy = []
+        file = []
+        recordedAt = []
+        review = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "audio" or edge._type == "~audio": 
+                    audio.append(edge)
+                elif edge._type == "citation" or edge._type == "~citation": 
+                    citation.append(edge)
+                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
+                    contentLocation.append(edge)
+                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
+                    locationCreated.append(edge)
+                elif edge._type == "video" or edge._type == "~video": 
+                    video.append(edge)
+                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
+                    writtenBy.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
+                    recordedAt.append(edge)
+                elif edge._type == "review" or edge._type == "~review": 
+                    review.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
+                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
+                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
+                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# An Importer is used to import data from an external source to the Pod database.
+class Importer(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 name=None, repository=None, dataType=None, icon=None, bundleImage=None, changelog=None, label=None,
+                 genericAttribute=None, measure=None, sharedWith=None, importerRun=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.name = name
+        self.repository = repository
+        self.dataType = dataType
+        self.icon = icon
+        self.bundleImage = bundleImage
+        self.importerRun = importerRun if importerRun is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        name = json.get("name", None)
+        repository = json.get("repository", None)
+        dataType = json.get("dataType", None)
+        icon = json.get("icon", None)
+        bundleImage = json.get("bundleImage", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        importerRun = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "importerRun" or edge._type == "~importerRun": 
+                    importerRun.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, name=name, repository=repository,
+                  dataType=dataType, icon=icon, bundleImage=bundleImage, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, importerRun=importerRun)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A run of a certain Importer, that defines the details of the specific import.
+class ImporterRun(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 name=None, repository=None, progress=None, dataType=None, username=None, password=None,
+                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, importer=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.name = name
+        self.repository = repository
+        self.progress = progress
+        self.dataType = dataType
+        self.username = username
+        self.password = password
+        self.importer = importer if importer is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        name = json.get("name", None)
+        repository = json.get("repository", None)
+        progress = json.get("progress", None)
+        dataType = json.get("dataType", None)
+        username = json.get("username", None)
+        password = json.get("password", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        importer = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "importer" or edge._type == "~importer": 
+                    importer.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, name=name, repository=repository,
+                  progress=progress, dataType=dataType, username=username, password=password, changelog=changelog,
+                  label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith,
+                  importer=importer)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# An indexer enhances your personal data by inferring facts over existing data and adding those to
+# the database.
+class Indexer(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 name=None, repository=None, icon=None, query=None, bundleImage=None, runDestination=None,
+                 indexerClass=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
+                 indexerRun=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.name = name
+        self.repository = repository
+        self.icon = icon
+        self.query = query
+        self.bundleImage = bundleImage
+        self.runDestination = runDestination
+        self.indexerClass = indexerClass
+        self.indexerRun = indexerRun if indexerRun is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        name = json.get("name", None)
+        repository = json.get("repository", None)
+        icon = json.get("icon", None)
+        query = json.get("query", None)
+        bundleImage = json.get("bundleImage", None)
+        runDestination = json.get("runDestination", None)
+        indexerClass = json.get("indexerClass", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        indexerRun = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "indexerRun" or edge._type == "~indexerRun": 
+                    indexerRun.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, name=name, repository=repository, icon=icon,
+                  query=query, bundleImage=bundleImage, runDestination=runDestination, indexerClass=indexerClass,
+                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
+                  sharedWith=sharedWith, indexerRun=indexerRun)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A run of a certain Indexer.
+class IndexerRun(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 name=None, repository=None, query=None, progress=None, targetDataType=None, changelog=None,
+                 label=None, genericAttribute=None, measure=None, sharedWith=None, indexer=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.name = name
+        self.repository = repository
+        self.query = query
+        self.progress = progress
+        self.targetDataType = targetDataType
+        self.indexer = indexer if indexer is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        name = json.get("name", None)
+        repository = json.get("repository", None)
+        query = json.get("query", None)
+        progress = json.get("progress", None)
+        targetDataType = json.get("targetDataType", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        indexer = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "indexer" or edge._type == "~indexer": 
+                    indexer.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, name=name, repository=repository, query=query,
+                  progress=progress, targetDataType=targetDataType, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, indexer=indexer)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A sector that produces goods or related services within an economy.
+class Industry(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 itemType=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.itemType = itemType
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        itemType = json.get("itemType", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, itemType=itemType, changelog=changelog,
+                  label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# An integrator operates on your database enhances your personal data by inferring facts over
+# existing data and adding those to the database.
+class Integrator(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 name=None, repository=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.name = name
+        self.repository = repository
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        name = json.get("name", None)
+        repository = json.get("repository", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, name=name, repository=repository,
+                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
+                  sharedWith=sharedWith)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A Receipt is a confirmation of a transaction.
+class Invoice(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, file=None,
+                 transaction=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.file = file if file is not None else []
+        self.transaction = transaction if transaction is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        file = []
+        transaction = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "transaction" or edge._type == "~transaction": 
+                    transaction.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, file=file,
+                  transaction=transaction)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# Attached to an Item, to mark it to be something.
+class Label(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 color=None, name=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None, comment=None, appliesTo=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.color = color
+        self.name = name
+        self.comment = comment if comment is not None else []
+        self.appliesTo = appliesTo if appliesTo is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        color = json.get("color", None)
+        name = json.get("name", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        comment = []
+        appliesTo = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "comment" or edge._type == "~comment": 
+                    comment.append(edge)
+                elif edge._type == "appliesTo" or edge._type == "~appliesTo": 
+                    appliesTo.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, color=color, name=name, changelog=changelog,
+                  label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith,
+                  comment=comment, appliesTo=appliesTo)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A potential offer.
+class Lead(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, offer=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.offer = offer if offer is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        offer = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "offer" or edge._type == "~offer": 
+                    offer.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, offer=offer)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# The location of something.
+class Location(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 latitude=None, longitude=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.latitude = latitude
+        self.longitude = longitude
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        latitude = json.get("latitude", None)
+        longitude = json.get("longitude", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, latitude=latitude, longitude=longitude,
+                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
+                  sharedWith=sharedWith)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A material that an Item is (partially) made from, for instance cotton, paper, steel, etc.
+class Material(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 name=None, defaultQuantity=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None, price=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.name = name
+        self.defaultQuantity = defaultQuantity
+        self.price = price if price is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        name = json.get("name", None)
+        defaultQuantity = json.get("defaultQuantity", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        price = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "price" or edge._type == "~price": 
+                    price.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, name=name, defaultQuantity=defaultQuantity,
+                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
+                  sharedWith=sharedWith, price=price)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A measure consists of a definition, symbol, unit and value (int, float, string, bool, or
+# datetime).
+class Measure(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 definition=None, symbol=None, intValue=None, floatValue=None, stringValue=None, datetimeValue=None,
+                 boolValue=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
+                 unit=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.definition = definition
+        self.symbol = symbol
+        self.intValue = intValue
+        self.floatValue = floatValue
+        self.stringValue = stringValue
+        self.datetimeValue = datetimeValue
+        self.boolValue = boolValue
+        self.unit = unit if unit is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        definition = json.get("definition", None)
+        symbol = json.get("symbol", None)
+        intValue = json.get("intValue", None)
+        floatValue = json.get("floatValue", None)
+        stringValue = json.get("stringValue", None)
+        datetimeValue = json.get("datetimeValue", None)
+        boolValue = json.get("boolValue", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        unit = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "unit" or edge._type == "~unit": 
+                    unit.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, definition=definition, symbol=symbol,
+                  intValue=intValue, floatValue=floatValue, stringValue=stringValue, datetimeValue=datetimeValue,
+                  boolValue=boolValue, changelog=changelog, label=label, genericAttribute=genericAttribute,
+                  measure=measure, sharedWith=sharedWith, unit=unit)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A media object, such as an image, video, or audio object embedded in a web page or a downloadable
+# dataset i.e. DataDownload. Note that a creative work may have many media objects associated with it
+# on the same web page. For example, a page about a single song (MusicRecording) may have a music
+# video (VideoObject), and a high and low bandwidth audio stream (2 AudioObject's).
+class MediaObject(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 bitrate=None, duration=None, endTime=None, fileLocation=None, startTime=None, changelog=None,
+                 label=None, genericAttribute=None, measure=None, sharedWith=None, file=None, includes=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.bitrate = bitrate
+        self.duration = duration
+        self.endTime = endTime
+        self.fileLocation = fileLocation
+        self.startTime = startTime
+        self.file = file if file is not None else []
+        self.includes = includes if includes is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        bitrate = json.get("bitrate", None)
+        duration = json.get("duration", None)
+        endTime = json.get("endTime", None)
+        fileLocation = json.get("fileLocation", None)
+        startTime = json.get("startTime", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        file = []
+        includes = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "includes" or edge._type == "~includes": 
+                    includes.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, bitrate=bitrate, duration=duration,
+                  endTime=endTime, fileLocation=fileLocation, startTime=startTime, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, file=file,
+                  includes=includes)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# Any condition of the human body that affects the normal functioning of a person, whether
+# physically or mentally. Includes diseases, injuries, disabilities, disorders, syndromes, etc.
+class MedicalCondition(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 itemType=None, name=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.itemType = itemType
+        self.name = name
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        itemType = json.get("itemType", None)
+        name = json.get("name", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, itemType=itemType, name=name, changelog=changelog,
+                  label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A single message.
+class Message(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
+                 transcript=None, itemType=None, subject=None, dateSent=None, dateReceived=None, service=None,
+                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, audio=None,
+                 citation=None, contentLocation=None, locationCreated=None, video=None, writtenBy=None, file=None,
+                 recordedAt=None, review=None, messageChannel=None, sender=None, receiver=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.title = title
+        self.abstract = abstract
+        self.datePublished = datePublished
+        self.keyword = keyword
+        self.content = content
+        self.textContent = textContent
+        self.transcript = transcript
+        self.itemType = itemType
+        self.subject = subject
+        self.dateSent = dateSent
+        self.dateReceived = dateReceived
+        self.service = service
+        self.audio = audio if audio is not None else []
+        self.citation = citation if citation is not None else []
+        self.contentLocation = contentLocation if contentLocation is not None else []
+        self.locationCreated = locationCreated if locationCreated is not None else []
+        self.video = video if video is not None else []
+        self.writtenBy = writtenBy if writtenBy is not None else []
+        self.file = file if file is not None else []
+        self.recordedAt = recordedAt if recordedAt is not None else []
+        self.review = review if review is not None else []
+        self.messageChannel = messageChannel if messageChannel is not None else []
+        self.sender = sender if sender is not None else []
+        self.receiver = receiver if receiver is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        title = json.get("title", None)
+        abstract = json.get("abstract", None)
+        datePublished = json.get("datePublished", None)
+        keyword = json.get("keyword", None)
+        content = json.get("content", None)
+        textContent = json.get("textContent", None)
+        transcript = json.get("transcript", None)
+        itemType = json.get("itemType", None)
+        subject = json.get("subject", None)
+        dateSent = json.get("dateSent", None)
+        dateReceived = json.get("dateReceived", None)
+        service = json.get("service", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        audio = []
+        citation = []
+        contentLocation = []
+        locationCreated = []
+        video = []
+        writtenBy = []
+        file = []
+        recordedAt = []
+        review = []
+        messageChannel = []
+        sender = []
+        receiver = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "audio" or edge._type == "~audio": 
+                    audio.append(edge)
+                elif edge._type == "citation" or edge._type == "~citation": 
+                    citation.append(edge)
+                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
+                    contentLocation.append(edge)
+                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
+                    locationCreated.append(edge)
+                elif edge._type == "video" or edge._type == "~video": 
+                    video.append(edge)
+                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
+                    writtenBy.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
+                    recordedAt.append(edge)
+                elif edge._type == "review" or edge._type == "~review": 
+                    review.append(edge)
+                elif edge._type == "messageChannel" or edge._type == "~messageChannel": 
+                    messageChannel.append(edge)
+                elif edge._type == "sender" or edge._type == "~sender": 
+                    sender.append(edge)
+                elif edge._type == "receiver" or edge._type == "~receiver": 
+                    receiver.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
+                  transcript=transcript, itemType=itemType, subject=subject, dateSent=dateSent,
+                  dateReceived=dateReceived, service=service, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
+                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
+                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review, messageChannel=messageChannel,
+                  sender=sender, receiver=receiver)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A chat is a collection of messages.
+class MessageChannel(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 name=None, topic=None, encrypted=None, changelog=None, label=None, genericAttribute=None,
+                 measure=None, sharedWith=None, photo=None, receiver=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.name = name
+        self.topic = topic
+        self.encrypted = encrypted
+        self.photo = photo if photo is not None else []
+        self.receiver = receiver if receiver is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        name = json.get("name", None)
+        topic = json.get("topic", None)
+        encrypted = json.get("encrypted", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        photo = []
+        receiver = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "photo" or edge._type == "~photo": 
+                    photo.append(edge)
+                elif edge._type == "receiver" or edge._type == "~receiver": 
+                    receiver.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, name=name, topic=topic, encrypted=encrypted,
+                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
+                  sharedWith=sharedWith, photo=photo, receiver=receiver)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A way of transportation, for instance a bus or airplane.
+class ModeOfTransport(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
         return res
 
@@ -1096,35 +3179,20 @@ class MovingImage(Item):
         return res
 
 
-# A work of performing art, for instance dance, theater, opera or musical.
-class PerformingArt(Item):
+# TBD
+class NavigationItem(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
                  externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
-                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
-                 writtenBy=None, file=None, recordedAt=None, review=None):
+                 title=None, sessionName=None, sequence=None, itemType=None, changelog=None, label=None,
+                 genericAttribute=None, measure=None, sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                          version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
-        self.abstract = abstract
-        self.datePublished = datePublished
-        self.keyword = keyword
-        self.content = content
-        self.textContent = textContent
-        self.transcript = transcript
+        self.sessionName = sessionName
+        self.sequence = sequence
         self.itemType = itemType
-        self.audio = audio if audio is not None else []
-        self.citation = citation if citation is not None else []
-        self.contentLocation = contentLocation if contentLocation is not None else []
-        self.locationCreated = locationCreated if locationCreated is not None else []
-        self.video = video if video is not None else []
-        self.writtenBy = writtenBy if writtenBy is not None else []
-        self.file = file if file is not None else []
-        self.recordedAt = recordedAt if recordedAt is not None else []
-        self.review = review if review is not None else []
 
     @classmethod
     def from_json(cls, json):
@@ -1140,12 +3208,8 @@ class PerformingArt(Item):
         uid = json.get("uid", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
-        abstract = json.get("abstract", None)
-        datePublished = json.get("datePublished", None)
-        keyword = json.get("keyword", None)
-        content = json.get("content", None)
-        textContent = json.get("textContent", None)
-        transcript = json.get("transcript", None)
+        sessionName = json.get("sessionName", None)
+        sequence = json.get("sequence", None)
         itemType = json.get("itemType", None)
        
         changelog = []
@@ -1153,15 +3217,6 @@ class PerformingArt(Item):
         genericAttribute = []
         measure = []
         sharedWith = []
-        audio = []
-        citation = []
-        contentLocation = []
-        locationCreated = []
-        video = []
-        writtenBy = []
-        file = []
-        recordedAt = []
-        review = []
         
         if all_edges is not None:
             for edge_json in all_edges:
@@ -1176,66 +3231,30 @@ class PerformingArt(Item):
                     measure.append(edge)
                 elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
                     sharedWith.append(edge)
-                elif edge._type == "audio" or edge._type == "~audio": 
-                    audio.append(edge)
-                elif edge._type == "citation" or edge._type == "~citation": 
-                    citation.append(edge)
-                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
-                    contentLocation.append(edge)
-                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
-                    locationCreated.append(edge)
-                elif edge._type == "video" or edge._type == "~video": 
-                    video.append(edge)
-                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
-                    writtenBy.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
-                    recordedAt.append(edge)
-                elif edge._type == "review" or edge._type == "~review": 
-                    review.append(edge)
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
-                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
-                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
-                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
-                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review)
+                  version=version, uid=uid, importJson=importJson, title=title, sessionName=sessionName,
+                  sequence=sequence, itemType=itemType, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
         return res
 
 
-# A audio performance or production. Can be a single, album, radio show, podcast etc.
-class Recording(Item):
+# A group or system of interconnected people or things, for instance a social network.
+class Network(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
                  externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
-                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
-                 writtenBy=None, file=None, recordedAt=None, review=None):
+                 name=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
+                 organization=None, resource=None, website=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                          version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.title = title
-        self.abstract = abstract
-        self.datePublished = datePublished
-        self.keyword = keyword
-        self.content = content
-        self.textContent = textContent
-        self.transcript = transcript
-        self.itemType = itemType
-        self.audio = audio if audio is not None else []
-        self.citation = citation if citation is not None else []
-        self.contentLocation = contentLocation if contentLocation is not None else []
-        self.locationCreated = locationCreated if locationCreated is not None else []
-        self.video = video if video is not None else []
-        self.writtenBy = writtenBy if writtenBy is not None else []
-        self.file = file if file is not None else []
-        self.recordedAt = recordedAt if recordedAt is not None else []
-        self.review = review if review is not None else []
+        self.name = name
+        self.organization = organization if organization is not None else []
+        self.resource = resource if resource is not None else []
+        self.website = website if website is not None else []
 
     @classmethod
     def from_json(cls, json):
@@ -1250,29 +3269,16 @@ class Recording(Item):
         version = json.get("version", None)
         uid = json.get("uid", None)
         importJson = json.get("importJson", None)
-        title = json.get("title", None)
-        abstract = json.get("abstract", None)
-        datePublished = json.get("datePublished", None)
-        keyword = json.get("keyword", None)
-        content = json.get("content", None)
-        textContent = json.get("textContent", None)
-        transcript = json.get("transcript", None)
-        itemType = json.get("itemType", None)
+        name = json.get("name", None)
        
         changelog = []
         label = []
         genericAttribute = []
         measure = []
         sharedWith = []
-        audio = []
-        citation = []
-        contentLocation = []
-        locationCreated = []
-        video = []
-        writtenBy = []
-        file = []
-        recordedAt = []
-        review = []
+        organization = []
+        resource = []
+        website = []
         
         if all_edges is not None:
             for edge_json in all_edges:
@@ -1287,757 +3293,18 @@ class Recording(Item):
                     measure.append(edge)
                 elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
                     sharedWith.append(edge)
-                elif edge._type == "audio" or edge._type == "~audio": 
-                    audio.append(edge)
-                elif edge._type == "citation" or edge._type == "~citation": 
-                    citation.append(edge)
-                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
-                    contentLocation.append(edge)
-                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
-                    locationCreated.append(edge)
-                elif edge._type == "video" or edge._type == "~video": 
-                    video.append(edge)
-                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
-                    writtenBy.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
-                    recordedAt.append(edge)
-                elif edge._type == "review" or edge._type == "~review": 
-                    review.append(edge)
+                elif edge._type == "organization" or edge._type == "~organization": 
+                    organization.append(edge)
+                elif edge._type == "resource" or edge._type == "~resource": 
+                    resource.append(edge)
+                elif edge._type == "website" or edge._type == "~website": 
+                    website.append(edge)
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
-                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
-                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
-                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
-                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A work of visual arts, for instance a painting, sculpture or drawing.
-class VisualArt(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
-                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
-                 writtenBy=None, file=None, recordedAt=None, review=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.title = title
-        self.abstract = abstract
-        self.datePublished = datePublished
-        self.keyword = keyword
-        self.content = content
-        self.textContent = textContent
-        self.transcript = transcript
-        self.itemType = itemType
-        self.audio = audio if audio is not None else []
-        self.citation = citation if citation is not None else []
-        self.contentLocation = contentLocation if contentLocation is not None else []
-        self.locationCreated = locationCreated if locationCreated is not None else []
-        self.video = video if video is not None else []
-        self.writtenBy = writtenBy if writtenBy is not None else []
-        self.file = file if file is not None else []
-        self.recordedAt = recordedAt if recordedAt is not None else []
-        self.review = review if review is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        title = json.get("title", None)
-        abstract = json.get("abstract", None)
-        datePublished = json.get("datePublished", None)
-        keyword = json.get("keyword", None)
-        content = json.get("content", None)
-        textContent = json.get("textContent", None)
-        transcript = json.get("transcript", None)
-        itemType = json.get("itemType", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        audio = []
-        citation = []
-        contentLocation = []
-        locationCreated = []
-        video = []
-        writtenBy = []
-        file = []
-        recordedAt = []
-        review = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "audio" or edge._type == "~audio": 
-                    audio.append(edge)
-                elif edge._type == "citation" or edge._type == "~citation": 
-                    citation.append(edge)
-                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
-                    contentLocation.append(edge)
-                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
-                    locationCreated.append(edge)
-                elif edge._type == "video" or edge._type == "~video": 
-                    video.append(edge)
-                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
-                    writtenBy.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
-                    recordedAt.append(edge)
-                elif edge._type == "review" or edge._type == "~review": 
-                    review.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
-                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
-                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
-                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
-                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A written work, for instance a book, article or note. Doesn't have to be published.
-class WrittenWork(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
-                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
-                 writtenBy=None, file=None, recordedAt=None, review=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.title = title
-        self.abstract = abstract
-        self.datePublished = datePublished
-        self.keyword = keyword
-        self.content = content
-        self.textContent = textContent
-        self.transcript = transcript
-        self.itemType = itemType
-        self.audio = audio if audio is not None else []
-        self.citation = citation if citation is not None else []
-        self.contentLocation = contentLocation if contentLocation is not None else []
-        self.locationCreated = locationCreated if locationCreated is not None else []
-        self.video = video if video is not None else []
-        self.writtenBy = writtenBy if writtenBy is not None else []
-        self.file = file if file is not None else []
-        self.recordedAt = recordedAt if recordedAt is not None else []
-        self.review = review if review is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        title = json.get("title", None)
-        abstract = json.get("abstract", None)
-        datePublished = json.get("datePublished", None)
-        keyword = json.get("keyword", None)
-        content = json.get("content", None)
-        textContent = json.get("textContent", None)
-        transcript = json.get("transcript", None)
-        itemType = json.get("itemType", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        audio = []
-        citation = []
-        contentLocation = []
-        locationCreated = []
-        video = []
-        writtenBy = []
-        file = []
-        recordedAt = []
-        review = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "audio" or edge._type == "~audio": 
-                    audio.append(edge)
-                elif edge._type == "citation" or edge._type == "~citation": 
-                    citation.append(edge)
-                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
-                    contentLocation.append(edge)
-                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
-                    locationCreated.append(edge)
-                elif edge._type == "video" or edge._type == "~video": 
-                    video.append(edge)
-                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
-                    writtenBy.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
-                    recordedAt.append(edge)
-                elif edge._type == "review" or edge._type == "~review": 
-                    review.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
-                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
-                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
-                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
-                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# An article, for instance from a journal, magazine or newspaper.
-class Article(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
-                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
-                 writtenBy=None, file=None, recordedAt=None, review=None, comment=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.title = title
-        self.abstract = abstract
-        self.datePublished = datePublished
-        self.keyword = keyword
-        self.content = content
-        self.textContent = textContent
-        self.transcript = transcript
-        self.itemType = itemType
-        self.audio = audio if audio is not None else []
-        self.citation = citation if citation is not None else []
-        self.contentLocation = contentLocation if contentLocation is not None else []
-        self.locationCreated = locationCreated if locationCreated is not None else []
-        self.video = video if video is not None else []
-        self.writtenBy = writtenBy if writtenBy is not None else []
-        self.file = file if file is not None else []
-        self.recordedAt = recordedAt if recordedAt is not None else []
-        self.review = review if review is not None else []
-        self.comment = comment if comment is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        title = json.get("title", None)
-        abstract = json.get("abstract", None)
-        datePublished = json.get("datePublished", None)
-        keyword = json.get("keyword", None)
-        content = json.get("content", None)
-        textContent = json.get("textContent", None)
-        transcript = json.get("transcript", None)
-        itemType = json.get("itemType", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        audio = []
-        citation = []
-        contentLocation = []
-        locationCreated = []
-        video = []
-        writtenBy = []
-        file = []
-        recordedAt = []
-        review = []
-        comment = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "audio" or edge._type == "~audio": 
-                    audio.append(edge)
-                elif edge._type == "citation" or edge._type == "~citation": 
-                    citation.append(edge)
-                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
-                    contentLocation.append(edge)
-                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
-                    locationCreated.append(edge)
-                elif edge._type == "video" or edge._type == "~video": 
-                    video.append(edge)
-                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
-                    writtenBy.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
-                    recordedAt.append(edge)
-                elif edge._type == "review" or edge._type == "~review": 
-                    review.append(edge)
-                elif edge._type == "comment" or edge._type == "~comment": 
-                    comment.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
-                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
-                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
-                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
-                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review, comment=comment)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A comment.
-class Comment(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
-                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
-                 writtenBy=None, file=None, recordedAt=None, review=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.title = title
-        self.abstract = abstract
-        self.datePublished = datePublished
-        self.keyword = keyword
-        self.content = content
-        self.textContent = textContent
-        self.transcript = transcript
-        self.itemType = itemType
-        self.audio = audio if audio is not None else []
-        self.citation = citation if citation is not None else []
-        self.contentLocation = contentLocation if contentLocation is not None else []
-        self.locationCreated = locationCreated if locationCreated is not None else []
-        self.video = video if video is not None else []
-        self.writtenBy = writtenBy if writtenBy is not None else []
-        self.file = file if file is not None else []
-        self.recordedAt = recordedAt if recordedAt is not None else []
-        self.review = review if review is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        title = json.get("title", None)
-        abstract = json.get("abstract", None)
-        datePublished = json.get("datePublished", None)
-        keyword = json.get("keyword", None)
-        content = json.get("content", None)
-        textContent = json.get("textContent", None)
-        transcript = json.get("transcript", None)
-        itemType = json.get("itemType", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        audio = []
-        citation = []
-        contentLocation = []
-        locationCreated = []
-        video = []
-        writtenBy = []
-        file = []
-        recordedAt = []
-        review = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "audio" or edge._type == "~audio": 
-                    audio.append(edge)
-                elif edge._type == "citation" or edge._type == "~citation": 
-                    citation.append(edge)
-                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
-                    contentLocation.append(edge)
-                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
-                    locationCreated.append(edge)
-                elif edge._type == "video" or edge._type == "~video": 
-                    video.append(edge)
-                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
-                    writtenBy.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
-                    recordedAt.append(edge)
-                elif edge._type == "review" or edge._type == "~review": 
-                    review.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
-                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
-                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
-                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
-                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A single message.
-class Message(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
-                 transcript=None, itemType=None, subject=None, dateSent=None, dateReceived=None, changelog=None,
-                 label=None, genericAttribute=None, measure=None, sharedWith=None, audio=None, citation=None,
-                 contentLocation=None, locationCreated=None, video=None, writtenBy=None, file=None, recordedAt=None,
-                 review=None, messageChannel=None, sender=None, receiver=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.title = title
-        self.abstract = abstract
-        self.datePublished = datePublished
-        self.keyword = keyword
-        self.content = content
-        self.textContent = textContent
-        self.transcript = transcript
-        self.itemType = itemType
-        self.subject = subject
-        self.dateSent = dateSent
-        self.dateReceived = dateReceived
-        self.audio = audio if audio is not None else []
-        self.citation = citation if citation is not None else []
-        self.contentLocation = contentLocation if contentLocation is not None else []
-        self.locationCreated = locationCreated if locationCreated is not None else []
-        self.video = video if video is not None else []
-        self.writtenBy = writtenBy if writtenBy is not None else []
-        self.file = file if file is not None else []
-        self.recordedAt = recordedAt if recordedAt is not None else []
-        self.review = review if review is not None else []
-        self.messageChannel = messageChannel if messageChannel is not None else []
-        self.sender = sender if sender is not None else []
-        self.receiver = receiver if receiver is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        title = json.get("title", None)
-        abstract = json.get("abstract", None)
-        datePublished = json.get("datePublished", None)
-        keyword = json.get("keyword", None)
-        content = json.get("content", None)
-        textContent = json.get("textContent", None)
-        transcript = json.get("transcript", None)
-        itemType = json.get("itemType", None)
-        subject = json.get("subject", None)
-        dateSent = json.get("dateSent", None)
-        dateReceived = json.get("dateReceived", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        audio = []
-        citation = []
-        contentLocation = []
-        locationCreated = []
-        video = []
-        writtenBy = []
-        file = []
-        recordedAt = []
-        review = []
-        messageChannel = []
-        sender = []
-        receiver = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "audio" or edge._type == "~audio": 
-                    audio.append(edge)
-                elif edge._type == "citation" or edge._type == "~citation": 
-                    citation.append(edge)
-                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
-                    contentLocation.append(edge)
-                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
-                    locationCreated.append(edge)
-                elif edge._type == "video" or edge._type == "~video": 
-                    video.append(edge)
-                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
-                    writtenBy.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
-                    recordedAt.append(edge)
-                elif edge._type == "review" or edge._type == "~review": 
-                    review.append(edge)
-                elif edge._type == "messageChannel" or edge._type == "~messageChannel": 
-                    messageChannel.append(edge)
-                elif edge._type == "sender" or edge._type == "~sender": 
-                    sender.append(edge)
-                elif edge._type == "receiver" or edge._type == "~receiver": 
-                    receiver.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
-                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
-                  transcript=transcript, itemType=itemType, subject=subject, dateSent=dateSent,
-                  dateReceived=dateReceived, changelog=changelog, label=label, genericAttribute=genericAttribute,
-                  measure=measure, sharedWith=sharedWith, audio=audio, citation=citation,
-                  contentLocation=contentLocation, locationCreated=locationCreated, video=video, writtenBy=writtenBy,
-                  file=file, recordedAt=recordedAt, review=review, messageChannel=messageChannel, sender=sender,
-                  receiver=receiver)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A single email message.
-class EmailMessage(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
-                 transcript=None, itemType=None, subject=None, dateSent=None, dateReceived=None, changelog=None,
-                 label=None, genericAttribute=None, measure=None, sharedWith=None, audio=None, citation=None,
-                 contentLocation=None, locationCreated=None, video=None, writtenBy=None, file=None, recordedAt=None,
-                 review=None, messageChannel=None, sender=None, receiver=None, cc=None, bcc=None, replyTo=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.title = title
-        self.abstract = abstract
-        self.datePublished = datePublished
-        self.keyword = keyword
-        self.content = content
-        self.textContent = textContent
-        self.transcript = transcript
-        self.itemType = itemType
-        self.subject = subject
-        self.dateSent = dateSent
-        self.dateReceived = dateReceived
-        self.audio = audio if audio is not None else []
-        self.citation = citation if citation is not None else []
-        self.contentLocation = contentLocation if contentLocation is not None else []
-        self.locationCreated = locationCreated if locationCreated is not None else []
-        self.video = video if video is not None else []
-        self.writtenBy = writtenBy if writtenBy is not None else []
-        self.file = file if file is not None else []
-        self.recordedAt = recordedAt if recordedAt is not None else []
-        self.review = review if review is not None else []
-        self.messageChannel = messageChannel if messageChannel is not None else []
-        self.sender = sender if sender is not None else []
-        self.receiver = receiver if receiver is not None else []
-        self.cc = cc if cc is not None else []
-        self.bcc = bcc if bcc is not None else []
-        self.replyTo = replyTo if replyTo is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        title = json.get("title", None)
-        abstract = json.get("abstract", None)
-        datePublished = json.get("datePublished", None)
-        keyword = json.get("keyword", None)
-        content = json.get("content", None)
-        textContent = json.get("textContent", None)
-        transcript = json.get("transcript", None)
-        itemType = json.get("itemType", None)
-        subject = json.get("subject", None)
-        dateSent = json.get("dateSent", None)
-        dateReceived = json.get("dateReceived", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        audio = []
-        citation = []
-        contentLocation = []
-        locationCreated = []
-        video = []
-        writtenBy = []
-        file = []
-        recordedAt = []
-        review = []
-        messageChannel = []
-        sender = []
-        receiver = []
-        cc = []
-        bcc = []
-        replyTo = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "audio" or edge._type == "~audio": 
-                    audio.append(edge)
-                elif edge._type == "citation" or edge._type == "~citation": 
-                    citation.append(edge)
-                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
-                    contentLocation.append(edge)
-                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
-                    locationCreated.append(edge)
-                elif edge._type == "video" or edge._type == "~video": 
-                    video.append(edge)
-                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
-                    writtenBy.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
-                    recordedAt.append(edge)
-                elif edge._type == "review" or edge._type == "~review": 
-                    review.append(edge)
-                elif edge._type == "messageChannel" or edge._type == "~messageChannel": 
-                    messageChannel.append(edge)
-                elif edge._type == "sender" or edge._type == "~sender": 
-                    sender.append(edge)
-                elif edge._type == "receiver" or edge._type == "~receiver": 
-                    receiver.append(edge)
-                elif edge._type == "cc" or edge._type == "~cc": 
-                    cc.append(edge)
-                elif edge._type == "bcc" or edge._type == "~bcc": 
-                    bcc.append(edge)
-                elif edge._type == "replyTo" or edge._type == "~replyTo": 
-                    replyTo.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
-                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
-                  transcript=transcript, itemType=itemType, subject=subject, dateSent=dateSent,
-                  dateReceived=dateReceived, changelog=changelog, label=label, genericAttribute=genericAttribute,
-                  measure=measure, sharedWith=sharedWith, audio=audio, citation=citation,
-                  contentLocation=contentLocation, locationCreated=locationCreated, video=video, writtenBy=writtenBy,
-                  file=file, recordedAt=recordedAt, review=review, messageChannel=messageChannel, sender=sender,
-                  receiver=receiver, cc=cc, bcc=bcc, replyTo=replyTo)
+                  version=version, uid=uid, importJson=importJson, name=name, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith,
+                  organization=organization, resource=resource, website=website)
         for e in res.get_all_edges(): e.source = res
         return res
 
@@ -2285,2065 +3552,6 @@ class NoteList(Item):
                   citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
                   writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review, span=span, itemSpan=itemSpan,
                   note=note)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A review of an Item, for instance a Organization, CreativeWork, or Product.
-class Review(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
-                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
-                 writtenBy=None, file=None, recordedAt=None, review=None, rating=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.title = title
-        self.abstract = abstract
-        self.datePublished = datePublished
-        self.keyword = keyword
-        self.content = content
-        self.textContent = textContent
-        self.transcript = transcript
-        self.itemType = itemType
-        self.audio = audio if audio is not None else []
-        self.citation = citation if citation is not None else []
-        self.contentLocation = contentLocation if contentLocation is not None else []
-        self.locationCreated = locationCreated if locationCreated is not None else []
-        self.video = video if video is not None else []
-        self.writtenBy = writtenBy if writtenBy is not None else []
-        self.file = file if file is not None else []
-        self.recordedAt = recordedAt if recordedAt is not None else []
-        self.review = review if review is not None else []
-        self.rating = rating if rating is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        title = json.get("title", None)
-        abstract = json.get("abstract", None)
-        datePublished = json.get("datePublished", None)
-        keyword = json.get("keyword", None)
-        content = json.get("content", None)
-        textContent = json.get("textContent", None)
-        transcript = json.get("transcript", None)
-        itemType = json.get("itemType", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        audio = []
-        citation = []
-        contentLocation = []
-        locationCreated = []
-        video = []
-        writtenBy = []
-        file = []
-        recordedAt = []
-        review = []
-        rating = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "audio" or edge._type == "~audio": 
-                    audio.append(edge)
-                elif edge._type == "citation" or edge._type == "~citation": 
-                    citation.append(edge)
-                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
-                    contentLocation.append(edge)
-                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
-                    locationCreated.append(edge)
-                elif edge._type == "video" or edge._type == "~video": 
-                    video.append(edge)
-                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
-                    writtenBy.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
-                    recordedAt.append(edge)
-                elif edge._type == "review" or edge._type == "~review": 
-                    review.append(edge)
-                elif edge._type == "rating" or edge._type == "~rating": 
-                    rating.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
-                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
-                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
-                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
-                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review, rating=rating)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A key used in an cryptography protocol.
-class CryptoKey(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 itemType=None, role=None, key=None, active=None, name=None, changelog=None, label=None,
-                 genericAttribute=None, measure=None, sharedWith=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.itemType = itemType
-        self.role = role
-        self.key = key
-        self.active = active
-        self.name = name
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        itemType = json.get("itemType", None)
-        role = json.get("role", None)
-        key = json.get("key", None)
-        active = json.get("active", None)
-        name = json.get("name", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, itemType=itemType, role=role, key=key,
-                  active=active, name=name, changelog=changelog, label=label, genericAttribute=genericAttribute,
-                  measure=measure, sharedWith=sharedWith)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A business corporation.
-class Device(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 deviceID=None, make=None, manufacturer=None, model=None, name=None, dateAcquired=None,
-                 dateLost=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.deviceID = deviceID
-        self.make = make
-        self.manufacturer = manufacturer
-        self.model = model
-        self.name = name
-        self.dateAcquired = dateAcquired
-        self.dateLost = dateLost
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        deviceID = json.get("deviceID", None)
-        make = json.get("make", None)
-        manufacturer = json.get("manufacturer", None)
-        model = json.get("model", None)
-        name = json.get("name", None)
-        dateAcquired = json.get("dateAcquired", None)
-        dateLost = json.get("dateLost", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, deviceID=deviceID, make=make,
-                  manufacturer=manufacturer, model=model, name=name, dateAcquired=dateAcquired, dateLost=dateLost,
-                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
-                  sharedWith=sharedWith)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A Downloader is used to download data from an external source, to be imported using an Importer.
-class Downloader(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# Any kind of event, for instance a music festival or a business meeting.
-class Event(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 audience=None, startTime=None, endTime=None, duration=None, eventStatus=None, changelog=None,
-                 label=None, genericAttribute=None, measure=None, sharedWith=None, location=None, review=None,
-                 subEvent=None, capacity=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.audience = audience
-        self.startTime = startTime
-        self.endTime = endTime
-        self.duration = duration
-        self.eventStatus = eventStatus
-        self.location = location if location is not None else []
-        self.review = review if review is not None else []
-        self.subEvent = subEvent if subEvent is not None else []
-        self.capacity = capacity if capacity is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        audience = json.get("audience", None)
-        startTime = json.get("startTime", None)
-        endTime = json.get("endTime", None)
-        duration = json.get("duration", None)
-        eventStatus = json.get("eventStatus", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        location = []
-        review = []
-        subEvent = []
-        capacity = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "location" or edge._type == "~location": 
-                    location.append(edge)
-                elif edge._type == "review" or edge._type == "~review": 
-                    review.append(edge)
-                elif edge._type == "subEvent" or edge._type == "~subEvent": 
-                    subEvent.append(edge)
-                elif edge._type == "capacity" or edge._type == "~capacity": 
-                    capacity.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, audience=audience, startTime=startTime,
-                  endTime=endTime, duration=duration, eventStatus=eventStatus, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, location=location,
-                  review=review, subEvent=subEvent, capacity=capacity)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# Any file that can be stored on disk.
-class File(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 sha256=None, nonce=None, key=None, filename=None, changelog=None, label=None, genericAttribute=None,
-                 measure=None, sharedWith=None, resource=None, usedBy=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.sha256 = sha256
-        self.nonce = nonce
-        self.key = key
-        self.filename = filename
-        self.resource = resource if resource is not None else []
-        self.usedBy = usedBy if usedBy is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        sha256 = json.get("sha256", None)
-        nonce = json.get("nonce", None)
-        key = json.get("key", None)
-        filename = json.get("filename", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        resource = []
-        usedBy = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "resource" or edge._type == "~resource": 
-                    resource.append(edge)
-                elif edge._type == "usedBy" or edge._type == "~usedBy": 
-                    usedBy.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, sha256=sha256, nonce=nonce, key=key,
-                  filename=filename, changelog=changelog, label=label, genericAttribute=genericAttribute,
-                  measure=measure, sharedWith=sharedWith, resource=resource, usedBy=usedBy)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# The number of occurrences of a repeating event per measure of time.
-class Frequency(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 occurrences=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.occurrences = occurrences
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        occurrences = json.get("occurrences", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, occurrences=occurrences, changelog=changelog,
-                  label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A generic attribute that can be referenced by an Item.
-class GenericAttribute(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 name=None, boolValue=None, datetimeValue=None, floatValue=None, intValue=None, stringValue=None,
-                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.name = name
-        self.boolValue = boolValue
-        self.datetimeValue = datetimeValue
-        self.floatValue = floatValue
-        self.intValue = intValue
-        self.stringValue = stringValue
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        name = json.get("name", None)
-        boolValue = json.get("boolValue", None)
-        datetimeValue = json.get("datetimeValue", None)
-        floatValue = json.get("floatValue", None)
-        intValue = json.get("intValue", None)
-        stringValue = json.get("stringValue", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, boolValue=boolValue,
-                  datetimeValue=datetimeValue, floatValue=floatValue, intValue=intValue, stringValue=stringValue,
-                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
-                  sharedWith=sharedWith)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# An Importer is used to import data from an external source to the Pod database.
-class Importer(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 name=None, dataType=None, icon=None, bundleImage=None, changelog=None, label=None,
-                 genericAttribute=None, measure=None, sharedWith=None, importerRun=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.name = name
-        self.dataType = dataType
-        self.icon = icon
-        self.bundleImage = bundleImage
-        self.importerRun = importerRun if importerRun is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        name = json.get("name", None)
-        dataType = json.get("dataType", None)
-        icon = json.get("icon", None)
-        bundleImage = json.get("bundleImage", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        importerRun = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "importerRun" or edge._type == "~importerRun": 
-                    importerRun.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, dataType=dataType, icon=icon,
-                  bundleImage=bundleImage, changelog=changelog, label=label, genericAttribute=genericAttribute,
-                  measure=measure, sharedWith=sharedWith, importerRun=importerRun)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A run of a certain Importer, that defines the details of the specific import.
-class ImporterRun(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 name=None, progress=None, dataType=None, username=None, password=None, changelog=None, label=None,
-                 genericAttribute=None, measure=None, sharedWith=None, importer=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.name = name
-        self.progress = progress
-        self.dataType = dataType
-        self.username = username
-        self.password = password
-        self.importer = importer if importer is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        name = json.get("name", None)
-        progress = json.get("progress", None)
-        dataType = json.get("dataType", None)
-        username = json.get("username", None)
-        password = json.get("password", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        importer = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "importer" or edge._type == "~importer": 
-                    importer.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, progress=progress, dataType=dataType,
-                  username=username, password=password, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, importer=importer)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# An indexer enhances your personal data by inferring facts over existing data and adding those to
-# the database.
-class Indexer(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 name=None, icon=None, query=None, bundleImage=None, runDestination=None, indexerClass=None,
-                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, indexerRun=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.name = name
-        self.icon = icon
-        self.query = query
-        self.bundleImage = bundleImage
-        self.runDestination = runDestination
-        self.indexerClass = indexerClass
-        self.indexerRun = indexerRun if indexerRun is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        name = json.get("name", None)
-        icon = json.get("icon", None)
-        query = json.get("query", None)
-        bundleImage = json.get("bundleImage", None)
-        runDestination = json.get("runDestination", None)
-        indexerClass = json.get("indexerClass", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        indexerRun = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "indexerRun" or edge._type == "~indexerRun": 
-                    indexerRun.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, icon=icon, query=query,
-                  bundleImage=bundleImage, runDestination=runDestination, indexerClass=indexerClass,
-                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
-                  sharedWith=sharedWith, indexerRun=indexerRun)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A run of a certain Indexer.
-class IndexerRun(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 name=None, query=None, progress=None, targetDataType=None, changelog=None, label=None,
-                 genericAttribute=None, measure=None, sharedWith=None, indexer=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.name = name
-        self.query = query
-        self.progress = progress
-        self.targetDataType = targetDataType
-        self.indexer = indexer if indexer is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        name = json.get("name", None)
-        query = json.get("query", None)
-        progress = json.get("progress", None)
-        targetDataType = json.get("targetDataType", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        indexer = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "indexer" or edge._type == "~indexer": 
-                    indexer.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, query=query, progress=progress,
-                  targetDataType=targetDataType, changelog=changelog, label=label, genericAttribute=genericAttribute,
-                  measure=measure, sharedWith=sharedWith, indexer=indexer)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A sector that produces goods or related services within an economy.
-class Industry(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 itemType=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.itemType = itemType
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        itemType = json.get("itemType", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, itemType=itemType, changelog=changelog,
-                  label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A Receipt is a confirmation of a transaction.
-class Invoice(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, file=None,
-                 transaction=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.file = file if file is not None else []
-        self.transaction = transaction if transaction is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        file = []
-        transaction = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "transaction" or edge._type == "~transaction": 
-                    transaction.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, file=file,
-                  transaction=transaction)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# Attached to an Item, to mark it to be something.
-class Label(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 color=None, name=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, comment=None, appliesTo=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.color = color
-        self.name = name
-        self.comment = comment if comment is not None else []
-        self.appliesTo = appliesTo if appliesTo is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        color = json.get("color", None)
-        name = json.get("name", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        comment = []
-        appliesTo = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "comment" or edge._type == "~comment": 
-                    comment.append(edge)
-                elif edge._type == "appliesTo" or edge._type == "~appliesTo": 
-                    appliesTo.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, color=color, name=name, changelog=changelog,
-                  label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith,
-                  comment=comment, appliesTo=appliesTo)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A potential offer.
-class Lead(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, offer=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.offer = offer if offer is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        offer = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "offer" or edge._type == "~offer": 
-                    offer.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, offer=offer)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# The location of something.
-class Location(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 latitude=None, longitude=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.latitude = latitude
-        self.longitude = longitude
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        latitude = json.get("latitude", None)
-        longitude = json.get("longitude", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, latitude=latitude, longitude=longitude,
-                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
-                  sharedWith=sharedWith)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A postal address.
-class Address(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 latitude=None, longitude=None, city=None, postalCode=None, state=None, street=None, itemType=None,
-                 locationAutoLookupHash=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, country=None, location=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.latitude = latitude
-        self.longitude = longitude
-        self.city = city
-        self.postalCode = postalCode
-        self.state = state
-        self.street = street
-        self.itemType = itemType
-        self.locationAutoLookupHash = locationAutoLookupHash
-        self.country = country if country is not None else []
-        self.location = location if location is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        latitude = json.get("latitude", None)
-        longitude = json.get("longitude", None)
-        city = json.get("city", None)
-        postalCode = json.get("postalCode", None)
-        state = json.get("state", None)
-        street = json.get("street", None)
-        itemType = json.get("itemType", None)
-        locationAutoLookupHash = json.get("locationAutoLookupHash", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        country = []
-        location = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "country" or edge._type == "~country": 
-                    country.append(edge)
-                elif edge._type == "location" or edge._type == "~location": 
-                    location.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, latitude=latitude, longitude=longitude, city=city,
-                  postalCode=postalCode, state=state, street=street, itemType=itemType,
-                  locationAutoLookupHash=locationAutoLookupHash, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, country=country,
-                  location=location)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A country.
-class Country(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 latitude=None, longitude=None, name=None, changelog=None, label=None, genericAttribute=None,
-                 measure=None, sharedWith=None, flag=None, location=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.latitude = latitude
-        self.longitude = longitude
-        self.name = name
-        self.flag = flag if flag is not None else []
-        self.location = location if location is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        latitude = json.get("latitude", None)
-        longitude = json.get("longitude", None)
-        name = json.get("name", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        flag = []
-        location = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "flag" or edge._type == "~flag": 
-                    flag.append(edge)
-                elif edge._type == "location" or edge._type == "~location": 
-                    location.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, latitude=latitude, longitude=longitude, name=name,
-                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
-                  sharedWith=sharedWith, flag=flag, location=location)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A material that an Item is (partially) made from, for instance cotton, paper, steel, etc.
-class Material(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 name=None, defaultQuantity=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, price=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.name = name
-        self.defaultQuantity = defaultQuantity
-        self.price = price if price is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        name = json.get("name", None)
-        defaultQuantity = json.get("defaultQuantity", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        price = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "price" or edge._type == "~price": 
-                    price.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, defaultQuantity=defaultQuantity,
-                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
-                  sharedWith=sharedWith, price=price)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A measure consists of a definition, symbol, unit and value (int, float, string, bool, or
-# datetime).
-class Measure(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 definition=None, symbol=None, intValue=None, floatValue=None, stringValue=None, datetimeValue=None,
-                 boolValue=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
-                 unit=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.definition = definition
-        self.symbol = symbol
-        self.intValue = intValue
-        self.floatValue = floatValue
-        self.stringValue = stringValue
-        self.datetimeValue = datetimeValue
-        self.boolValue = boolValue
-        self.unit = unit if unit is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        definition = json.get("definition", None)
-        symbol = json.get("symbol", None)
-        intValue = json.get("intValue", None)
-        floatValue = json.get("floatValue", None)
-        stringValue = json.get("stringValue", None)
-        datetimeValue = json.get("datetimeValue", None)
-        boolValue = json.get("boolValue", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        unit = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "unit" or edge._type == "~unit": 
-                    unit.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, definition=definition, symbol=symbol,
-                  intValue=intValue, floatValue=floatValue, stringValue=stringValue, datetimeValue=datetimeValue,
-                  boolValue=boolValue, changelog=changelog, label=label, genericAttribute=genericAttribute,
-                  measure=measure, sharedWith=sharedWith, unit=unit)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A media object, such as an image, video, or audio object embedded in a web page or a downloadable
-# dataset i.e. DataDownload. Note that a creative work may have many media objects associated with it
-# on the same web page. For example, a page about a single song (MusicRecording) may have a music
-# video (VideoObject), and a high and low bandwidth audio stream (2 AudioObject's).
-class MediaObject(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 bitrate=None, duration=None, endTime=None, fileLocation=None, startTime=None, changelog=None,
-                 label=None, genericAttribute=None, measure=None, sharedWith=None, file=None, includes=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.bitrate = bitrate
-        self.duration = duration
-        self.endTime = endTime
-        self.fileLocation = fileLocation
-        self.startTime = startTime
-        self.file = file if file is not None else []
-        self.includes = includes if includes is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        bitrate = json.get("bitrate", None)
-        duration = json.get("duration", None)
-        endTime = json.get("endTime", None)
-        fileLocation = json.get("fileLocation", None)
-        startTime = json.get("startTime", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        file = []
-        includes = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "includes" or edge._type == "~includes": 
-                    includes.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, bitrate=bitrate, duration=duration,
-                  endTime=endTime, fileLocation=fileLocation, startTime=startTime, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, file=file,
-                  includes=includes)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# An audio file.
-class Audio(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 bitrate=None, duration=None, endTime=None, fileLocation=None, startTime=None, caption=None,
-                 transcript=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
-                 file=None, includes=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.bitrate = bitrate
-        self.duration = duration
-        self.endTime = endTime
-        self.fileLocation = fileLocation
-        self.startTime = startTime
-        self.caption = caption
-        self.transcript = transcript
-        self.file = file if file is not None else []
-        self.includes = includes if includes is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        bitrate = json.get("bitrate", None)
-        duration = json.get("duration", None)
-        endTime = json.get("endTime", None)
-        fileLocation = json.get("fileLocation", None)
-        startTime = json.get("startTime", None)
-        caption = json.get("caption", None)
-        transcript = json.get("transcript", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        file = []
-        includes = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "includes" or edge._type == "~includes": 
-                    includes.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, bitrate=bitrate, duration=duration,
-                  endTime=endTime, fileLocation=fileLocation, startTime=startTime, caption=caption,
-                  transcript=transcript, changelog=changelog, label=label, genericAttribute=genericAttribute,
-                  measure=measure, sharedWith=sharedWith, file=file, includes=includes)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# An image file.
-class Photo(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 bitrate=None, duration=None, endTime=None, fileLocation=None, startTime=None, caption=None,
-                 exifData=None, name=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, file=None, includes=None, thumbnail=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.bitrate = bitrate
-        self.duration = duration
-        self.endTime = endTime
-        self.fileLocation = fileLocation
-        self.startTime = startTime
-        self.caption = caption
-        self.exifData = exifData
-        self.name = name
-        self.file = file if file is not None else []
-        self.includes = includes if includes is not None else []
-        self.thumbnail = thumbnail if thumbnail is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        bitrate = json.get("bitrate", None)
-        duration = json.get("duration", None)
-        endTime = json.get("endTime", None)
-        fileLocation = json.get("fileLocation", None)
-        startTime = json.get("startTime", None)
-        caption = json.get("caption", None)
-        exifData = json.get("exifData", None)
-        name = json.get("name", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        file = []
-        includes = []
-        thumbnail = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "includes" or edge._type == "~includes": 
-                    includes.append(edge)
-                elif edge._type == "thumbnail" or edge._type == "~thumbnail": 
-                    thumbnail.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, bitrate=bitrate, duration=duration,
-                  endTime=endTime, fileLocation=fileLocation, startTime=startTime, caption=caption, exifData=exifData,
-                  name=name, changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
-                  sharedWith=sharedWith, file=file, includes=includes, thumbnail=thumbnail)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A video file.
-class Video(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 bitrate=None, duration=None, endTime=None, fileLocation=None, startTime=None, caption=None,
-                 exifData=None, name=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, file=None, includes=None, thumbnail=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.bitrate = bitrate
-        self.duration = duration
-        self.endTime = endTime
-        self.fileLocation = fileLocation
-        self.startTime = startTime
-        self.caption = caption
-        self.exifData = exifData
-        self.name = name
-        self.file = file if file is not None else []
-        self.includes = includes if includes is not None else []
-        self.thumbnail = thumbnail if thumbnail is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        bitrate = json.get("bitrate", None)
-        duration = json.get("duration", None)
-        endTime = json.get("endTime", None)
-        fileLocation = json.get("fileLocation", None)
-        startTime = json.get("startTime", None)
-        caption = json.get("caption", None)
-        exifData = json.get("exifData", None)
-        name = json.get("name", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        file = []
-        includes = []
-        thumbnail = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "file" or edge._type == "~file": 
-                    file.append(edge)
-                elif edge._type == "includes" or edge._type == "~includes": 
-                    includes.append(edge)
-                elif edge._type == "thumbnail" or edge._type == "~thumbnail": 
-                    thumbnail.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, bitrate=bitrate, duration=duration,
-                  endTime=endTime, fileLocation=fileLocation, startTime=startTime, caption=caption, exifData=exifData,
-                  name=name, changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
-                  sharedWith=sharedWith, file=file, includes=includes, thumbnail=thumbnail)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# Any condition of the human body that affects the normal functioning of a person, whether
-# physically or mentally. Includes diseases, injuries, disabilities, disorders, syndromes, etc.
-class MedicalCondition(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 itemType=None, name=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.itemType = itemType
-        self.name = name
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        itemType = json.get("itemType", None)
-        name = json.get("name", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, itemType=itemType, name=name, changelog=changelog,
-                  label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A chat is a collection of messages.
-class MessageChannel(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 name=None, topic=None, encrypted=None, changelog=None, label=None, genericAttribute=None,
-                 measure=None, sharedWith=None, photo=None, receiver=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.name = name
-        self.topic = topic
-        self.encrypted = encrypted
-        self.photo = photo if photo is not None else []
-        self.receiver = receiver if receiver is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        name = json.get("name", None)
-        topic = json.get("topic", None)
-        encrypted = json.get("encrypted", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        photo = []
-        receiver = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "photo" or edge._type == "~photo": 
-                    photo.append(edge)
-                elif edge._type == "receiver" or edge._type == "~receiver": 
-                    receiver.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, topic=topic, encrypted=encrypted,
-                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
-                  sharedWith=sharedWith, photo=photo, receiver=receiver)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A way of transportation, for instance a bus or airplane.
-class ModeOfTransport(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# TBD
-class NavigationItem(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 title=None, sessionName=None, sequence=None, itemType=None, changelog=None, label=None,
-                 genericAttribute=None, measure=None, sharedWith=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.title = title
-        self.sessionName = sessionName
-        self.sequence = sequence
-        self.itemType = itemType
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        title = json.get("title", None)
-        sessionName = json.get("sessionName", None)
-        sequence = json.get("sequence", None)
-        itemType = json.get("itemType", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, sessionName=sessionName,
-                  sequence=sequence, itemType=itemType, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        for e in res.get_all_edges(): e.source = res
-        return res
-
-
-# A group or system of interconnected people or things, for instance a social network.
-class Network(Item):
-    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 name=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
-                 organization=None, resource=None, website=None):
-        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
-                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
-        self.name = name
-        self.organization = organization if organization is not None else []
-        self.resource = resource if resource is not None else []
-        self.website = website if website is not None else []
-
-    @classmethod
-    def from_json(cls, json):
-        all_edges = json.get("allEdges", None)
-        dateAccessed = json.get("dateAccessed", None)
-        dateCreated = json.get("dateCreated", None)
-        dateModified = json.get("dateModified", None)
-        deleted = json.get("deleted", None)
-        externalId = json.get("externalId", None)
-        itemDescription = json.get("itemDescription", None)
-        starred = json.get("starred", None)
-        version = json.get("version", None)
-        uid = json.get("uid", None)
-        importJson = json.get("importJson", None)
-        name = json.get("name", None)
-       
-        changelog = []
-        label = []
-        genericAttribute = []
-        measure = []
-        sharedWith = []
-        organization = []
-        resource = []
-        website = []
-        
-        if all_edges is not None:
-            for edge_json in all_edges:
-                edge = Edge.from_json(edge_json)
-                if edge._type == "changelog" or edge._type == "~changelog": 
-                    changelog.append(edge)
-                elif edge._type == "label" or edge._type == "~label": 
-                    label.append(edge)
-                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
-                    genericAttribute.append(edge)
-                elif edge._type == "measure" or edge._type == "~measure": 
-                    measure.append(edge)
-                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
-                    sharedWith.append(edge)
-                elif edge._type == "organization" or edge._type == "~organization": 
-                    organization.append(edge)
-                elif edge._type == "resource" or edge._type == "~resource": 
-                    resource.append(edge)
-                elif edge._type == "website" or edge._type == "~website": 
-                    website.append(edge)
-        
-        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
-                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, changelog=changelog, label=label,
-                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith,
-                  organization=organization, resource=resource, website=website)
         for e in res.get_all_edges(): e.source = res
         return res
 
@@ -4628,17 +3836,127 @@ class Organization(Item):
         return res
 
 
+# A work of performing art, for instance dance, theater, opera or musical.
+class PerformingArt(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
+                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
+                 writtenBy=None, file=None, recordedAt=None, review=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.title = title
+        self.abstract = abstract
+        self.datePublished = datePublished
+        self.keyword = keyword
+        self.content = content
+        self.textContent = textContent
+        self.transcript = transcript
+        self.itemType = itemType
+        self.audio = audio if audio is not None else []
+        self.citation = citation if citation is not None else []
+        self.contentLocation = contentLocation if contentLocation is not None else []
+        self.locationCreated = locationCreated if locationCreated is not None else []
+        self.video = video if video is not None else []
+        self.writtenBy = writtenBy if writtenBy is not None else []
+        self.file = file if file is not None else []
+        self.recordedAt = recordedAt if recordedAt is not None else []
+        self.review = review if review is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        title = json.get("title", None)
+        abstract = json.get("abstract", None)
+        datePublished = json.get("datePublished", None)
+        keyword = json.get("keyword", None)
+        content = json.get("content", None)
+        textContent = json.get("textContent", None)
+        transcript = json.get("transcript", None)
+        itemType = json.get("itemType", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        audio = []
+        citation = []
+        contentLocation = []
+        locationCreated = []
+        video = []
+        writtenBy = []
+        file = []
+        recordedAt = []
+        review = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "audio" or edge._type == "~audio": 
+                    audio.append(edge)
+                elif edge._type == "citation" or edge._type == "~citation": 
+                    citation.append(edge)
+                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
+                    contentLocation.append(edge)
+                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
+                    locationCreated.append(edge)
+                elif edge._type == "video" or edge._type == "~video": 
+                    video.append(edge)
+                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
+                    writtenBy.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
+                    recordedAt.append(edge)
+                elif edge._type == "review" or edge._type == "~review": 
+                    review.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
+                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
+                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
+                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
 # A person (alive, dead, undead, or fictional).
 class Person(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
                  externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
                  birthDate=None, email=None, deathDate=None, firstName=None, lastName=None, gender=None,
-                 sexualOrientation=None, displayName=None, nameQuality=None, enablePresence=None,
-                 enableReceipts=None, role=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, address=None, birthPlace=None, deathPlace=None, profilePicture=None,
-                 relationship=None, hasPhoneNumber=None, website=None, industry=None, cryptoKey=None, account=None,
-                 diet=None, medicalCondition=None, memberOf=None, performsAt=None, attends=None, organizes=None,
-                 founded=None, buyer=None, seller=None):
+                 sexualOrientation=None, displayName=None, role=None, changelog=None, label=None,
+                 genericAttribute=None, measure=None, sharedWith=None, address=None, birthPlace=None,
+                 deathPlace=None, profilePicture=None, relationship=None, hasPhoneNumber=None, website=None,
+                 industry=None, cryptoKey=None, account=None, diet=None, medicalCondition=None, memberOf=None,
+                 performsAt=None, attends=None, organizes=None, founded=None, buyer=None, seller=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                          version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
@@ -4651,9 +3969,6 @@ class Person(Item):
         self.gender = gender
         self.sexualOrientation = sexualOrientation
         self.displayName = displayName
-        self.nameQuality = nameQuality
-        self.enablePresence = enablePresence
-        self.enableReceipts = enableReceipts
         self.role = role
         self.address = address if address is not None else []
         self.birthPlace = birthPlace if birthPlace is not None else []
@@ -4696,9 +4011,6 @@ class Person(Item):
         gender = json.get("gender", None)
         sexualOrientation = json.get("sexualOrientation", None)
         displayName = json.get("displayName", None)
-        nameQuality = json.get("nameQuality", None)
-        enablePresence = json.get("enablePresence", None)
-        enableReceipts = json.get("enableReceipts", None)
         role = json.get("role", None)
        
         changelog = []
@@ -4782,8 +4094,7 @@ class Person(Item):
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                   version=version, uid=uid, importJson=importJson, birthDate=birthDate, email=email,
                   deathDate=deathDate, firstName=firstName, lastName=lastName, gender=gender,
-                  sexualOrientation=sexualOrientation, displayName=displayName, nameQuality=nameQuality,
-                  enablePresence=enablePresence, enableReceipts=enableReceipts, role=role, changelog=changelog,
+                  sexualOrientation=sexualOrientation, displayName=displayName, role=role, changelog=changelog,
                   label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith,
                   address=address, birthPlace=birthPlace, deathPlace=deathPlace, profilePicture=profilePicture,
                   relationship=relationship, hasPhoneNumber=hasPhoneNumber, website=website, industry=industry,
@@ -4848,6 +4159,90 @@ class PhoneNumber(Item):
                   version=version, uid=uid, importJson=importJson, phoneNumber=phoneNumber, itemType=itemType,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# An image file.
+class Photo(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 bitrate=None, duration=None, endTime=None, fileLocation=None, startTime=None, caption=None,
+                 exifData=None, name=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None, file=None, includes=None, thumbnail=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.bitrate = bitrate
+        self.duration = duration
+        self.endTime = endTime
+        self.fileLocation = fileLocation
+        self.startTime = startTime
+        self.caption = caption
+        self.exifData = exifData
+        self.name = name
+        self.file = file if file is not None else []
+        self.includes = includes if includes is not None else []
+        self.thumbnail = thumbnail if thumbnail is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        bitrate = json.get("bitrate", None)
+        duration = json.get("duration", None)
+        endTime = json.get("endTime", None)
+        fileLocation = json.get("fileLocation", None)
+        startTime = json.get("startTime", None)
+        caption = json.get("caption", None)
+        exifData = json.get("exifData", None)
+        name = json.get("name", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        file = []
+        includes = []
+        thumbnail = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "includes" or edge._type == "~includes": 
+                    includes.append(edge)
+                elif edge._type == "thumbnail" or edge._type == "~thumbnail": 
+                    thumbnail.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, bitrate=bitrate, duration=duration,
+                  endTime=endTime, fileLocation=fileLocation, startTime=startTime, caption=caption, exifData=exifData,
+                  name=name, changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
+                  sharedWith=sharedWith, file=file, includes=includes, thumbnail=thumbnail)
         for e in res.get_all_edges(): e.source = res
         return res
 
@@ -5143,6 +4538,251 @@ class Receipt(Item):
         return res
 
 
+# A set of instructions for preparing a particular dish, including a list of the ingredients
+# required.
+class Recipe(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
+                 transcript=None, itemType=None, duration=None, instructions=None, changelog=None, label=None,
+                 genericAttribute=None, measure=None, sharedWith=None, audio=None, citation=None,
+                 contentLocation=None, locationCreated=None, video=None, writtenBy=None, file=None, recordedAt=None,
+                 review=None, ingredient=None, price=None, yields=None, toolRequired=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.title = title
+        self.abstract = abstract
+        self.datePublished = datePublished
+        self.keyword = keyword
+        self.content = content
+        self.textContent = textContent
+        self.transcript = transcript
+        self.itemType = itemType
+        self.duration = duration
+        self.instructions = instructions
+        self.audio = audio if audio is not None else []
+        self.citation = citation if citation is not None else []
+        self.contentLocation = contentLocation if contentLocation is not None else []
+        self.locationCreated = locationCreated if locationCreated is not None else []
+        self.video = video if video is not None else []
+        self.writtenBy = writtenBy if writtenBy is not None else []
+        self.file = file if file is not None else []
+        self.recordedAt = recordedAt if recordedAt is not None else []
+        self.review = review if review is not None else []
+        self.ingredient = ingredient if ingredient is not None else []
+        self.price = price if price is not None else []
+        self.yields = yields if yields is not None else []
+        self.toolRequired = toolRequired if toolRequired is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        title = json.get("title", None)
+        abstract = json.get("abstract", None)
+        datePublished = json.get("datePublished", None)
+        keyword = json.get("keyword", None)
+        content = json.get("content", None)
+        textContent = json.get("textContent", None)
+        transcript = json.get("transcript", None)
+        itemType = json.get("itemType", None)
+        duration = json.get("duration", None)
+        instructions = json.get("instructions", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        audio = []
+        citation = []
+        contentLocation = []
+        locationCreated = []
+        video = []
+        writtenBy = []
+        file = []
+        recordedAt = []
+        review = []
+        ingredient = []
+        price = []
+        yields = []
+        toolRequired = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "audio" or edge._type == "~audio": 
+                    audio.append(edge)
+                elif edge._type == "citation" or edge._type == "~citation": 
+                    citation.append(edge)
+                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
+                    contentLocation.append(edge)
+                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
+                    locationCreated.append(edge)
+                elif edge._type == "video" or edge._type == "~video": 
+                    video.append(edge)
+                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
+                    writtenBy.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
+                    recordedAt.append(edge)
+                elif edge._type == "review" or edge._type == "~review": 
+                    review.append(edge)
+                elif edge._type == "ingredient" or edge._type == "~ingredient": 
+                    ingredient.append(edge)
+                elif edge._type == "price" or edge._type == "~price": 
+                    price.append(edge)
+                elif edge._type == "yields" or edge._type == "~yields": 
+                    yields.append(edge)
+                elif edge._type == "toolRequired" or edge._type == "~toolRequired": 
+                    toolRequired.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
+                  transcript=transcript, itemType=itemType, duration=duration, instructions=instructions,
+                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
+                  sharedWith=sharedWith, audio=audio, citation=citation, contentLocation=contentLocation,
+                  locationCreated=locationCreated, video=video, writtenBy=writtenBy, file=file, recordedAt=recordedAt,
+                  review=review, ingredient=ingredient, price=price, yields=yields, toolRequired=toolRequired)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A audio performance or production. Can be a single, album, radio show, podcast etc.
+class Recording(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
+                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
+                 writtenBy=None, file=None, recordedAt=None, review=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.title = title
+        self.abstract = abstract
+        self.datePublished = datePublished
+        self.keyword = keyword
+        self.content = content
+        self.textContent = textContent
+        self.transcript = transcript
+        self.itemType = itemType
+        self.audio = audio if audio is not None else []
+        self.citation = citation if citation is not None else []
+        self.contentLocation = contentLocation if contentLocation is not None else []
+        self.locationCreated = locationCreated if locationCreated is not None else []
+        self.video = video if video is not None else []
+        self.writtenBy = writtenBy if writtenBy is not None else []
+        self.file = file if file is not None else []
+        self.recordedAt = recordedAt if recordedAt is not None else []
+        self.review = review if review is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        title = json.get("title", None)
+        abstract = json.get("abstract", None)
+        datePublished = json.get("datePublished", None)
+        keyword = json.get("keyword", None)
+        content = json.get("content", None)
+        textContent = json.get("textContent", None)
+        transcript = json.get("transcript", None)
+        itemType = json.get("itemType", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        audio = []
+        citation = []
+        contentLocation = []
+        locationCreated = []
+        video = []
+        writtenBy = []
+        file = []
+        recordedAt = []
+        review = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "audio" or edge._type == "~audio": 
+                    audio.append(edge)
+                elif edge._type == "citation" or edge._type == "~citation": 
+                    citation.append(edge)
+                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
+                    contentLocation.append(edge)
+                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
+                    locationCreated.append(edge)
+                elif edge._type == "video" or edge._type == "~video": 
+                    video.append(edge)
+                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
+                    writtenBy.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
+                    recordedAt.append(edge)
+                elif edge._type == "review" or edge._type == "~review": 
+                    review.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
+                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
+                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
+                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
 # Describes a reservation, for instance for a Route or Event, or at a Organization.
 class Reservation(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
@@ -5278,6 +4918,121 @@ class Resource(Item):
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                   version=version, uid=uid, importJson=importJson, url=url, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, usedBy=usedBy)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A review of an Item, for instance a Organization, CreativeWork, or Product.
+class Review(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
+                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
+                 writtenBy=None, file=None, recordedAt=None, review=None, rating=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.title = title
+        self.abstract = abstract
+        self.datePublished = datePublished
+        self.keyword = keyword
+        self.content = content
+        self.textContent = textContent
+        self.transcript = transcript
+        self.itemType = itemType
+        self.audio = audio if audio is not None else []
+        self.citation = citation if citation is not None else []
+        self.contentLocation = contentLocation if contentLocation is not None else []
+        self.locationCreated = locationCreated if locationCreated is not None else []
+        self.video = video if video is not None else []
+        self.writtenBy = writtenBy if writtenBy is not None else []
+        self.file = file if file is not None else []
+        self.recordedAt = recordedAt if recordedAt is not None else []
+        self.review = review if review is not None else []
+        self.rating = rating if rating is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        title = json.get("title", None)
+        abstract = json.get("abstract", None)
+        datePublished = json.get("datePublished", None)
+        keyword = json.get("keyword", None)
+        content = json.get("content", None)
+        textContent = json.get("textContent", None)
+        transcript = json.get("transcript", None)
+        itemType = json.get("itemType", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        audio = []
+        citation = []
+        contentLocation = []
+        locationCreated = []
+        video = []
+        writtenBy = []
+        file = []
+        recordedAt = []
+        review = []
+        rating = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "audio" or edge._type == "~audio": 
+                    audio.append(edge)
+                elif edge._type == "citation" or edge._type == "~citation": 
+                    citation.append(edge)
+                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
+                    contentLocation.append(edge)
+                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
+                    locationCreated.append(edge)
+                elif edge._type == "video" or edge._type == "~video": 
+                    video.append(edge)
+                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
+                    writtenBy.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
+                    recordedAt.append(edge)
+                elif edge._type == "review" or edge._type == "~review": 
+                    review.append(edge)
+                elif edge._type == "rating" or edge._type == "~rating": 
+                    rating.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
+                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
+                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
+                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review, rating=rating)
         for e in res.get_all_edges(): e.source = res
         return res
 
@@ -5758,6 +5513,201 @@ class Unit(Item):
         return res
 
 
+# A video file.
+class Video(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 bitrate=None, duration=None, endTime=None, fileLocation=None, startTime=None, caption=None,
+                 exifData=None, name=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None, file=None, includes=None, thumbnail=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.bitrate = bitrate
+        self.duration = duration
+        self.endTime = endTime
+        self.fileLocation = fileLocation
+        self.startTime = startTime
+        self.caption = caption
+        self.exifData = exifData
+        self.name = name
+        self.file = file if file is not None else []
+        self.includes = includes if includes is not None else []
+        self.thumbnail = thumbnail if thumbnail is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        bitrate = json.get("bitrate", None)
+        duration = json.get("duration", None)
+        endTime = json.get("endTime", None)
+        fileLocation = json.get("fileLocation", None)
+        startTime = json.get("startTime", None)
+        caption = json.get("caption", None)
+        exifData = json.get("exifData", None)
+        name = json.get("name", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        file = []
+        includes = []
+        thumbnail = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "includes" or edge._type == "~includes": 
+                    includes.append(edge)
+                elif edge._type == "thumbnail" or edge._type == "~thumbnail": 
+                    thumbnail.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, bitrate=bitrate, duration=duration,
+                  endTime=endTime, fileLocation=fileLocation, startTime=startTime, caption=caption, exifData=exifData,
+                  name=name, changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
+                  sharedWith=sharedWith, file=file, includes=includes, thumbnail=thumbnail)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A work of visual arts, for instance a painting, sculpture or drawing.
+class VisualArt(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
+                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
+                 writtenBy=None, file=None, recordedAt=None, review=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.title = title
+        self.abstract = abstract
+        self.datePublished = datePublished
+        self.keyword = keyword
+        self.content = content
+        self.textContent = textContent
+        self.transcript = transcript
+        self.itemType = itemType
+        self.audio = audio if audio is not None else []
+        self.citation = citation if citation is not None else []
+        self.contentLocation = contentLocation if contentLocation is not None else []
+        self.locationCreated = locationCreated if locationCreated is not None else []
+        self.video = video if video is not None else []
+        self.writtenBy = writtenBy if writtenBy is not None else []
+        self.file = file if file is not None else []
+        self.recordedAt = recordedAt if recordedAt is not None else []
+        self.review = review if review is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        title = json.get("title", None)
+        abstract = json.get("abstract", None)
+        datePublished = json.get("datePublished", None)
+        keyword = json.get("keyword", None)
+        content = json.get("content", None)
+        textContent = json.get("textContent", None)
+        transcript = json.get("transcript", None)
+        itemType = json.get("itemType", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        audio = []
+        citation = []
+        contentLocation = []
+        locationCreated = []
+        video = []
+        writtenBy = []
+        file = []
+        recordedAt = []
+        review = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "audio" or edge._type == "~audio": 
+                    audio.append(edge)
+                elif edge._type == "citation" or edge._type == "~citation": 
+                    citation.append(edge)
+                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
+                    contentLocation.append(edge)
+                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
+                    locationCreated.append(edge)
+                elif edge._type == "video" or edge._type == "~video": 
+                    video.append(edge)
+                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
+                    writtenBy.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
+                    recordedAt.append(edge)
+                elif edge._type == "review" or edge._type == "~review": 
+                    review.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
+                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
+                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
+                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
 # An occasion where a choice is made choose between two or more options, for instance an election.
 class Vote(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
@@ -5940,5 +5890,116 @@ class Website(Item):
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                   version=version, uid=uid, importJson=importJson, itemType=itemType, url=url, changelog=changelog,
                   label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        for e in res.get_all_edges(): e.source = res
+        return res
+
+
+# A written work, for instance a book, article or note. Doesn't have to be published.
+class WrittenWork(Item):
+    def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
+                 transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
+                 sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
+                 writtenBy=None, file=None, recordedAt=None, review=None):
+        super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                         deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
+        self.title = title
+        self.abstract = abstract
+        self.datePublished = datePublished
+        self.keyword = keyword
+        self.content = content
+        self.textContent = textContent
+        self.transcript = transcript
+        self.itemType = itemType
+        self.audio = audio if audio is not None else []
+        self.citation = citation if citation is not None else []
+        self.contentLocation = contentLocation if contentLocation is not None else []
+        self.locationCreated = locationCreated if locationCreated is not None else []
+        self.video = video if video is not None else []
+        self.writtenBy = writtenBy if writtenBy is not None else []
+        self.file = file if file is not None else []
+        self.recordedAt = recordedAt if recordedAt is not None else []
+        self.review = review if review is not None else []
+
+    @classmethod
+    def from_json(cls, json):
+        all_edges = json.get("allEdges", None)
+        dateAccessed = json.get("dateAccessed", None)
+        dateCreated = json.get("dateCreated", None)
+        dateModified = json.get("dateModified", None)
+        deleted = json.get("deleted", None)
+        externalId = json.get("externalId", None)
+        itemDescription = json.get("itemDescription", None)
+        starred = json.get("starred", None)
+        version = json.get("version", None)
+        uid = json.get("uid", None)
+        importJson = json.get("importJson", None)
+        title = json.get("title", None)
+        abstract = json.get("abstract", None)
+        datePublished = json.get("datePublished", None)
+        keyword = json.get("keyword", None)
+        content = json.get("content", None)
+        textContent = json.get("textContent", None)
+        transcript = json.get("transcript", None)
+        itemType = json.get("itemType", None)
+       
+        changelog = []
+        label = []
+        genericAttribute = []
+        measure = []
+        sharedWith = []
+        audio = []
+        citation = []
+        contentLocation = []
+        locationCreated = []
+        video = []
+        writtenBy = []
+        file = []
+        recordedAt = []
+        review = []
+        
+        if all_edges is not None:
+            for edge_json in all_edges:
+                edge = Edge.from_json(edge_json)
+                if edge._type == "changelog" or edge._type == "~changelog": 
+                    changelog.append(edge)
+                elif edge._type == "label" or edge._type == "~label": 
+                    label.append(edge)
+                elif edge._type == "genericAttribute" or edge._type == "~genericAttribute": 
+                    genericAttribute.append(edge)
+                elif edge._type == "measure" or edge._type == "~measure": 
+                    measure.append(edge)
+                elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
+                    sharedWith.append(edge)
+                elif edge._type == "audio" or edge._type == "~audio": 
+                    audio.append(edge)
+                elif edge._type == "citation" or edge._type == "~citation": 
+                    citation.append(edge)
+                elif edge._type == "contentLocation" or edge._type == "~contentLocation": 
+                    contentLocation.append(edge)
+                elif edge._type == "locationCreated" or edge._type == "~locationCreated": 
+                    locationCreated.append(edge)
+                elif edge._type == "video" or edge._type == "~video": 
+                    video.append(edge)
+                elif edge._type == "writtenBy" or edge._type == "~writtenBy": 
+                    writtenBy.append(edge)
+                elif edge._type == "file" or edge._type == "~file": 
+                    file.append(edge)
+                elif edge._type == "recordedAt" or edge._type == "~recordedAt": 
+                    recordedAt.append(edge)
+                elif edge._type == "review" or edge._type == "~review": 
+                    review.append(edge)
+        
+        res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
+                  deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
+                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
+                  transcript=transcript, itemType=itemType, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
+                  citation=citation, contentLocation=contentLocation, locationCreated=locationCreated, video=video,
+                  writtenBy=writtenBy, file=file, recordedAt=recordedAt, review=review)
         for e in res.get_all_edges(): e.source = res
         return res
