@@ -207,6 +207,9 @@ class GmailImporter(ImporterBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    def get_data(self, client, indexer_run):
+        print('this function is a workaround (this Importer is an Indexer temporarily)')
+
     def run(self, importer_run, pod_client=None):
         # TODO: Get imap_host from importer_run
         imap_host = 'imap.gmail.com'
@@ -225,7 +228,6 @@ class GmailImporter(ImporterBase):
         # Create all email and account items
         all_thread_ids = set()
         for email_item in all_mails:
-            print(pod_client.get_properties_json(email_item))
             pod_client.create(email_item)
             for message_channel in email_item.messageChannel:
                 all_thread_ids.add(message_channel.externalId)

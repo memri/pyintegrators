@@ -71,9 +71,12 @@ def run_indexer(indexer_run, client):
     indexer.populate(client, updated_items, new_items)
 
 def run_importer(importer_run, client):
+    from ..integrator_registry import GmailImporter
+
     importer = importer_run.importer[0]
     # data = indexer.get_data(client, indexer_run)
-    updated_items, new_items = importer.run(importer_run, client)
+    temp_importer = GmailImporter()
+    temp_importer.run(importer_run, client)
     # indexer.populate(client, updated_items, new_items)
 
 def run_integrator_from_run_uid(run_uid, client):
