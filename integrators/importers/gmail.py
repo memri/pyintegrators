@@ -4,14 +4,12 @@ __all__ = ['IMAPClient', 'get_message_content', 'get_addresses_from_message', 'g
            'create_item_from_mail', 'download_mails', 'merge_duplicate_items', 'GmailImporter']
 
 # Cell
-
 import imaplib, email
 from ..data.schema import Account, EmailMessage, MessageChannel
 from ..pod.client import PodClient
 from email import policy
 
 # Cell
-
 class IMAPClient():
 
     def __init__(self, username, app_pw, host='imap.gmail.com', port=993, inbox='"[Gmail]/All Mail"'):
@@ -204,6 +202,7 @@ from ..imports import *
 from ..indexers.indexer import ImporterBase, test_registration
 
 class GmailImporter(ImporterBase):
+    """Imports email from GMail."""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

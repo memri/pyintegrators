@@ -60,7 +60,7 @@ nb_path: "nbs/index.ipynb"
 </tr>
 <tr>
 <td><code>GmailImporter</code></td>
-<td></td>
+<td>Imports email from GMail.</td>
 <td><img src="https://gitlab.memri.io/memri/pyintegrators/-/raw/prod/assets/build-passing.svg" alt="Build passing" title="Build passing"></td>
 </tr>
 <tr>
@@ -108,12 +108,12 @@ in the Notebooks' metadata. A script to do so can be installed using:</p>
 </pre></div>
 <h3 id="Jupyter-Notebooks">Jupyter Notebooks<a class="anchor-link" href="#Jupyter-Notebooks"> </a></h3><p>The Python integrators are written in nbdev. With nbdev, you write all code in 
 <a href="https://jupyter.readthedocs.io/en/latest/install/notebook-classic.html">Jupyter Notebooks</a>, and generate the library, documentation and tests using the nbdev CLI.</p>
-<h3 id="nbdev">nbdev<a class="anchor-link" href="#nbdev"> </a></h3><p>With nbdev we create the code in Notebooks, where we speficy the use off cells using special tags. See the <a href="https://nbdev.fast.ai/">nbdev documentation</a> for a all functionalities and tutorials, the most important tags are listed below.</p>
+<h3 id="nbdev">nbdev<a class="anchor-link" href="#nbdev"> </a></h3><p>With nbdev we create the code in Notebooks, where we specify the use off cells using special tags. See the <a href="https://nbdev.fast.ai/">nbdev documentation</a> for a all functionalities and tutorials, the most important tags are listed below.</p>
 <h4 id="nbdev-tags">nbdev tags<a class="anchor-link" href="#nbdev-tags"> </a></h4><ul>
 <li>Notebooks that start their name with an underscore, are ignored by nbdev completely</li>
 <li>Add <code>#default_exp &lt;packagename&gt;.&lt;modulename&gt;</code> to the top of your notebook to define the Python module to export to</li>
 <li>Add <code>#export</code> to the cells that define functions to include in the Python modules.</li>
-<li>All cells withouth the <code>#export</code> tag, are tests by default</li>
+<li>All cells without the <code>#export</code> tag, are tests by default</li>
 <li>All cells are included in the documentation, unless you add the keyword <code>#hide</code></li>
 </ul>
 <h4 id="nbdev-CLI">nbdev CLI<a class="anchor-link" href="#nbdev-CLI"> </a></h4><p>After developing your code in Notebooks, you can use the nbdev CLI:</p>
