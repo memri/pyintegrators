@@ -2,7 +2,7 @@ default:
   image: python:3.6 
   before_script:
   - apt-get update && apt-get install -y libsqlcipher-dev
-  - pip install nbdev jupyter
+  - pip install nbdev jupyter fastcore==1.0.9
   - pip install -e .
 
 read_notebooks:
