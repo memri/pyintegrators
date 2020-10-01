@@ -2,6 +2,9 @@
 > Integrators integrate your information in your Pod. They import data from external services (Gmail, WhatsApp, etc.), enrich data with indexers (face recognition, spam detection, etc.), and execute actions (sending messages, uploading files, etc.).
 
 
+# Overview
+We start by listing the existing indexers and their functionalities, make sure to check out their pages for usage examples.
+
 
 
 
