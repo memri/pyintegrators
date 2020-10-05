@@ -1978,8 +1978,8 @@ class ImporterRun(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
                  externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
                  name=None, repository=None, progress=None, dataType=None, username=None, password=None,
-                 runStatus=None, errorMessage=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, importer=None):
+                 runStatus=None, errorMessage=None, progressMessage=None, changelog=None, label=None,
+                 genericAttribute=None, measure=None, sharedWith=None, importer=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                          version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
@@ -1992,6 +1992,7 @@ class ImporterRun(Item):
         self.password = password
         self.runStatus = runStatus
         self.errorMessage = errorMessage
+        self.progressMessage = progressMessage
         self.importer = importer if importer is not None else []
 
     @classmethod
@@ -2015,6 +2016,7 @@ class ImporterRun(Item):
         password = json.get("password", None)
         runStatus = json.get("runStatus", None)
         errorMessage = json.get("errorMessage", None)
+        progressMessage = json.get("progressMessage", None)
        
         changelog = []
         label = []
@@ -2043,8 +2045,8 @@ class ImporterRun(Item):
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                   version=version, uid=uid, importJson=importJson, name=name, repository=repository,
                   progress=progress, dataType=dataType, username=username, password=password, runStatus=runStatus,
-                  errorMessage=errorMessage, changelog=changelog, label=label, genericAttribute=genericAttribute,
-                  measure=measure, sharedWith=sharedWith, importer=importer)
+                  errorMessage=errorMessage, progressMessage=progressMessage, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, importer=importer)
         for e in res.get_all_edges(): e.source = res
         return res
 
@@ -2129,8 +2131,8 @@ class IndexerRun(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
                  externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
                  name=None, repository=None, query=None, progress=None, targetDataType=None, runStatus=None,
-                 errorMessage=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
-                 indexer=None):
+                 errorMessage=None, progressMessage=None, changelog=None, label=None, genericAttribute=None,
+                 measure=None, sharedWith=None, indexer=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                          version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
@@ -2142,6 +2144,7 @@ class IndexerRun(Item):
         self.targetDataType = targetDataType
         self.runStatus = runStatus
         self.errorMessage = errorMessage
+        self.progressMessage = progressMessage
         self.indexer = indexer if indexer is not None else []
 
     @classmethod
@@ -2164,6 +2167,7 @@ class IndexerRun(Item):
         targetDataType = json.get("targetDataType", None)
         runStatus = json.get("runStatus", None)
         errorMessage = json.get("errorMessage", None)
+        progressMessage = json.get("progressMessage", None)
        
         changelog = []
         label = []
@@ -2192,8 +2196,8 @@ class IndexerRun(Item):
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                   version=version, uid=uid, importJson=importJson, name=name, repository=repository, query=query,
                   progress=progress, targetDataType=targetDataType, runStatus=runStatus, errorMessage=errorMessage,
-                  changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
-                  sharedWith=sharedWith, indexer=indexer)
+                  progressMessage=progressMessage, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, indexer=indexer)
         for e in res.get_all_edges(): e.source = res
         return res
 
