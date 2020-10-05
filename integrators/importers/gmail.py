@@ -4,9 +4,11 @@ __all__ = ['IMAPClient', 'part_to_str', 'DEFAULT_GMAIL_HOST', 'DEFAULT_GMAIL_INB
            'get_unique_accounts', 'get_g_attr', 'GmailImporter']
 
 # Cell
-import imaplib, email
+import imaplib, email, math
 from ..data.schema import Account, EmailMessage, MessageChannel
 from ..pod.client import PodClient
+from .util import *
+from ..data.basic import *
 from email import policy
 from email.utils import getaddresses
 
@@ -29,6 +31,9 @@ class IMAPClient():
     def get_all_mail_uids(self):
         result, data = self.client.uid('search', None, "ALL") # search and return uids instead
         return data[0].split()
+
+    def get_mails(self, uids):
+        return [self.get_mail(uid) for uid in uids]
 
     def get_mail(self, uid):
         if self.client.host == DEFAULT_GMAIL_HOST:
@@ -176,17 +181,21 @@ class GmailImporter(ImporterBase):
 
     def get_mails(self, gmail_ids, stop_at=1e9):
         all_mails = []
+        batch_size = 5
+        n_batches = math.ceil(total_mails/batch_size)
+        total_mails = min(len(gmail_ids), stop_at * batch_size)
 
         # Download files
-        for i, gmail_id in enumerate(gmail_ids):
+        for i, batch_ids in enumerate(batch(gmail_ids, n=batch_size)):
             if i >= stop_at:
                 print(f"stopped early at {stop_at}")
                 break
+            # TODO: set progress here
+            print(f'PROGRESS: Downloading mail : {i/n_batches * 100.0}% of {total_mails} mails')
 
-            mail, thread_id = self.imap_client.get_mail(gmail_id)
-
-            item = self.create_item_from_mail(mail, thread_id=thread_id)
-            all_mails.append(item)
+            for mail, thread_id in self.imap_client.get_mails(gmail_ids):
+                item = self.create_item_from_mail(mail, thread_id=thread_id)
+                all_mails.append(item)
 
         return all_mails
 
@@ -194,17 +203,20 @@ class GmailImporter(ImporterBase):
         self.set_imap_client(importer_run)
 
         stop_early_at = get_g_attr(importer_run, 'max_number', 'int', 10)
-        print(f'MAX_ITEMS: {stop_early_at}')
+        print(f'MAX_BATCHES: {stop_early_at}')
 
         gmail_ids = self.imap_client.get_all_mail_uids()
         all_mails = self.get_mails(gmail_ids, stop_early_at)
 
         # TODO: create better way to do this
+        print(f'PROGRESS: Merging duplicate items')
         all_accounts = get_unique_accounts(all_mails)
 
         # Create all email and account items
+        print(f'PROGRESS: Creating items')
         for item in all_mails + all_accounts: pod_client.create(item)
 
         # Create all edges from emails to accounts/messageThreads
+        print(f'PROGRESS: Creating edges')
         for email_item in all_mails: pod_client.create_edges(email_item.get_all_edges())
         print(f"Finished running {self}")
