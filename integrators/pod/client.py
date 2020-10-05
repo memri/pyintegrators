@@ -51,6 +51,15 @@ class PodClient:
             print(e)
             return False
 
+    def create_if_external_id_not_exists(self, node):
+        if not self.external_id_exists(node):
+            self.create(node)
+
+    def external_id_exists(self, node):
+        if node.externalId is None: return False
+        existing = self.search_by_fields({"externalId": node.externalId})
+        return len(existing) > 0
+
     def create_edges(self, edges):
         """Create edges between nodes, edges should be of format [{"_type": "friend", "_source": 1, "_target": 2}]"""
         create_edges = []

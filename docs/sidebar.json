@@ -5,7 +5,8 @@
     "ItemBase": "itembase.html"
   },
   "Importers": {
-    "Overview": "indexers.indexer.html"
+    "Overview": "importers.Importer.html",
+    "EmailImporter": "importers.EmailImporter.html"
   },
   "Indexers": {
     "Overview": "indexers.indexer.html",

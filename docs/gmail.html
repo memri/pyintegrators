@@ -1,6 +1,10 @@
 ---
 
+<<<<<<< HEAD
 title: Email importer
+=======
+title: Title
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
 
 
 keywords: fastai
@@ -36,6 +40,7 @@ nb_path: "nbs/gmail.ipynb"
 </div>
     {% endraw %}
 
+<<<<<<< HEAD
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is an email importer, it imports your emails from an email server using SMTP. It was tested on gmail, but should work for most SMTP-servers. <em>The recommended usage for Gmail is to enable two-factor authentication. In this case, make sure you allow <a href="https://www.gmass.co/blog/gmail-smtp/">SMTP-connections</a> and have enabled an application password (explained in the same link):</em></p>
@@ -43,6 +48,7 @@ nb_path: "nbs/gmail.ipynb"
 </div>
 </div>
 </div>
+=======
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -61,7 +67,63 @@ nb_path: "nbs/gmail.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
+<h2 id="IMAPClient" class="doc_header"><code>class</code> <code>IMAPClient</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/gmail.py#L13" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IMAPClient</code>(<strong><code>username</code></strong>, <strong><code>app_pw</code></strong>, <strong><code>host</code></strong>=<em><code>'imap.gmail.com'</code></em>, <strong><code>port</code></strong>=<em><code>993</code></em>, <strong><code>inbox</code></strong>=<em><code>'"[Gmail]/All Mail"'</code></em>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<<<<<<< HEAD
+=======
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="get_message_content" class="doc_header"><code>get_message_content</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/gmail.py#L92" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_message_content</code>(<strong><code>message</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<<<<<<< HEAD
 <h2 id="IMAPClient" class="doc_header"><code>class</code> <code>IMAPClient</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/gmail.py#L17" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IMAPClient</code>(<strong><code>username</code></strong>, <strong><code>app_pw</code></strong>, <strong><code>host</code></strong>=<em><code>'imap.gmail.com'</code></em>, <strong><code>port</code></strong>=<em><code>993</code></em>, <strong><code>inbox</code></strong>=<em><code>'"[Gmail]/All Mail"'</code></em>)</p>
+=======
+<h4 id="get_addresses_from_message" class="doc_header"><code>get_addresses_from_message</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/gmail.py#L108" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_addresses_from_message</code>(<strong><code>message</code></strong>, <strong><code>field</code></strong>)</p>
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
 </blockquote>
 
 </div>
@@ -85,7 +147,11 @@ nb_path: "nbs/gmail.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
+<<<<<<< HEAD
 <h4 id="part_to_str" class="doc_header"><code>part_to_str</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/gmail.py#L54" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>part_to_str</code>(<strong><code>part</code></strong>)</p>
+=======
+<h4 id="get_timestamp_from_message" class="doc_header"><code>get_timestamp_from_message</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/gmail.py#L114" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_timestamp_from_message</code>(<strong><code>message</code></strong>)</p>
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
 </blockquote>
 
 </div>
@@ -116,7 +182,10 @@ nb_path: "nbs/gmail.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
+<<<<<<< HEAD
 <h4 id="merge_duplicate_items" class="doc_header"><code>merge_duplicate_items</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/gmail.py#L70" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge_duplicate_items</code>(<strong><code>all_mails</code></strong>)</p>
+=======
+<h4 id="create_item_from_mail" class="doc_header"><code>create_item_from_mail</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/gmail.py#L124" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_item_from_mail</code>(<strong><code>mail</code></strong>, <strong><code>thread_id</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 
 </div>
@@ -140,7 +209,36 @@ nb_path: "nbs/gmail.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
+<h4 id="download_mails" class="doc_header"><code>download_mails</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/gmail.py#L166" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>download_mails</code>(<strong><code>imap_client</code></strong>, <strong><code>gmail_ids</code></strong>, <strong><code>stop_at</code></strong>)</p>
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<<<<<<< HEAD
 <h4 id="get_g_attr" class="doc_header"><code>get_g_attr</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/gmail.py#L85" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_g_attr</code>(<strong><code>item</code></strong>, <strong><code>name</code></strong>, <strong><code>data_type</code></strong>, <strong><code>default_value</code></strong>=<em><code>None</code></em>)</p>
+=======
+<h4 id="merge_duplicate_items" class="doc_header"><code>merge_duplicate_items</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/gmail.py#L184" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge_duplicate_items</code>(<strong><code>all_mails</code></strong>)</p>
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
 </blockquote>
 
 </div>
@@ -173,8 +271,12 @@ nb_path: "nbs/gmail.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="GmailImporter" class="doc_header"><code>class</code> <code>GmailImporter</code><a href="" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GmailImporter</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>) :: <a href="/integrators/indexers.indexer.html#ImporterBase"><code>ImporterBase</code></a></p>
 </blockquote>
+<<<<<<< HEAD
 <p>Provides a base class for all items. All items in the schema inherit from this class, and it provides some
 basic functionality for consistency and to enable easier usage.</p>
+=======
+<p>Imports email from GMail.</p>
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
 
 </div>
 
@@ -186,6 +288,7 @@ basic functionality for consistency and to enable easier usage.</p>
 </div>
     {% endraw %}
 
+<<<<<<< HEAD
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The email importer has the following parameters</p>
@@ -201,6 +304,8 @@ basic functionality for consistency and to enable easier usage.</p>
 </div>
 </div>
 </div>
+=======
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -208,11 +313,17 @@ basic functionality for consistency and to enable easier usage.</p>
 
 <div class="inner_cell">
     <div class="input_area">
+<<<<<<< HEAD
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># This cell is meant to be able to test the importer locally</span>
 
 <span class="c1"># Store your credentials in this file:</span>
 <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;tmp/credentials_gmail.txt&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
 <span class="n">imap_host</span> <span class="o">=</span> <span class="n">DEFAULT_GMAIL_HOST</span>
+=======
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Store your credentials in this file:</span>
+<span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;tmp/credentials_gmail.txt&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">imap_host</span> <span class="o">=</span> <span class="s1">&#39;imap.gmail.com&#39;</span>
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
 <span class="n">imap_user</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">imap_pw</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
@@ -220,6 +331,7 @@ basic functionality for consistency and to enable easier usage.</p>
 <span class="n">pod_client</span><span class="o">.</span><span class="n">delete_all</span><span class="p">()</span>
 
 <span class="n">importer_run</span> <span class="o">=</span> <span class="n">ImporterRun</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">imap_user</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">imap_pw</span><span class="p">)</span>
+<<<<<<< HEAD
 <span class="n">importer</span> <span class="o">=</span> <span class="n">Importer</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
 <span class="n">host_item</span> <span class="o">=</span> <span class="n">GenericAttribute</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="n">stringValue</span><span class="o">=</span><span class="n">DEFAULT_GMAIL_HOST</span><span class="p">)</span>
 <span class="n">port_item</span> <span class="o">=</span> <span class="n">GenericAttribute</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;port&#39;</span><span class="p">,</span> <span class="n">intValue</span><span class="o">=</span><span class="mi">993</span><span class="p">)</span>
@@ -231,12 +343,34 @@ basic functionality for consistency and to enable easier usage.</p>
 
 <span class="n">importer_temp</span> <span class="o">=</span> <span class="n">GmailImporter</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
 <span class="n">importer_temp</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">importer_run</span><span class="o">=</span><span class="n">importer_run</span><span class="p">,</span> <span class="n">pod_client</span><span class="o">=</span><span class="n">pod_client</span><span class="p">)</span>
+=======
+
+<span class="n">importer</span> <span class="o">=</span> <span class="n">GmailImporter</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
+<span class="n">importer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">importer_run</span><span class="o">=</span><span class="n">importer_run</span><span class="p">,</span> <span class="n">pod_client</span><span class="o">=</span><span class="n">pod_client</span><span class="p">)</span>
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<<<<<<< HEAD
+=======
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>UsageError: Line magic function `%nbdev_slow_test` not found.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
 </div>
     {% endraw %}
 
@@ -257,8 +391,13 @@ basic functionality for consistency and to enable easier usage.</p>
 
 <span class="s2">This is content&quot;&quot;&quot;</span>
 
+<<<<<<< HEAD
 <span class="n">gmail_importer</span> <span class="o">=</span> <span class="n">GmailImporter</span><span class="p">()</span>
 <span class="n">mail_item</span> <span class="o">=</span> <span class="n">gmail_importer</span><span class="o">.</span><span class="n">create_item_from_mail</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="s1">&#39;message_channel_id&#39;</span><span class="p">)</span>
+=======
+<span class="c1">#mail_message = email.message_from_string(test)</span>
+<span class="n">mail_item</span> <span class="o">=</span> <span class="n">create_item_from_mail</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="s1">&#39;message_channel_id&#39;</span><span class="p">)</span>
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
 
 <span class="k">assert</span> <span class="n">mail_item</span><span class="o">.</span><span class="n">externalId</span> <span class="o">==</span> <span class="s1">&#39;1234&#39;</span>
 <span class="k">assert</span> <span class="n">mail_item</span><span class="o">.</span><span class="n">sender</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">externalId</span> <span class="o">==</span> <span class="s1">&#39;a@gmail.com&#39;</span>
@@ -266,7 +405,11 @@ basic functionality for consistency and to enable easier usage.</p>
 <span class="k">assert</span> <span class="n">mail_item</span><span class="o">.</span><span class="n">replyTo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">externalId</span> <span class="o">==</span> <span class="s1">&#39;c@gmail.com&#39;</span>
 <span class="k">assert</span> <span class="n">mail_item</span><span class="o">.</span><span class="n">subject</span> <span class="o">==</span> <span class="s1">&#39;the subject&#39;</span>
 <span class="k">assert</span> <span class="n">mail_item</span><span class="o">.</span><span class="n">content</span> <span class="o">==</span> <span class="s1">&#39;This is content&#39;</span>
+<<<<<<< HEAD
 <span class="k">assert</span> <span class="n">mail_item</span><span class="o">.</span><span class="n">dateSent</span> <span class="o">==</span> <span class="n">gmail_importer</span><span class="o">.</span><span class="n">get_timestamp_from_message</span><span class="p">(</span><span class="n">email</span><span class="o">.</span><span class="n">message_from_bytes</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+=======
+<span class="k">assert</span> <span class="n">mail_item</span><span class="o">.</span><span class="n">dateSent</span> <span class="o">==</span> <span class="n">get_timestamp_from_message</span><span class="p">(</span><span class="n">email</span><span class="o">.</span><span class="n">message_from_bytes</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
 <span class="k">assert</span> <span class="n">mail_item</span><span class="o">.</span><span class="n">messageChannel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">externalId</span> <span class="o">==</span> <span class="s1">&#39;message_channel_id&#39;</span>
 </pre></div>
 
@@ -302,6 +445,7 @@ basic functionality for consistency and to enable easier usage.</p>
 </div>
     {% endraw %}
 
+<<<<<<< HEAD
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -337,6 +481,8 @@ basic functionality for consistency and to enable easier usage.</p>
 </div>
     {% endraw %}
 
+=======
+>>>>>>> 3d70a15b7ff098e3a2601533bc4fa517d2e82a02
 </div>
  
 
