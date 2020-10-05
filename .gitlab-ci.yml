@@ -1,8 +1,8 @@
 default: 
   image: python:3.6 
   before_script:
-  - apt-get update && apt-get install -y libsqlcipher-dev
-  - pip install nbdev jupyter
+  - apt-get update && apt-get install -y libsqlcipher-dev && apt-get install -y libgl1-mesa-glx
+  - pip install nbdev==1.0.4 jupyter fastcore==1.0.0
   - pip install -e .
 
 read_notebooks:
