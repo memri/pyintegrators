@@ -20,7 +20,10 @@ entries:
   - folderitems:
     - output: web,pdf
       title: Overview
-      url: indexers.indexer.html
+      url: importers.Importer.html
+    - output: web,pdf
+      title: EmailImporter
+      url: importers.EmailImporter.html
     output: web
     title: Importers
   - folderitems:
