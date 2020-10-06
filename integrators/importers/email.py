@@ -12,7 +12,7 @@ from ..data.basic import *
 from email import policy
 from email.utils import getaddresses
 from ..imports import *
-from nbdev.showdoc import show_doc
+from nbdev import show_doc
 
 # Cell
 DEFAULT_GMAIL_HOST = 'imap.gmail.com'
