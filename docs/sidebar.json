@@ -6,7 +6,7 @@
   },
   "Importers": {
     "Overview": "importers.Importer.html",
-    "GmailImporter": "importers.GmailImporter.html"
+    "EmailImporter": "importers.EmailImporter.html"
   },
   "Indexers": {
     "Overview": "indexers.indexer.html",

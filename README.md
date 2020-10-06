@@ -1,5 +1,6 @@
-# Integrators
+# pyintegrators
 > Integrators integrate your information in your Pod. They import data from external services (Gmail, WhatsApp, etc.), enrich data with indexers (face recognition, spam detection, etc.), and execute actions (sending messages, uploading files, etc.).
+
 
 
 # Overview

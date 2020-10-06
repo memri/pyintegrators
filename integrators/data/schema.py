@@ -1978,7 +1978,8 @@ class ImporterRun(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
                  externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
                  name=None, repository=None, progress=None, dataType=None, username=None, password=None,
-                 changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, importer=None):
+                 runStatus=None, errorMessage=None, progressMessage=None, changelog=None, label=None,
+                 genericAttribute=None, measure=None, sharedWith=None, importer=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                          version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
@@ -1989,6 +1990,9 @@ class ImporterRun(Item):
         self.dataType = dataType
         self.username = username
         self.password = password
+        self.runStatus = runStatus
+        self.errorMessage = errorMessage
+        self.progressMessage = progressMessage
         self.importer = importer if importer is not None else []
 
     @classmethod
@@ -2010,6 +2014,9 @@ class ImporterRun(Item):
         dataType = json.get("dataType", None)
         username = json.get("username", None)
         password = json.get("password", None)
+        runStatus = json.get("runStatus", None)
+        errorMessage = json.get("errorMessage", None)
+        progressMessage = json.get("progressMessage", None)
        
         changelog = []
         label = []
@@ -2037,9 +2044,9 @@ class ImporterRun(Item):
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                   version=version, uid=uid, importJson=importJson, name=name, repository=repository,
-                  progress=progress, dataType=dataType, username=username, password=password, changelog=changelog,
-                  label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith,
-                  importer=importer)
+                  progress=progress, dataType=dataType, username=username, password=password, runStatus=runStatus,
+                  errorMessage=errorMessage, progressMessage=progressMessage, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, importer=importer)
         for e in res.get_all_edges(): e.source = res
         return res
 
@@ -2123,8 +2130,9 @@ class Indexer(Item):
 class IndexerRun(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
                  externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
-                 name=None, repository=None, query=None, progress=None, targetDataType=None, changelog=None,
-                 label=None, genericAttribute=None, measure=None, sharedWith=None, indexer=None):
+                 name=None, repository=None, query=None, progress=None, targetDataType=None, runStatus=None,
+                 errorMessage=None, progressMessage=None, changelog=None, label=None, genericAttribute=None,
+                 measure=None, sharedWith=None, indexer=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                          version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
@@ -2134,6 +2142,9 @@ class IndexerRun(Item):
         self.query = query
         self.progress = progress
         self.targetDataType = targetDataType
+        self.runStatus = runStatus
+        self.errorMessage = errorMessage
+        self.progressMessage = progressMessage
         self.indexer = indexer if indexer is not None else []
 
     @classmethod
@@ -2154,6 +2165,9 @@ class IndexerRun(Item):
         query = json.get("query", None)
         progress = json.get("progress", None)
         targetDataType = json.get("targetDataType", None)
+        runStatus = json.get("runStatus", None)
+        errorMessage = json.get("errorMessage", None)
+        progressMessage = json.get("progressMessage", None)
        
         changelog = []
         label = []
@@ -2181,7 +2195,8 @@ class IndexerRun(Item):
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                   version=version, uid=uid, importJson=importJson, name=name, repository=repository, query=query,
-                  progress=progress, targetDataType=targetDataType, changelog=changelog, label=label,
+                  progress=progress, targetDataType=targetDataType, runStatus=runStatus, errorMessage=errorMessage,
+                  progressMessage=progressMessage, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, indexer=indexer)
         for e in res.get_all_edges(): e.source = res
         return res

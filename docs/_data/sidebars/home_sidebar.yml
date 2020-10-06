@@ -22,8 +22,8 @@ entries:
       title: Overview
       url: importers.Importer.html
     - output: web,pdf
-      title: GmailImporter
-      url: importers.GmailImporter.html
+      title: EmailImporter
+      url: importers.EmailImporter.html
     output: web
     title: Importers
   - folderitems:
