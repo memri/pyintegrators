@@ -14,7 +14,7 @@ class ImporterBase(Importer):
             importer_run.progress = progress
             pod_client.update_item(importer_run)
         if verbose:
-            print(f'PROGRESS: Importing {progress}% of {total} ')
+            print(f'PROGRESS: Importing {progress * 100}% of {total} ')
 
     @staticmethod
     def update_run_status(pod_client, importer_run, status, verbose=True):

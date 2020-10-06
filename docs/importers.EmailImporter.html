@@ -68,7 +68,7 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="IMAPClient.list_mailboxes" class="doc_header"><code>IMAPClient.list_mailboxes</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/email.py#L29" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>IMAPClient.list_mailboxes</code>()</p>
+<h4 id="IMAPClient.list_mailboxes" class="doc_header"><code>IMAPClient.list_mailboxes</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/email.py#L30" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>IMAPClient.list_mailboxes</code>()</p>
 </blockquote>
 <p>Lists all available mailboxes</p>
 
@@ -93,7 +93,7 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="IMAPClient.get_all_mail_uids" class="doc_header"><code>IMAPClient.get_all_mail_uids</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/email.py#L33" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>IMAPClient.get_all_mail_uids</code>()</p>
+<h4 id="IMAPClient.get_all_mail_uids" class="doc_header"><code>IMAPClient.get_all_mail_uids</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/email.py#L34" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>IMAPClient.get_all_mail_uids</code>()</p>
 </blockquote>
 <p>retrieves all mail uids from the selected mailbox</p>
 
@@ -118,7 +118,7 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="IMAPClient.get_mail" class="doc_header"><code>IMAPClient.get_mail</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/email.py#L41" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>IMAPClient.get_mail</code>(<strong><code>uid</code></strong>)</p>
+<h4 id="IMAPClient.get_mail" class="doc_header"><code>IMAPClient.get_mail</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/email.py#L42" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>IMAPClient.get_mail</code>(<strong><code>uid</code></strong>)</p>
 </blockquote>
 <p>Fetches a mail given a uid, returns (raw_mail, thread_id)</p>
 
@@ -298,7 +298,7 @@ provided in the importer run. if you pass a pod client it will add the new items
 
 <span class="n">importer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">importer_run</span><span class="o">=</span><span class="n">importer_run</span><span class="p">,</span> <span class="n">pod_client</span><span class="o">=</span><span class="n">pod_client</span><span class="p">)</span>
 
-<span class="k">assert</span> <span class="n">importer_run</span><span class="o">.</span><span class="n">progress</span> <span class="o">==</span> <span class="mi">100</span>
+<span class="k">assert</span> <span class="n">importer_run</span><span class="o">.</span><span class="n">progress</span> <span class="o">==</span> <span class="mf">1.0</span>
 <span class="k">assert</span> <span class="n">importer_run</span><span class="o">.</span><span class="n">runStatus</span> <span class="o">==</span> <span class="s2">&quot;done&quot;</span>
 <span class="n">pod_client</span><span class="o">.</span><span class="n">delete_all</span><span class="p">()</span>
 </pre></div>
@@ -321,7 +321,7 @@ PROGRESS: Importing 100.0% of 10
 PROGRESS MESSAGE: merging duplicate items
 PROGRESS MESSAGE: creating accounts
 PROGRESS MESSAGE: creating threads
-Finished running GmailImporter (#None)
+Finished running EmailImporter (#None)
 RUN STATUS: done
 </pre>
 </div>

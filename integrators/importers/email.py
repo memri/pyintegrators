@@ -12,6 +12,7 @@ from ..data.basic import *
 from email import policy
 from email.utils import getaddresses
 from ..imports import *
+from nbdev import show_doc
 
 # Cell
 DEFAULT_GMAIL_HOST = 'imap.gmail.com'
@@ -114,6 +115,7 @@ from .importer import ImporterBase
 
 
 class EmailImporter(ImporterBase):
+    """Imports emails over imap"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.imap_client = None
@@ -207,7 +209,7 @@ class EmailImporter(ImporterBase):
                 else:
                     mails.append(item)
 
-            progress = (i + 1) / n_batches * 100.0
+            progress = (i + 1) / n_batches * 1.0
             self.update_progress(pod_client, importer_run, progress, total=len(mail_ids))
 
         return mails
