@@ -22,6 +22,8 @@ COPY ./MANIFEST.in ./MANIFEST.in
 COPY ./README.md ./README.md
 COPY ./tools ./tools
 COPY ./integrators ./integrators
+COPY ./nbs ./nbs
+COPY ./test ./test
 
 # Build the final image
 
