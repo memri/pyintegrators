@@ -56,7 +56,9 @@ def parse_base_item_json(json):
 
 # Cell
 class Edge():
-    """Makes a link between two `ItemBase` Items"""
+    """Edges makes a link between two `ItemBase` Items. You won't use this class a lot in practice, as edges are
+    abstracted away for normal users. When items are retrieved from the database, the edges are parsed automatically.
+    When you add an edge between to items within pyintegrators, you will often use `ItemBase.add_edge`"""
     def __init__(self, source, target, _type, label=None, sequence=None, created=False, reverse=True):
         self.source   = source
         self.target   = target
@@ -90,7 +92,8 @@ class Edge():
          and self._type == other._type
 
     def traverse(self, start):
-        """traverse an edge starting from the source to the target or vice versa."""
+        """We can traverse an edge starting from the source to the target or vice versa. In practice we often call
+        item.some_edge_type, which calls item.traverse(edgetype), which in turn calls this function."""
         if start == self.source:
             return self.target
         elif start == self.target:

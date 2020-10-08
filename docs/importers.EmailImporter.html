@@ -52,7 +52,7 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="ImapClient">ImapClient<a class="anchor-link" href="#ImapClient"> </a></h2><p>This importer communicates with email providers over imap. We created a convenience class around pythons imaplib that lets you list your mailboxes, retriev your mails and get their content.</p>
+<h2 id="ImapClient">ImapClient<a class="anchor-link" href="#ImapClient"> </a></h2><p>The <a href="/integrators/importers.EmailImporter.html#EmailImporter"><code>EmailImporter</code></a> communicates with email providers over imap. We created a convenience class around pythons imaplib , called the <code>ImapClient</code> that lets you list your mailboxes, retriev your mails and get their content.</p>
 
 </div>
 </div>
@@ -151,7 +151,7 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="EmailImporter" class="doc_header"><code>class</code> <code>EmailImporter</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/email.py#L117" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>EmailImporter</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>) :: <a href="/integrators/importers.Importer.html#ImporterBase"><code>ImporterBase</code></a></p>
 </blockquote>
-<p>Imports emails over imap</p>
+<p>Imports emails over imap.</p>
 
 </div>
 
@@ -280,19 +280,30 @@ provided in the importer run. if you pass a pod client it will add the new items
 
 <div class="inner_cell">
     <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pod_client</span> <span class="o">=</span> <span class="n">PodClient</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># This cell is meant to be able to test the importer locally</span>
 <span class="k">def</span> <span class="nf">get_gmail_creds</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">read_file</span><span class="p">(</span><span class="n">HOME_DIR</span> <span class="o">/</span> <span class="s1">&#39;.memri&#39;</span> <span class="o">/</span> <span class="s1">&#39;credentials_gmail.txt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>
 
 <span class="n">imap_user</span><span class="p">,</span> <span class="n">imap_pw</span> <span class="o">=</span> <span class="n">get_gmail_creds</span><span class="p">()</span>
-<span class="n">pod_client</span> <span class="o">=</span> <span class="n">PodClient</span><span class="p">()</span>
-<span class="n">pod_client</span><span class="o">.</span><span class="n">delete_all</span><span class="p">()</span>
-<span class="n">importer</span> <span class="o">=</span> <span class="n">EmailImporter</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
-
-<span class="n">importer_run</span> <span class="o">=</span> <span class="n">ImporterRun</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">imap_user</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">imap_pw</span><span class="p">)</span>
-<span class="n">importer_run</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;genericAttribute&#39;</span><span class="p">,</span> <span class="n">GenericAttribute</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="n">stringValue</span><span class="o">=</span><span class="n">DEFAULT_GMAIL_HOST</span><span class="p">))</span>
-<span class="n">importer_run</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;genericAttribute&#39;</span><span class="p">,</span> <span class="n">GenericAttribute</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;port&#39;</span><span class="p">,</span> <span class="n">intValue</span><span class="o">=</span><span class="mi">993</span><span class="p">))</span>
-<span class="n">importer_run</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;genericAttribute&#39;</span><span class="p">,</span> <span class="n">GenericAttribute</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;max_number&#39;</span><span class="p">,</span> <span class="n">intValue</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">importer</span>           <span class="o">=</span> <span class="n">EmailImporter</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
+<span class="n">importer_run</span>       <span class="o">=</span> <span class="n">get_importer_run</span><span class="p">(</span><span class="n">imap_user</span><span class="p">,</span> <span class="n">imap_pw</span><span class="p">)</span>
 <span class="n">importer_run</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;importer&#39;</span><span class="p">,</span> <span class="n">importer</span><span class="p">)</span>
 <span class="n">pod_client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">importer_run</span><span class="p">)</span>
 
