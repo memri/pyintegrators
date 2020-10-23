@@ -79,6 +79,7 @@ class HTMLListParser():
                 for i, child in enumerate(children):
                     # this extracts the lists that have a title and are not on a single line
                     if div_is_unstructured_list_title(child):
+                        print(child)
                         title = child
                         successors = list(children)[i+1:]
                         if len(successors) == 0:

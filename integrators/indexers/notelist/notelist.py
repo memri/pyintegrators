@@ -84,7 +84,7 @@ class ISpan(Span):
         return f"ISpan [{self.startIdx}, {self.endIdx}]"
 
 # Cell
-def get_span(note, elem, parsed):
+def get_span(elem, parsed):
     e_str = str(elem)
     parsed_str = str(parsed)
 
