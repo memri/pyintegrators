@@ -13,7 +13,6 @@ from ...imports import *
 from ...pod.client import PodClient
 
 # Cell
-import spacy
 # from imdb import  IMDb
 
 class NotesListIndexer(Indexer):
@@ -46,15 +45,16 @@ class NotesListIndexer(Indexer):
 
         return updates_nodes, new_nodes
 
+# Cell
 class ListTypePredictor():
     """Predicts one of `LIST_CLASSES` for a list in a note."""
 
     def __init__(self):
         self.classes = LIST_CLASSES
-        self.nlp = spacy.load("en_core_web_md")
+
+        self.nlp = load_spacy_model("en_core_web_md")
 #         self.ia  = IMDb()
         self.verb_like_tags = ["VB", "VBP"]
-
 
     def predict(self, l, assign=False):
         items = l.get_items(remove_html_=True)
@@ -64,9 +64,7 @@ class ListTypePredictor():
             preds.append(self.predict_item(item))
 
         pred = max(set(preds), key=preds.count)
-
         if assign: l.category = pred
-
         return pred
 
     def predict_item(self, item):

@@ -64,7 +64,7 @@ class ULNoteList(INoteList):
                   if len(i("ul")) == 0]
 
         if remove_html_: result = [remove_html(str(x)) for x in result]
-        result = [x for x in result if x != ""]
+        result = [str(x) for x in result if x != ""]
         return result
 
     def __repr__(self):
