@@ -5,6 +5,7 @@ __all__ = ['LIST_CLASSES', 'INote', 'INoteList', 'ULNoteList', 'ISpan', 'get_spa
 # Cell
 from ...data.schema import *
 from .util import *
+import bs4
 
 # Cell
 TODO, TOWATCH, TOREAD, TOLISTEN, TOBUY, UNKOWN = "todo","towatch", "toread", "tolisten", "tobuy", "unknown"
@@ -59,9 +60,10 @@ class ULNoteList(INoteList):
     def get_items(self, remove_html_=False, skip_nested=False):
 
         if self.content is None: return [self.textContent]
-
-        result = [i for i in get_toplevel_elements(str(self.content), "li")
-                  if len(i("ul")) == 0]
+        parsed = bs4.BeautifulSoup(self.content, "html.parser").ul
+        result = [x for x in parsed.find_all("li", recursive=False) if len(x("ul")) == 0]
+#         result = [i for i in get_toplevel_elements(str(self.content), "li")
+#                   if len(i("ul")) == 0]
 
         if remove_html_: result = [remove_html(str(x)) for x in result]
         result = [str(x) for x in result if x != ""]
