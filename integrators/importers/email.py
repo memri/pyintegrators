@@ -31,9 +31,13 @@ class IMAPClient():
         """Lists all available mailboxes"""
         return self.client.list()
 
-    def get_all_mail_uids(self):
+    def get_all_mail_uids(self, from_uid=None):
         """retrieves all mail uids from the selected mailbox"""
-        result, data = self.client.uid('search', None, "ALL") # search and return uids instead
+        if from_uid == None:
+            result, data = self.client.uid('search', None, "ALL") # search and return uids instead
+        else:
+            # Be wary of the difference between sequence number and UIDs
+            result, data = self.client.uid('search', None, "UID " + str(from_uid) + ":*")
         return data[0].split()
 
     def get_mails(self, uids):
