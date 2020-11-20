@@ -23,7 +23,11 @@ def get_constructor(_type, indexer_class=None):
         if _type == "Indexer":
             constructor = classes[indexer_class]
         else:
-            constructor = classes[_type]
+            i_class = "I" + "_type"
+            if i_class in classes:
+                constructor = classes[i_class]
+            else:
+                constructor = classes[_type]
     else:
         raise TypeError
     return constructor
@@ -3968,7 +3972,7 @@ class Person(Item):
                  externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
                  birthDate=None, email=None, deathDate=None, firstName=None, lastName=None, gender=None,
                  sexualOrientation=None, displayName=None, role=None, changelog=None, label=None,
-                 genericAttribute=None, measure=None, sharedWith=None, address=None, birthPlace=None,
+                 genericAttribute=None, measure=None, sharedWith=None, occurence=None, address=None, birthPlace=None,
                  deathPlace=None, profilePicture=None, relationship=None, hasPhoneNumber=None, website=None,
                  industry=None, cryptoKey=None, account=None, diet=None, medicalCondition=None, memberOf=None,
                  performsAt=None, attends=None, organizes=None, founded=None, buyer=None, seller=None):
@@ -3985,6 +3989,7 @@ class Person(Item):
         self.sexualOrientation = sexualOrientation
         self.displayName = displayName
         self.role = role
+        self.occurence = occurence if occurence is not None else []
         self.address = address if address is not None else []
         self.birthPlace = birthPlace if birthPlace is not None else []
         self.deathPlace = deathPlace if deathPlace is not None else []
@@ -4033,6 +4038,7 @@ class Person(Item):
         genericAttribute = []
         measure = []
         sharedWith = []
+        occurence = []
         address = []
         birthPlace = []
         deathPlace = []
@@ -4066,6 +4072,8 @@ class Person(Item):
                     measure.append(edge)
                 elif edge._type == "sharedWith" or edge._type == "~sharedWith": 
                     sharedWith.append(edge)
+                elif edge._type == "occurence" or edge._type == "~occurence": 
+                    occurence.append(edge)
                 elif edge._type == "address" or edge._type == "~address": 
                     address.append(edge)
                 elif edge._type == "birthPlace" or edge._type == "~birthPlace": 
@@ -4111,11 +4119,11 @@ class Person(Item):
                   deathDate=deathDate, firstName=firstName, lastName=lastName, gender=gender,
                   sexualOrientation=sexualOrientation, displayName=displayName, role=role, changelog=changelog,
                   label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith,
-                  address=address, birthPlace=birthPlace, deathPlace=deathPlace, profilePicture=profilePicture,
-                  relationship=relationship, hasPhoneNumber=hasPhoneNumber, website=website, industry=industry,
-                  cryptoKey=cryptoKey, account=account, diet=diet, medicalCondition=medicalCondition,
-                  memberOf=memberOf, performsAt=performsAt, attends=attends, organizes=organizes, founded=founded,
-                  buyer=buyer, seller=seller)
+                  occurence=occurence, address=address, birthPlace=birthPlace, deathPlace=deathPlace,
+                  profilePicture=profilePicture, relationship=relationship, hasPhoneNumber=hasPhoneNumber,
+                  website=website, industry=industry, cryptoKey=cryptoKey, account=account, diet=diet,
+                  medicalCondition=medicalCondition, memberOf=memberOf, performsAt=performsAt, attends=attends,
+                  organizes=organizes, founded=founded, buyer=buyer, seller=seller)
         for e in res.get_all_edges(): e.source = res
         return res
 
@@ -4183,8 +4191,8 @@ class Photo(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
                  externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
                  bitrate=None, duration=None, endTime=None, fileLocation=None, startTime=None, caption=None,
-                 exifData=None, name=None, changelog=None, label=None, genericAttribute=None, measure=None,
-                 sharedWith=None, file=None, includes=None, thumbnail=None):
+                 exifData=None, name=None, height=None, width=None, channels=None, changelog=None, label=None,
+                 genericAttribute=None, measure=None, sharedWith=None, file=None, includes=None, thumbnail=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                          version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
@@ -4197,6 +4205,9 @@ class Photo(Item):
         self.caption = caption
         self.exifData = exifData
         self.name = name
+        self.height = height
+        self.width = width
+        self.channels = channels
         self.file = file if file is not None else []
         self.includes = includes if includes is not None else []
         self.thumbnail = thumbnail if thumbnail is not None else []
@@ -4222,6 +4233,9 @@ class Photo(Item):
         caption = json.get("caption", None)
         exifData = json.get("exifData", None)
         name = json.get("name", None)
+        height = json.get("height", None)
+        width = json.get("width", None)
+        channels = json.get("channels", None)
        
         changelog = []
         label = []
@@ -4256,8 +4270,9 @@ class Photo(Item):
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
                   version=version, uid=uid, importJson=importJson, bitrate=bitrate, duration=duration,
                   endTime=endTime, fileLocation=fileLocation, startTime=startTime, caption=caption, exifData=exifData,
-                  name=name, changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
-                  sharedWith=sharedWith, file=file, includes=includes, thumbnail=thumbnail)
+                  name=name, height=height, width=width, channels=channels, changelog=changelog, label=label,
+                  genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, file=file,
+                  includes=includes, thumbnail=thumbnail)
         for e in res.get_all_edges(): e.source = res
         return res
 
