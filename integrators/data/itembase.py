@@ -139,7 +139,8 @@ class ItemBase():
         self.__setattr__(name, res)
 
     def is_expanded(self):
-        """returns whether the node is expanded. An expanded node retrieved nodes that are *directly* connected to it
+        """returns whether the node is expanded. An expanded node retrieved nodes that are
+        *directly* connected to it
         from the pod, and stored their values via edges in the object."""
         return len(self.get_all_edges()) > 0
 
@@ -214,8 +215,8 @@ class ItemBase():
         return res
 
     def inherit_funcs(self, other):
-        """This function can be used to inherit new functionalities from a subclass. This is a patch to solve the fact
-        that python does provide extensions of classes that are defined in a different file that are dynamic enough for
-        our use case."""
+        """This function can be used to inherit new functionalities from a subclass. This is a patch to solve
+        the fact that python does provide extensions of classes that are defined in a different file that are
+        dynamic enough for our use case."""
         assert issubclass(other, self.__class__)
         self.__class__ = other

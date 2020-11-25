@@ -101,19 +101,23 @@ class IPhoto(Photo):
         show_images(crops, cols=3)
 
     @classmethod
-    def from_path(cls, path, size=None):
-        data = cv2.imread(str(path))
-        if size is not None: data = resize(data, size)
-        h,w,c = get_height_width_channels(data)
-        res = cls(data=data, path=path, height=h, width=w, channels=c)
-        file = File.from_data(sha256=sha256(data.tobytes()).hexdigest())
-        res.add_edge("file", file)
+    def from_data(cls,*args, **kwargs):
+        res = super().from_data(*args, **kwargs)
+        if res.file:
+            res.file[0]
         return res
 
     @classmethod
-    def from_np(cls, data):
+    def from_path(cls, path, size=None):
+        data = cv2.imread(str(path))
+        res = cls.from_np(data, size)
+        return res
+
+    @classmethod
+    def from_np(cls, data, size=None, *args, **kwargs):
+        if size is not None: data = resize(data, size)
         h,w,c = get_height_width_channels(data)
-        res = cls(data=data, height=h, width=w, channels=c)
+        res = cls(data=data, height=h, width=w, channels=c, *args, **kwargs)
         file = File.from_data(sha256=sha256(data.tobytes()).hexdigest())
         res.add_edge("file", file)
         return res

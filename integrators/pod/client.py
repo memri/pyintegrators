@@ -4,6 +4,7 @@ __all__ = ['DEFAULT_POD_ADDRESS', 'POD_VERSION', 'PodClient']
 
 # Cell
 from ..data.itembase import Edge, ItemBase
+from ..indexers.facerecognition.photo import resize
 from ..data.schema import *
 from ..imports import *
 from hashlib import sha256
@@ -76,22 +77,32 @@ class PodClient:
             result = requests.post(f"{self.base_url}/get_file", json=body)
             if result.status_code != 200:
                 print(result, result.content)
-                return False
+                return None
             else:
                 return result.content
         except requests.exceptions.RequestException as e:
             print(e)
-            return False
+            return None
 
-    def get_photo(self, uid):
+    def get_photo(self, uid, size=640):
         photo = self.get(uid)
-        if len(photo.file) > 0:
+        self._load_photo_data(photo, size=size)
+        return photo
+
+    def _load_photo_data(self, photo, size=None):
+        if len(photo.file) > 0 and photo.data is None:
             file = self.get_file(photo.file[0].sha256)
+            if file is None:
+                print(f"Could not load data of {photo} attached file item does not have data in pod")
+                return
             data = np.frombuffer(file, dtype=np.uint8)
             c = photo.channels
             shape = (photo.height,photo.width, c) if c is not None and c > 1 else (photo.height, photo.width)
-            photo.data = data.reshape(shape)
-        return photo
+            data = data.reshape(shape)
+            if size is not None: data = resize(data, size)
+            photo.data = data
+            return
+        print(f"could not load data of {photo}, no file attached")
 
     def create_if_external_id_not_exists(self, node):
         if not self.external_id_exists(node):
@@ -263,8 +274,7 @@ class PodClient:
         body = {"payload": fields_data,
                 "databaseKey": self.database_key}
         try:
-            result = requests.post(f"{self.base_url}/search_by_fields",
-                                   json=body)
+            result = requests.post(f"{self.base_url}/search_by_fields", json=body)
             json =  result.json()
             res = [self.item_from_json(item) for item in json]
             return self.filter_deleted(res)

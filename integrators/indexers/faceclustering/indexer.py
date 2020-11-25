@@ -37,7 +37,10 @@ class FaceClusteringIndexer(IndexerBase):
         super().__init__(*args, **kwargs)
 
     def get_data(self, client, indexer_run):
-        return IndexerData(photos=[d.expand(client) for d in get_indexer_run_data(client, indexer_run)])
+        photos = [d.expand(client) for d in get_indexer_run_data(client, indexer_run)]
+        for p in photos: client._load_photo_data(p, size=640)
+        photos = [p for p in photos if p.data is not None]
+        return IndexerData(photos=photos)
 
     def get_clusters(self, pred_confs, dataset):
         pred_dist2peak, pred_peaks = confidence_to_peaks(dataset.dists, dataset.nbrs,pred_confs, max_conn=1)
@@ -69,6 +72,7 @@ class FaceClusteringIndexer(IndexerBase):
 
     def index(self, data, *args, **kwargs):
         photos = data.photos
+        print(f"Indexing {len(photos)} photos")
         crop_photos = self.get_crops(photos)
         files = [c.file[0] for c in crop_photos]
         for c in progress_bar(crop_photos): c.embedding = self.rec_model.get_embedding(c)

@@ -12,6 +12,7 @@ from .itembase import ItemBase, Edge
 
 def get_constructor(_type, indexer_class=None):
     import integrators.indexers as models
+    from integrators.indexers.facerecognition.photo import IPhoto
     from integrators.indexers.indexer import IndexerBase
     import integrators.integrator_registry
 
@@ -23,7 +24,7 @@ def get_constructor(_type, indexer_class=None):
         if _type == "Indexer":
             constructor = classes[indexer_class]
         else:
-            i_class = "I" + "_type"
+            i_class = "I" + _type
             if i_class in classes:
                 constructor = classes[i_class]
             else:
