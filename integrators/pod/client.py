@@ -6,6 +6,7 @@ __all__ = ['DEFAULT_POD_ADDRESS', 'POD_VERSION', 'PodClient']
 from ..data.itembase import Edge, ItemBase
 from ..data.schema import *
 from ..imports import *
+from hashlib import sha256
 
 # Cell
 DEFAULT_POD_ADDRESS = "http://localhost:3030"
@@ -50,6 +51,47 @@ class PodClient:
         except requests.exceptions.RequestException as e:
             print(e)
             return False
+
+    def upload_photo(self, arr):
+        return self.upload_file(arr.tobytes())
+
+    def upload_file(self, file):
+        # TODO: currently this only works for numpy images
+        try:
+            sha = sha256(file).hexdigest()
+            result = requests.post(f"{self.base_url}/upload_file/{self.database_key}/{sha}", data=file)
+            if result.status_code != 200:
+                print(result, result.content)
+                return False
+            else:
+                return True
+        except requests.exceptions.RequestException as e:
+            print(e)
+            return False
+
+    def get_file(self, sha):
+        # TODO: currently this only works for numpy images
+        try:
+            body= {"databaseKey": self.database_key, "payload": {"sha256": sha}}
+            result = requests.post(f"{self.base_url}/get_file", json=body)
+            if result.status_code != 200:
+                print(result, result.content)
+                return False
+            else:
+                return result.content
+        except requests.exceptions.RequestException as e:
+            print(e)
+            return False
+
+    def get_photo(self, uid):
+        photo = self.get(uid)
+        if len(photo.file) > 0:
+            file = self.get_file(photo.file[0].sha256)
+            data = np.frombuffer(file, dtype=np.uint8)
+            c = photo.channels
+            shape = (photo.height,photo.width, c) if c is not None and c > 1 else (photo.height, photo.width)
+            photo.data = data.reshape(shape)
+        return photo
 
     def create_if_external_id_not_exists(self, node):
         if not self.external_id_exists(node):
@@ -187,8 +229,10 @@ class PodClient:
 
     def get_properties_json(self, node):
         res = dict()
+        private = getattr(node, "private", [])
         for k,v in node.__dict__.items():
-            if k[:1] != '_' and not (isinstance(v, list) and len(v)>0 and isinstance(v[0], Edge)) and v is not None:
+            if k[:1] != '_' and k != "private" and k not in private and not (isinstance(v, list)\
+                            and len(v)>0 and isinstance(v[0], Edge)) and v is not None:
                 res[k] = v
         res["_type"] = self._get_schema_type(node)
         return res
