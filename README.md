@@ -66,7 +66,7 @@ After developing your code in Notebooks, you can use the nbdev CLI:
 Before you make a merge request, make sure that you used all the nbdev commands specified above, or GitLab's CI won't pass.
 
 ## Docs
-Find the online docs at [pyintegrators.docs.memri.io](https://pyintegrators.docs.memri.io/).
+Find the online docs at [pyintegrators.docs.memri.io](https://pyintegrators.memri.io/integrators/).
 
 ### Render documentation locally
 New documentation will be deployed automatically when a new version is released to the `prod`  branch. To inspect the documentation beforehand, you can run it local machine by [installing Jekyll](https://jekyllrb.com/docs/installation/).
