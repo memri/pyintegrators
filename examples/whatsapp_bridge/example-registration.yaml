@@ -1,0 +1,12 @@
+id: whatsapp
+url: http://example.com:29318
+as_token:
+hs_token:
+sender_localpart:
+rate_limited: false
+namespaces:
+  users:
+  - regex: ^@whatsapp_[0-9]+:localhost$
+    exclusive: true
+  - regex: ^@whatsappbot:localhost$
+    exclusive: true
