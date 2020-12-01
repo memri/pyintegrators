@@ -12,9 +12,9 @@ We start by listing the existing indexers and their functionalities, make sure t
 
 | Integrator | Description | Tests passing |
 |------------|-------------|---------------|
+|`EmailImporter`|Imports emails over imap| ![Build passing](https://gitlab.memri.io/memri/pyintegrators/-/raw/prod/assets/build-passing.svg "Build passing")|
 |`FaceRecognitionIndexer`|Recognizes photos from faces.| ![Build passing](https://gitlab.memri.io/memri/pyintegrators/-/raw/prod/assets/build-passing.svg "Build passing")|
 |`GeoIndexer`|Adds Countries and Cities to items with a location.| ![Build passing](https://gitlab.memri.io/memri/pyintegrators/-/raw/prod/assets/build-passing.svg "Build passing")|
-|`GmailImporter`|Imports email from GMail.| ![Build passing](https://gitlab.memri.io/memri/pyintegrators/-/raw/prod/assets/build-passing.svg "Build passing")|
 |`NotesListIndexer`|Extracts lists from notes and categorizes them.| ![Build passing](https://gitlab.memri.io/memri/pyintegrators/-/raw/prod/assets/build-passing.svg "Build passing")|
 
 

@@ -73,7 +73,7 @@ basic functionality for consistency and to enable easier usage.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="IndexerData" class="doc_header"><code>class</code> <code>IndexerData</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L36" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IndexerData</code>(<strong>**<code>kwargs</code></strong>)</p>
+<h2 id="IndexerData" class="doc_header"><code>class</code> <code>IndexerData</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L51" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IndexerData</code>(<strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -97,7 +97,7 @@ basic functionality for consistency and to enable easier usage.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_indexer_run_data" class="doc_header"><code>get_indexer_run_data</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L45" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_indexer_run_data</code>(<strong><code>client</code></strong>, <strong><code>indexer_run</code></strong>)</p>
+<h4 id="get_indexer_run_data" class="doc_header"><code>get_indexer_run_data</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L60" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_indexer_run_data</code>(<strong><code>client</code></strong>, <strong><code>indexer_run</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -121,7 +121,7 @@ basic functionality for consistency and to enable easier usage.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="test_registration" class="doc_header"><code>test_registration</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L54" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_registration</code>(<strong><code>integrator</code></strong>)</p>
+<h4 id="test_registration" class="doc_header"><code>test_registration</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L66" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_registration</code>(<strong><code>integrator</code></strong>)</p>
 </blockquote>
 <p>Check whether an integrator is registred. Registration is necessary to be able to load the right indexer
 when retrieving it from the database.</p>
@@ -159,6 +159,39 @@ when retrieving it from the database.</p>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="run_integrator" class="doc_header"><code>run_integrator</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L97" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>run_integrator</code>(<strong><code>environ</code></strong>=<em><code>None</code></em>, <strong><code>pod_full_address</code></strong>=<em><code>None</code></em>, <strong><code>integrator_run_uid</code></strong>=<em><code>None</code></em>, <strong><code>database_key</code></strong>=<em><code>None</code></em>, <strong><code>owner_key</code></strong>=<em><code>None</code></em>, <strong><code>verbose</code></strong>=<em><code>False</code></em>)</p>
+</blockquote>
+<p>Runs an integrator, you can either provide the run settings as parameters to this function (for local testing)
+or via environment variables (this is how the pod communicates with integrators).</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
 <div class="inner_cell">
@@ -172,17 +205,11 @@ when retrieving it from the database.</p>
     <span class="n">address</span> <span class="o">=</span> <span class="n">Address</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
     <span class="n">indexer</span> <span class="o">=</span> <span class="n">Indexer</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">indexerClass</span><span class="o">=</span><span class="s2">&quot;GeoIndexer&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GeoIndexer&quot;</span><span class="p">)</span>
     <span class="n">indexer_run</span> <span class="o">=</span> <span class="n">IndexerRun</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">targetDataType</span><span class="o">=</span><span class="s2">&quot;Address&quot;</span><span class="p">)</span>
-
+    
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">location</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">]:</span> <span class="n">client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        
-    <span class="n">edge_success</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_edge</span><span class="p">(</span><span class="n">Edge</span><span class="p">(</span><span class="n">indexer_run</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="s2">&quot;indexer&quot;</span><span class="p">))</span>
-    <span class="n">edge_success2</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_edge</span><span class="p">(</span><span class="n">Edge</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">))</span>
-
-    <span class="k">assert</span> <span class="n">edge_success</span> <span class="ow">and</span> <span class="n">edge_success2</span>
-    
+    <span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">create_edge</span><span class="p">(</span><span class="n">Edge</span><span class="p">(</span><span class="n">indexer_run</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="s2">&quot;indexer&quot;</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">create_edge</span><span class="p">(</span><span class="n">Edge</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">address</span>
-    
-<span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">create_toy_dataset</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -194,18 +221,41 @@ when retrieving it from the database.</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Before we can move on, we need to make sure that our indexer is registred. This hold for any integrator that we create.</p>
+<h2 id="Running-an-indexer-by-providing-environment-variables">Running an indexer by providing environment variables<a class="anchor-link" href="#Running-an-indexer-by-providing-environment-variables"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="generate_test_env" class="doc_header"><code>generate_test_env</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L129" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>generate_test_env</code>(<strong><code>client</code></strong>, <strong><code>indexer_run</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>{% include important.html content='Note that before running an indexer, it needs to be registered. We can do this by importing the file in <code>integrators.indexer_registry.py</code>.' %}</p>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
 </div>
-</div>
+    {% endraw %}
+
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -213,7 +263,7 @@ when retrieving it from the database.</p>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_registration</span><span class="p">(</span><span class="n">GeoIndexer</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">create_toy_dataset</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -223,6 +273,66 @@ when retrieving it from the database.</p>
 </div>
     {% endraw %}
 
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">run_integrator</span><span class="p">(</span><span class="n">environ</span><span class="o">=</span><span class="n">generate_test_env</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Reading run parameters from environment variables
+1 items found to index
+indexing 1 items
+Loading formatted geocoded file...
+updating IndexerRun (#4)
+creating Country (#None)
+updating Address (#2)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">delete_all</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Run">Run<a class="anchor-link" href="#Run"> </a></h2>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we start with the setting we would normally have: some memri client makes a call to the pod to execute an indexer run. Lets start by getting the indexer and the indexer run.</p>
@@ -237,11 +347,62 @@ when retrieving it from the database.</p>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexer_run</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">indexer_run</span><span class="o">.</span><span class="n">uid</span><span class="p">)</span>
-<span class="n">indexer</span> <span class="o">=</span> <span class="n">indexer_run</span><span class="o">.</span><span class="n">indexer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">create_toy_dataset</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="n">uid</span> <span class="o">=</span> <span class="n">indexer_run</span><span class="o">.</span><span class="n">uid</span><span class="p">;</span> <span class="n">uid</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>9</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexer_run</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uid</span><span class="p">)</span>
+<span class="n">indexer</span> <span class="o">=</span> <span class="n">indexer_run</span><span class="o">.</span><span class="n">indexer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">indexer</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>GeoIndexer (#8)</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -270,6 +431,31 @@ when retrieving it from the database.</p>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 items found to index
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>IndexerData 
+{&#39;items_with_location&#39;: [Address (#7)]}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -287,6 +473,21 @@ when retrieving it from the database.</p>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>indexing 1 items
+updating IndexerRun (#9)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -301,6 +502,21 @@ when retrieving it from the database.</p>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>creating Country (#None)
+updating Address (#7)
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -330,60 +546,47 @@ when retrieving it from the database.</p>
 </div>
 </div>
 </div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Running-an-indexer-by-providing-parameters-as-variables">Running an indexer by providing parameters as variables<a class="anchor-link" href="#Running-an-indexer-by-providing-parameters-as-variables"> </a></h2>
 </div>
-    {% endraw %}
-
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">create_toy_dataset</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="n">run_integrator</span><span class="p">(</span><span class="n">pod_full_address</span><span class="o">=</span><span class="n">DEFAULT_POD_ADDRESS</span><span class="p">,</span>
+               <span class="n">integrator_run_uid</span><span class="o">=</span><span class="n">indexer_run</span><span class="o">.</span><span class="n">uid</span><span class="p">,</span>
+               <span class="n">database_key</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">database_key</span><span class="p">,</span>
+               <span class="n">owner_key</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">owner_key</span><span class="p">)</span>
+
+<span class="n">client</span><span class="o">.</span><span class="n">delete_all</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
 
 <div class="output_area">
 
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="run_integrator" class="doc_header"><code>run_integrator</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/indexer.py#L89" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>run_integrator</code>(<strong><code>environ</code></strong>=<em><code>None</code></em>, <strong><code>pod_full_address</code></strong>=<em><code>None</code></em>, <strong><code>integrator_run_uid</code></strong>=<em><code>None</code></em>, <strong><code>database_key</code></strong>=<em><code>None</code></em>, <strong><code>owner_key</code></strong>=<em><code>None</code></em>, <strong><code>verbose</code></strong>=<em><code>False</code></em>)</p>
-</blockquote>
-<p>Runs an integrator, you can either provide the run settings as parameters to this function (for local testing)
-or via environment variables (this is how the pod communicates with integrators).</p>
-
-</div>
-
-</div>
-
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 items found to index
+indexing 1 items
+updating IndexerRun (#14)
+creating Country (#None)
+updating Address (#12)
+</pre>
 </div>
 </div>
 
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Running an indexer by providing parameters as variables</p>
-
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">create_toy_dataset</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-<span class="n">run_integrator</span><span class="p">(</span><span class="n">pod_full_address</span><span class="o">=</span><span class="n">DEFAULT_POD_ADDRESS</span><span class="p">,</span> <span class="n">integrator_run_uid</span><span class="o">=</span><span class="n">indexer_run</span><span class="o">.</span><span class="n">uid</span><span class="p">,</span>
-               <span class="n">database_key</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">database_key</span><span class="p">,</span> <span class="n">owner_key</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">owner_key</span><span class="p">)</span>
-<span class="n">client</span><span class="o">.</span><span class="n">delete_all</span><span class="p">()</span>
-</pre></div>
-
-    </div>
 </div>
 </div>
 
@@ -392,7 +595,13 @@ or via environment variables (this is how the pod communicates with integrators)
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Running an indexer by providing environment variables</p>
+<h2 id="Registration">Registration<a class="anchor-link" href="#Registration"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>All indexers need to be registred before they can be ran. We can test our registration as follows</p>
 
 </div>
 </div>
@@ -404,16 +613,7 @@ or via environment variables (this is how the pod communicates with integrators)
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">create_toy_dataset</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-
-<span class="n">payload</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="n">DATABASE_KEY_ENV</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">database_key</span><span class="p">,</span>
-               <span class="n">OWNER_KEY_ENV</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">owner_key</span><span class="p">})</span>
-              
-<span class="n">env</span> <span class="o">=</span> <span class="p">{</span><span class="n">POD_FULL_ADDRESS_ENV</span><span class="p">:</span> <span class="n">DEFAULT_POD_ADDRESS</span><span class="p">,</span>
-       <span class="n">RUN_UID_ENV</span><span class="p">:</span> <span class="n">indexer_run</span><span class="o">.</span><span class="n">uid</span><span class="p">,</span>
-       <span class="n">POD_SERVICE_PAYLOAD_ENV</span><span class="p">:</span> <span class="n">payload</span><span class="p">}</span>
-<span class="n">run_integrator</span><span class="p">(</span><span class="n">environ</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
-<span class="n">client</span><span class="o">.</span><span class="n">delete_all</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_registration</span><span class="p">(</span><span class="n">GeoIndexer</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -423,23 +623,13 @@ or via environment variables (this is how the pod communicates with integrators)
 </div>
     {% endraw %}
 
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">delete_all</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>{% include important.html content='Note that before running an indexer, it needs to be registered. We can do this by importing the file in <code>integrators.indexer_registry.py</code>.' %}</p>
 
 </div>
-    {% endraw %}
-
+</div>
+</div>
 </div>
  
 
