@@ -70,13 +70,13 @@ nb_path: "nbs/indexers.GeoIndexer.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Example">Example<a class="anchor-link" href="#Example"> </a></h1>
+<h1 id="Usage">Usage<a class="anchor-link" href="#Usage"> </a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>First, lets create a test dataset</p>
+<p>This Indexer is super simple, we use it to  describe the steps that we need to take to run an Indexer in general. First, lets create a test dataset. We initialize items and add them to an IndexerData object.</p>
 
 </div>
 </div>
@@ -88,15 +88,12 @@ nb_path: "nbs/indexers.GeoIndexer.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">PodClient</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">client</span>   <span class="o">=</span> <span class="n">PodClient</span><span class="p">()</span>
 
 <span class="n">location</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">latitude</span><span class="o">=-</span><span class="mf">37.81</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mf">144.96</span><span class="p">)</span>
-<span class="n">address</span> <span class="o">=</span> <span class="n">Address</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
-<span class="n">indexer</span> <span class="o">=</span> <span class="n">GeoIndexer</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
-<span class="n">indexer_run</span> <span class="o">=</span> <span class="n">IndexerRun</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">targetDataType</span><span class="o">=</span><span class="s2">&quot;Address&quot;</span><span class="p">)</span>
-
-<span class="n">indexer_run</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;indexer&quot;</span><span class="p">,</span> <span class="n">indexer</span><span class="p">)</span>
+<span class="n">address</span>  <span class="o">=</span> <span class="n">Address</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
 <span class="n">address</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
+<span class="n">data</span>     <span class="o">=</span> <span class="n">IndexerData</span><span class="p">(</span><span class="n">items_with_location</span><span class="o">=</span><span class="p">[</span><span class="n">address</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -106,6 +103,13 @@ nb_path: "nbs/indexers.GeoIndexer.ipynb"
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And lets initialize an indexer.</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -113,7 +117,9 @@ nb_path: "nbs/indexers.GeoIndexer.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_registration</span><span class="p">(</span><span class="n">GeoIndexer</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexer</span> <span class="o">=</span> <span class="n">GeoIndexer</span><span class="o">.</span><span class="n">from_data</span><span class="p">()</span>
+<span class="n">indexer_run</span> <span class="o">=</span> <span class="n">IndexerRun</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">targetDataType</span><span class="o">=</span><span class="s2">&quot;Address&quot;</span><span class="p">)</span>
+<span class="n">indexer_run</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;indexer&quot;</span><span class="p">,</span> <span class="n">indexer</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -123,23 +129,13 @@ nb_path: "nbs/indexers.GeoIndexer.ipynb"
 </div>
     {% endraw %}
 
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">IndexerData</span><span class="p">(</span><span class="n">items_with_location</span><span class="o">=</span> <span class="p">[</span><span class="n">address</span><span class="p">])</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, we can run the indexer</p>
 
 </div>
-    {% endraw %}
-
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -172,6 +168,37 @@ nb_path: "nbs/indexers.GeoIndexer.ipynb"
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally, lets test the registration of our indexer</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_registration</span><span class="p">(</span><span class="n">GeoIndexer</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And we are done, it is as simple as that.</p>
+
+</div>
+</div>
+</div>
 </div>
  
 

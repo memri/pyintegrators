@@ -23,6 +23,7 @@ import torch
 
 # Cell
 class FaceClusteringIndexer(IndexerBase):
+    """Clusters faces on photos."""
     model_fname = "pretrained_gcn_v_ms1m.pth"
     model_path = MODEL_DIR / model_fname
     model_s3_url = f"{MEMRI_S3}/{model_fname}"
