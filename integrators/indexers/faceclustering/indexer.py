@@ -22,14 +22,13 @@ import ipdb
 import torch
 
 # Cell
-
 class FaceClusteringIndexer(IndexerBase):
     model_fname = "pretrained_gcn_v_ms1m.pth"
     model_path = MODEL_DIR / model_fname
     model_s3_url = f"{MEMRI_S3}/{model_fname}"
 
     def __init__(self, *args, **kwargs):
-        self.rec_model = FaceRecognitionIndexer()
+        self.rec_model = FaceRecognitionModel()
         self.model = GCN_V(feature_dim=256, nhid=512, nclass=1, dropout=0.0)
         download_file(self.model_s3_url, self.model_path)
         load_checkpoint(self.model, str(self.model_path), map_location="cpu", strict=True);

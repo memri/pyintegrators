@@ -300,6 +300,8 @@ Loading formatted geocoded file...
 updating IndexerRun (#4)
 creating Country (#None)
 updating Address (#2)
+updating Country (#5)
+updating Address (#2)
 </pre>
 </div>
 </div>
@@ -466,7 +468,7 @@ updating Address (#2)
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">updated_items</span><span class="p">,</span> <span class="n">new_items</span> <span class="o">=</span> <span class="n">indexer</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">output_items</span> <span class="o">=</span> <span class="n">indexer</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -498,7 +500,7 @@ updating IndexerRun (#9)
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexer</span><span class="o">.</span><span class="n">populate</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">updated_items</span><span class="p">,</span> <span class="n">new_items</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexer</span><span class="o">.</span><span class="n">populate</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">output_items</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -582,6 +584,8 @@ updating Address (#7)
 indexing 1 items
 updating IndexerRun (#14)
 creating Country (#None)
+updating Address (#12)
+updating Country (#15)
 updating Address (#12)
 </pre>
 </div>

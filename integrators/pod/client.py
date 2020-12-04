@@ -38,6 +38,8 @@ class PodClient:
             return False
 
     def create(self, node):
+        if isinstance(node, Photo) and not self.create_photo_file(node): return False
+
         try:
             body = {"databaseKey": self.database_key, "payload":self.get_properties_json(node) }
             result = requests.post(f"{self.base_url}/create_item", json=body)
@@ -52,6 +54,11 @@ class PodClient:
         except requests.exceptions.RequestException as e:
             print(e)
             return False
+
+    def create_photo_file(self, photo):
+        file = photo.file[0]
+        self.create(file)
+        return self.upload_photo(photo.data)
 
     def upload_photo(self, arr):
         return self.upload_file(arr.tobytes())

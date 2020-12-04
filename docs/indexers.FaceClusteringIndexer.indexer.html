@@ -54,7 +54,7 @@ nb_path: "nbs/indexers.FaceClusteringIndexer.indexer.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="FaceClusteringIndexer" class="doc_header"><code>class</code> <code>FaceClusteringIndexer</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/faceclustering/indexer.py#L26" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>FaceClusteringIndexer</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>) :: <a href="/integrators/indexers.indexer.html#IndexerBase"><code>IndexerBase</code></a></p>
+<h2 id="FaceClusteringIndexer" class="doc_header"><code>class</code> <code>FaceClusteringIndexer</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/indexers/faceclustering/indexer.py#L25" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>FaceClusteringIndexer</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>) :: <a href="/integrators/indexers.indexer.html#IndexerBase"><code>IndexerBase</code></a></p>
 </blockquote>
 <p>Provides a base class for all items. All items in the schema inherit from this class, and it provides some
 basic functionality for consistency and to enable easier usage.</p>
@@ -396,492 +396,6 @@ use_landmarks True
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">database_key</span> <span class="o">=</span> <span class="s2">&quot;B53A8B31D91A46309ECCB044AF1947F6AF4E81CACA3A4F31ABACC2D8495975F0&quot;</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">owner_key</span> <span class="o">=</span> <span class="s2">&quot;15826F7F53D3BA753DAC0F360E974DF4F02F57430A39A2882EB1698C82B5345E&quot;</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">run_id</span> <span class="o">=</span> <span class="mi">1000001520</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">PodClient</span><span class="p">(</span><span class="n">database_key</span><span class="o">=</span><span class="n">database_key</span><span class="p">,</span> <span class="n">owner_key</span><span class="o">=</span><span class="n">owner_key</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">search_by_fields</span><span class="p">({</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Photo&quot;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">file</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>File (#1000001117)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span>get_indexer_run_data<span class="o">??</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">run_integrator</span><span class="p">(</span><span class="n">pod_full_address</span><span class="o">=</span><span class="n">DEFAULT_POD_ADDRESS</span><span class="p">,</span>
-               <span class="n">integrator_run_uid</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
-               <span class="n">database_key</span><span class="o">=</span><span class="n">database_key</span><span class="p">,</span>
-               <span class="n">owner_key</span><span class="o">=</span><span class="n">owner_key</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>[32, 16, 8] {&#39;32&#39;: {&#39;SCALES&#39;: (32, 16), &#39;BASE_SIZE&#39;: 16, &#39;RATIOS&#39;: (1.0,), &#39;ALLOWED_BORDER&#39;: 9999}, &#39;16&#39;: {&#39;SCALES&#39;: (8, 4), &#39;BASE_SIZE&#39;: 16, &#39;RATIOS&#39;: (1.0,), &#39;ALLOWED_BORDER&#39;: 9999}, &#39;8&#39;: {&#39;SCALES&#39;: (2, 1), &#39;BASE_SIZE&#39;: 16, &#39;RATIOS&#39;: (1.0,), &#39;ALLOWED_BORDER&#39;: 9999}}
-use_landmarks True
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000087) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000089) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000091) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000093) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000095) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000097) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000099) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000101) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000103) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000105) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000107) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000109) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000111) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000113) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000115) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000117) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000119) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000121) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000123) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000125) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000127) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000129) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000131) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000133) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000135) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000137) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000139) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000141) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000143) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000145) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000147) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000149) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000151) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000153) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000155) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000157) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000159) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000161) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000163) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000165) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000167) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000169) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000171) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000173) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000175) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000177) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000179) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000181) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000183) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000185) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000187) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000189) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000191) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000193) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000195) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000197) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000199) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000201) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000203) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000205) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000207) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000209) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000211) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000213) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000215) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000217) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000219) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000221) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000223) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000225) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000227) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000229) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000231) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000233) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000235) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000237) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000239) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000241) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000243) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000245) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000247) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000249) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000251) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000253) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000255) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000257) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000259) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000261) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000263) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000265) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000267) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000269) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000271) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000273) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000275) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000277) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000279) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000955) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000957) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000959) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000961) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000965) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000967) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000969) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000971) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000973) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000975) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000977) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000979) attached file item does not have data in pod
-&lt;Response [500]&gt; b&#39;Failed to read data from target file, No such file or directory (os error 2)&#39;
-Could not load data of IPhoto (#1000000981) attached file item does not have data in pod
-Indexing 0 photos
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-17-4cc01d4ecff8&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span>                integrator_run_uid<span class="ansi-blue-fg">=</span>run_id<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span>                database_key<span class="ansi-blue-fg">=</span>database_key<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">----&gt; 4</span><span class="ansi-red-fg">                owner_key=owner_key)
-</span>
-<span class="ansi-green-fg">~/workspace/pyintegrators/integrators/indexers/indexer.py</span> in <span class="ansi-cyan-fg">run_integrator</span><span class="ansi-blue-fg">(environ, pod_full_address, integrator_run_uid, database_key, owner_key, verbose)</span>
-<span class="ansi-green-intense-fg ansi-bold">    123</span> 
-<span class="ansi-green-intense-fg ansi-bold">    124</span>     client <span class="ansi-blue-fg">=</span> PodClient<span class="ansi-blue-fg">(</span>url<span class="ansi-blue-fg">=</span>pod_full_address<span class="ansi-blue-fg">,</span> database_key<span class="ansi-blue-fg">=</span>database_key<span class="ansi-blue-fg">,</span> owner_key<span class="ansi-blue-fg">=</span>owner_key<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 125</span><span class="ansi-red-fg">     </span>run_integrator_from_run_uid<span class="ansi-blue-fg">(</span>integrator_run_uid<span class="ansi-blue-fg">,</span> client<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    126</span> 
-<span class="ansi-green-intense-fg ansi-bold">    127</span> 
-
-<span class="ansi-green-fg">~/workspace/pyintegrators/integrators/indexers/indexer.py</span> in <span class="ansi-cyan-fg">run_integrator_from_run_uid</span><span class="ansi-blue-fg">(run_uid, client)</span>
-<span class="ansi-green-intense-fg ansi-bold">     87</span>     <span class="ansi-green-fg">if</span> isinstance<span class="ansi-blue-fg">(</span>run<span class="ansi-blue-fg">,</span> IndexerRun<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     88</span>         indexer <span class="ansi-blue-fg">=</span> run<span class="ansi-blue-fg">.</span>indexer<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-fg">---&gt; 89</span><span class="ansi-red-fg">         </span>indexer<span class="ansi-blue-fg">.</span>run<span class="ansi-blue-fg">(</span>run<span class="ansi-blue-fg">,</span> client<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     90</span>     <span class="ansi-green-fg">elif</span> isinstance<span class="ansi-blue-fg">(</span>run<span class="ansi-blue-fg">,</span> ImporterRun<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     91</span>         run_importer<span class="ansi-blue-fg">(</span>run<span class="ansi-blue-fg">,</span> client<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/workspace/pyintegrators/integrators/indexers/indexer.py</span> in <span class="ansi-cyan-fg">run</span><span class="ansi-blue-fg">(self, indexer_run, client)</span>
-<span class="ansi-green-intense-fg ansi-bold">     46</span>     <span class="ansi-green-fg">def</span> run<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> indexer_run<span class="ansi-blue-fg">,</span> client<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     47</span>         data <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>get_data<span class="ansi-blue-fg">(</span>client<span class="ansi-blue-fg">,</span> indexer_run<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">---&gt; 48</span><span class="ansi-red-fg">         </span>items <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>index<span class="ansi-blue-fg">(</span>data<span class="ansi-blue-fg">,</span> indexer_run<span class="ansi-blue-fg">,</span> client<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     49</span>         self<span class="ansi-blue-fg">.</span>populate<span class="ansi-blue-fg">(</span>client<span class="ansi-blue-fg">,</span> items<span class="ansi-blue-fg">,</span> edges<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     50</span> 
-
-<span class="ansi-green-fg">~/workspace/pyintegrators/integrators/indexers/faceclustering/indexer.py</span> in <span class="ansi-cyan-fg">index</span><span class="ansi-blue-fg">(self, data, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     77</span>         files <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>c<span class="ansi-blue-fg">.</span>file<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-green-fg">for</span> c <span class="ansi-green-fg">in</span> crop_photos<span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">     78</span>         <span class="ansi-green-fg">for</span> c <span class="ansi-green-fg">in</span> progress_bar<span class="ansi-blue-fg">(</span>crop_photos<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span> c<span class="ansi-blue-fg">.</span>embedding <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>rec_model<span class="ansi-blue-fg">.</span>get_embedding<span class="ansi-blue-fg">(</span>c<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">---&gt; 79</span><span class="ansi-red-fg">         </span>features <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>stack<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span>x<span class="ansi-blue-fg">.</span>embedding<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">256</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">]</span> <span class="ansi-green-fg">for</span> x <span class="ansi-green-fg">in</span> crop_photos<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     80</span>         pred_labels <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>get_predictions<span class="ansi-blue-fg">(</span>features<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     81</span>         people <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>create_cluster_items<span class="ansi-blue-fg">(</span>crop_photos<span class="ansi-blue-fg">,</span> pred_labels<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">&lt;__array_function__ internals&gt;</span> in <span class="ansi-cyan-fg">stack</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
-
-<span class="ansi-green-fg">/opt/anaconda3/envs/memri/lib/python3.7/site-packages/numpy/core/shape_base.py</span> in <span class="ansi-cyan-fg">stack</span><span class="ansi-blue-fg">(arrays, axis, out)</span>
-<span class="ansi-green-intense-fg ansi-bold">    421</span>     arrays <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>asanyarray<span class="ansi-blue-fg">(</span>arr<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">for</span> arr <span class="ansi-green-fg">in</span> arrays<span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">    422</span>     <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> arrays<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 423</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;need at least one array to stack&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    424</span> 
-<span class="ansi-green-intense-fg ansi-bold">    425</span>     shapes <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span>arr<span class="ansi-blue-fg">.</span>shape <span class="ansi-green-fg">for</span> arr <span class="ansi-green-fg">in</span> arrays<span class="ansi-blue-fg">}</span>
-
-<span class="ansi-red-fg">ValueError</span>: need at least one array to stack</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">debug</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>&gt; <span class="ansi-green-fg">/opt/anaconda3/envs/memri/lib/python3.7/site-packages/numpy/core/shape_base.py</span>(423)<span class="ansi-cyan-fg">stack</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">    421 </span><span class="ansi-red-fg">    </span>arrays <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>asanyarray<span class="ansi-blue-fg">(</span>arr<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">for</span> arr <span class="ansi-green-fg">in</span> arrays<span class="ansi-blue-fg">]</span>
-<span class="ansi-green-fg">    422 </span><span class="ansi-red-fg">    </span><span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> arrays<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 423 </span><span class="ansi-red-fg">        </span><span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;need at least one array to stack&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">    424 </span>
-<span class="ansi-green-fg">    425 </span><span class="ansi-red-fg">    </span>shapes <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span>arr<span class="ansi-blue-fg">.</span>shape <span class="ansi-green-fg">for</span> arr <span class="ansi-green-fg">in</span> arrays<span class="ansi-blue-fg">}</span>
-
-ipdb&gt; u
-&gt; <span class="ansi-green-fg">&lt;__array_function__ internals&gt;</span>(6)<span class="ansi-cyan-fg">stack</span><span class="ansi-blue-fg">()</span>
-
-ipdb&gt; u
-&gt; <span class="ansi-green-fg">/Users/koen/workspace/pyintegrators/integrators/indexers/faceclustering/indexer.py</span>(79)<span class="ansi-cyan-fg">index</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">     77 </span><span class="ansi-red-fg">        </span>files <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>c<span class="ansi-blue-fg">.</span>file<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-green-fg">for</span> c <span class="ansi-green-fg">in</span> crop_photos<span class="ansi-blue-fg">]</span>
-<span class="ansi-green-fg">     78 </span><span class="ansi-red-fg">        </span><span class="ansi-green-fg">for</span> c <span class="ansi-green-fg">in</span> progress_bar<span class="ansi-blue-fg">(</span>crop_photos<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span> c<span class="ansi-blue-fg">.</span>embedding <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>rec_model<span class="ansi-blue-fg">.</span>get_embedding<span class="ansi-blue-fg">(</span>c<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">---&gt; 79 </span><span class="ansi-red-fg">        </span>features <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>stack<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span>x<span class="ansi-blue-fg">.</span>embedding<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">256</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">]</span> <span class="ansi-green-fg">for</span> x <span class="ansi-green-fg">in</span> crop_photos<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">     80 </span><span class="ansi-red-fg">        </span>pred_labels <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>get_predictions<span class="ansi-blue-fg">(</span>features<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">     81 </span><span class="ansi-red-fg">        </span>people <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>create_cluster_items<span class="ansi-blue-fg">(</span>crop_photos<span class="ansi-blue-fg">,</span> pred_labels<span class="ansi-blue-fg">)</span>
-
-ipdb&gt; u
-&gt; <span class="ansi-green-fg">/Users/koen/workspace/pyintegrators/integrators/indexers/indexer.py</span>(48)<span class="ansi-cyan-fg">run</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">     46 </span><span class="ansi-red-fg">    </span><span class="ansi-green-fg">def</span> run<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> indexer_run<span class="ansi-blue-fg">,</span> client<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">     47 </span><span class="ansi-red-fg">        </span>data <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>get_data<span class="ansi-blue-fg">(</span>client<span class="ansi-blue-fg">,</span> indexer_run<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">---&gt; 48 </span><span class="ansi-red-fg">        </span>items <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>index<span class="ansi-blue-fg">(</span>data<span class="ansi-blue-fg">,</span> indexer_run<span class="ansi-blue-fg">,</span> client<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">     49 </span><span class="ansi-red-fg">        </span>self<span class="ansi-blue-fg">.</span>populate<span class="ansi-blue-fg">(</span>client<span class="ansi-blue-fg">,</span> items<span class="ansi-blue-fg">,</span> edges<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">     50 </span>
-
-ipdb&gt; data
-IndexerData 
-{&#39;photos&#39;: []}
-ipdb&gt; q
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">PodClient</span><span class="p">()</span>
 </pre></div>
 
@@ -899,11 +413,12 @@ ipdb&gt; q
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># indexer = Indexer.from_data(indexerClass=&quot;FaceClusteringIndexer&quot;, name=&quot;FaceClustering&quot;)</span>
-<span class="c1"># indexer_run = IndexerRun.from_data(progress=0, targetDataType=&quot;Photo&quot;)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">photos</span> <span class="o">=</span> <span class="p">[</span><span class="n">IPhoto</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">640</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data_dir</span><span class="o">.</span><span class="n">ls</span><span class="p">()</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;jpg&quot;</span><span class="p">)]</span>
+<span class="n">indexer</span> <span class="o">=</span> <span class="n">Indexer</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">indexerClass</span><span class="o">=</span><span class="s2">&quot;FaceClusteringIndexer&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;FaceClustering&quot;</span><span class="p">)</span>
+<span class="n">indexer_run</span> <span class="o">=</span> <span class="n">IndexerRun</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">targetDataType</span><span class="o">=</span><span class="s2">&quot;Photo&quot;</span><span class="p">)</span>
 
-<span class="c1"># for x in [indexer, indexer_run] + photos : client.create(x)</span>
-<span class="c1"># assert client.create_edge(Edge(indexer_run, indexer, &quot;indexer&quot;))</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">indexer</span><span class="p">,</span> <span class="n">indexer_run</span><span class="p">]</span> <span class="o">+</span> <span class="n">photos</span> <span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">create_edge</span><span class="p">(</span><span class="n">Edge</span><span class="p">(</span><span class="n">indexer_run</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="s2">&quot;indexer&quot;</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -938,6 +453,7 @@ ipdb&gt; q
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[32, 16, 8] {&#39;32&#39;: {&#39;SCALES&#39;: (32, 16), &#39;BASE_SIZE&#39;: 16, &#39;RATIOS&#39;: (1.0,), &#39;ALLOWED_BORDER&#39;: 9999}, &#39;16&#39;: {&#39;SCALES&#39;: (8, 4), &#39;BASE_SIZE&#39;: 16, &#39;RATIOS&#39;: (1.0,), &#39;ALLOWED_BORDER&#39;: 9999}, &#39;8&#39;: {&#39;SCALES&#39;: (2, 1), &#39;BASE_SIZE&#39;: 16, &#39;RATIOS&#39;: (1.0,), &#39;ALLOWED_BORDER&#39;: 9999}}
 use_landmarks True
+Indexing 4 photos
 </pre>
 </div>
 </div>
@@ -987,7 +503,7 @@ use_landmarks True
             }
         </style>
       <progress value='45' class='' max='45' style='width:300px; height:20px; vertical-align: middle;'></progress>
-      100.00% [45/45 00:08<00:00]
+      100.00% [45/45 00:07<00:00]
     </div>
     
 </div>
@@ -1054,198 +570,243 @@ creating Person (#None)
 creating Person (#None)
 creating Person (#None)
 creating Person (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-creating File (#None)
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-uploading photo
-updating IPhoto (#7)
-updating IPhoto (#8)
-updating IPhoto (#9)
-updating IPhoto (#10)
-updating IPhoto (#11)
-updating IPhoto (#12)
-updating IPhoto (#13)
-updating IPhoto (#14)
-updating IPhoto (#15)
-updating IPhoto (#16)
-updating IPhoto (#17)
-updating IPhoto (#18)
-updating IPhoto (#19)
-updating IPhoto (#20)
-updating IPhoto (#21)
-updating IPhoto (#22)
-updating IPhoto (#23)
-updating IPhoto (#24)
-updating IPhoto (#25)
-updating IPhoto (#26)
-updating IPhoto (#27)
-updating IPhoto (#28)
-updating IPhoto (#29)
-updating IPhoto (#30)
-updating IPhoto (#31)
-updating IPhoto (#32)
-updating IPhoto (#33)
-updating IPhoto (#34)
-updating IPhoto (#35)
-updating IPhoto (#36)
-updating IPhoto (#37)
-updating IPhoto (#38)
-updating IPhoto (#39)
-updating IPhoto (#40)
-updating IPhoto (#41)
-updating IPhoto (#42)
-updating IPhoto (#43)
-updating IPhoto (#44)
-updating IPhoto (#45)
-updating IPhoto (#46)
-updating IPhoto (#47)
-updating IPhoto (#48)
-updating IPhoto (#49)
-updating IPhoto (#50)
-updating IPhoto (#51)
-updating Person (#52)
-updating Person (#53)
-updating Person (#54)
-updating Person (#55)
-updating Person (#56)
-updating Person (#57)
-updating Person (#58)
-updating Person (#59)
-updating Person (#60)
-updating Person (#61)
-updating Person (#62)
-updating Person (#63)
-updating File (#64)
+updating File (#11)
+updating File (#13)
+updating File (#15)
+updating File (#17)
+updating File (#19)
+updating File (#21)
+updating File (#23)
+updating File (#25)
+updating File (#27)
+updating File (#29)
+updating File (#31)
+updating File (#33)
+updating File (#35)
+updating File (#37)
+updating File (#39)
+updating File (#41)
+updating File (#43)
+updating File (#45)
+updating File (#47)
+updating File (#49)
+updating File (#51)
+updating File (#53)
+updating File (#55)
+updating File (#57)
+updating File (#59)
+updating File (#61)
+updating File (#63)
 updating File (#65)
-updating File (#66)
 updating File (#67)
-updating File (#68)
 updating File (#69)
-updating File (#70)
 updating File (#71)
-updating File (#72)
 updating File (#73)
-updating File (#74)
 updating File (#75)
-updating File (#76)
 updating File (#77)
-updating File (#78)
 updating File (#79)
-updating File (#80)
 updating File (#81)
-updating File (#82)
 updating File (#83)
-updating File (#84)
 updating File (#85)
-updating File (#86)
 updating File (#87)
-updating File (#88)
 updating File (#89)
-updating File (#90)
 updating File (#91)
-updating File (#92)
 updating File (#93)
-updating File (#94)
 updating File (#95)
-updating File (#96)
 updating File (#97)
-updating File (#98)
 updating File (#99)
-updating File (#100)
-updating File (#101)
-updating File (#102)
-updating File (#103)
-updating File (#104)
-updating File (#105)
-updating File (#106)
-updating File (#107)
-updating File (#108)
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+(&#39;Connection aborted.&#39;, RemoteDisconnected(&#39;Remote end closed connection without response&#39;))
+uploading photo
+(&#39;Connection aborted.&#39;, RemoteDisconnected(&#39;Remote end closed connection without response&#39;))
+uploading photo
+(&#39;Connection aborted.&#39;, RemoteDisconnected(&#39;Remote end closed connection without response&#39;))
+uploading photo
+(&#39;Connection aborted.&#39;, RemoteDisconnected(&#39;Remote end closed connection without response&#39;))
+uploading photo
+(&#39;Connection aborted.&#39;, RemoteDisconnected(&#39;Remote end closed connection without response&#39;))
+uploading photo
+(&#39;Connection aborted.&#39;, RemoteDisconnected(&#39;Remote end closed connection without response&#39;))
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+uploading photo
+&lt;Response [409]&gt; b&#39;File already exists&#39;
+updating IPhoto (#12)
+updating IPhoto (#14)
+updating IPhoto (#16)
+updating IPhoto (#18)
+updating IPhoto (#20)
+updating IPhoto (#22)
+updating IPhoto (#24)
+updating IPhoto (#26)
+updating IPhoto (#28)
+updating IPhoto (#30)
+updating IPhoto (#32)
+updating IPhoto (#34)
+updating IPhoto (#36)
+updating IPhoto (#38)
+updating IPhoto (#40)
+updating IPhoto (#42)
+updating IPhoto (#44)
+updating IPhoto (#46)
+updating IPhoto (#48)
+updating IPhoto (#50)
+updating IPhoto (#52)
+updating IPhoto (#54)
+updating IPhoto (#56)
+updating IPhoto (#58)
+updating IPhoto (#60)
+updating IPhoto (#62)
+updating IPhoto (#64)
+updating IPhoto (#66)
+updating IPhoto (#68)
+updating IPhoto (#70)
+updating IPhoto (#72)
+updating IPhoto (#74)
+updating IPhoto (#76)
+updating IPhoto (#78)
+updating IPhoto (#80)
+updating IPhoto (#82)
+updating IPhoto (#84)
+updating IPhoto (#86)
+updating IPhoto (#88)
+updating IPhoto (#90)
+updating IPhoto (#92)
+updating IPhoto (#94)
+updating IPhoto (#96)
+updating IPhoto (#98)
+updating IPhoto (#100)
+updating Person (#101)
+updating Person (#102)
+updating Person (#103)
+updating Person (#104)
+updating Person (#105)
+updating Person (#106)
+updating Person (#107)
+updating Person (#108)
+updating Person (#109)
+updating Person (#110)
+updating Person (#111)
+updating Person (#112)
+updating File (#11)
+updating File (#13)
+updating File (#15)
+updating File (#17)
+updating File (#19)
+updating File (#21)
+updating File (#23)
+updating File (#25)
+updating File (#27)
+updating File (#29)
+updating File (#31)
+updating File (#33)
+updating File (#35)
+updating File (#37)
+updating File (#39)
+updating File (#41)
+updating File (#43)
+updating File (#45)
+updating File (#47)
+updating File (#49)
+updating File (#51)
+updating File (#53)
+updating File (#55)
+updating File (#57)
+updating File (#59)
+updating File (#61)
+updating File (#63)
+updating File (#65)
+updating File (#67)
+updating File (#69)
+updating File (#71)
+updating File (#73)
+updating File (#75)
+updating File (#77)
+updating File (#79)
+updating File (#81)
+updating File (#83)
+updating File (#85)
+updating File (#87)
+updating File (#89)
+updating File (#91)
+updating File (#93)
+updating File (#95)
+updating File (#97)
+updating File (#99)
 </pre>
 </div>
 </div>
