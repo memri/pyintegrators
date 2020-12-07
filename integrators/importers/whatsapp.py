@@ -123,7 +123,8 @@ class WhatsAppImporter(ImporterBase):
         self.bot_name = None
         self.username = None
         self.dir = None
-        self.token = None
+        self.matrix_acc = None
+        self.matrix_token = None
         self.acc_idx = {}
         self.msgchan_idx = {}
         self.msg_idx = {}
@@ -139,8 +140,6 @@ class WhatsAppImporter(ImporterBase):
         self.bot_name = get_g_attr(importer_run, 'bot', 'string', None)
         self.username = importer_run.username
         self.dir = f"{os.getcwd()}/../{self.username}_matrix_data"
-
-        self.token = importer_run.password
 
         assert self.hostname is not None
         assert self.matrix_address is not None
@@ -179,11 +178,16 @@ class WhatsAppImporter(ImporterBase):
             # run matrix
             self.matrix.run_matrix(network_name)
 
+        # retreave matrix account and token
+        account_item = pod_client.search_by_fields(json.dumps({"externalId": self.username}))
+        self.matrix_acc = account_item["displayName"]
+        self.matrix_token = account_item["importJson"]
+
         # run whatsapp bridge
         self.mautrix.run_bridge(network_name)
 
         # create MatrixClient
-        self.matrix_client = MatrixClient(self.matrix_address, self.username, self.token)
+        self.matrix_client = MatrixClient(self.matrix_address, self.matrix_acc, self.matrix_token)
 
     def get_receivers(self, room):
         """Fetch message receivers of a room"""

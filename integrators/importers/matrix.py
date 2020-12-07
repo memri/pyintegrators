@@ -12,13 +12,11 @@ import docker
 # Cell
 class MatrixClient:
 
-    def __init__(self, url, username, token):
+    def __init__(self, url, token):
         self.url = url # Matrix url
-        self.username = username # username of Matrix account
         self.token = token # token of Matrix account
 
         assert self.url is not None
-        assert self.username is not None
         assert self.token is not None
 
     def get_joined_rooms(self):
