@@ -3,8 +3,11 @@
 __all__ = ['MatrixClient']
 
 # Cell
+from hashlib import sha256
+from ..data.schema import *
 from ..imports import *
 from nbdev.showdoc import show_doc
+import docker
 
 # Cell
 class MatrixClient:
