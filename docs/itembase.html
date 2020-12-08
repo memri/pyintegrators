@@ -33,6 +33,8 @@ nb_path: "nbs/itembase.ipynb"
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Any data class in pyintegrators inherits from <a href="/integrators/itembase.html#ItemBase"><code>ItemBase</code></a>. As its name suggests it is a base class for items with some handy functionalities to create new items and edges, retrieve all edges to other items, and sync with the pod.</p>
 
+<<<<<<< HEAD
+=======
 </div>
 </div>
 </div>
@@ -40,6 +42,7 @@ nb_path: "nbs/itembase.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
+>>>>>>> 91a611d1549d288f5b91d2f6cc57890057a20bdb
 <div class="output_wrapper">
 <div class="output">
 
@@ -167,7 +170,8 @@ basic functionality for consistency and to enable easier usage.</p>
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="ItemBase.is_expanded" class="doc_header"><code>ItemBase.is_expanded</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/data/itembase.py#L144" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ItemBase.is_expanded</code>()</p>
 </blockquote>
-<p>returns whether the node is expanded. An expanded node retrieved nodes that are <em>directly</em> connected to it
+<p>returns whether the node is expanded. An expanded node retrieved nodes that are
+<em>directly</em> connected to it
 from the pod, and stored their values via edges in the object.</p>
 
 </div>
@@ -191,7 +195,11 @@ from the pod, and stored their values via edges in the object.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
+<<<<<<< HEAD
+<h4 id="ItemBase.expand" class="doc_header"><code>ItemBase.expand</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/data/itembase.py#L181" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ItemBase.expand</code>(<strong><code>api</code></strong>)</p>
+=======
 <h4 id="ItemBase.expand" class="doc_header"><code>ItemBase.expand</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/data/itembase.py#L183" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ItemBase.expand</code>(<strong><code>api</code></strong>)</p>
+>>>>>>> 91a611d1549d288f5b91d2f6cc57890057a20bdb
 </blockquote>
 <p>Expands a node (retrieves all directly connected nodes ands adds to object).</p>
 
@@ -216,11 +224,15 @@ from the pod, and stored their values via edges in the object.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
+<<<<<<< HEAD
+<h4 id="ItemBase.inherit_funcs" class="doc_header"><code>ItemBase.inherit_funcs</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/data/itembase.py#L217" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ItemBase.inherit_funcs</code>(<strong><code>other</code></strong>)</p>
+=======
 <h4 id="ItemBase.inherit_funcs" class="doc_header"><code>ItemBase.inherit_funcs</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/data/itembase.py#L219" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ItemBase.inherit_funcs</code>(<strong><code>other</code></strong>)</p>
+>>>>>>> 91a611d1549d288f5b91d2f6cc57890057a20bdb
 </blockquote>
-<p>This function can be used to inherit new functionalities from a subclass. This is a patch to solve the fact
-that python does provide extensions of classes that are defined in a different file that are dynamic enough for
-our use case.</p>
+<p>This function can be used to inherit new functionalities from a subclass. This is a patch to solve
+the fact that python does provide extensions of classes that are defined in a different file that are
+dynamic enough for our use case.</p>
 
 </div>
 
