@@ -3,7 +3,7 @@
 __all__ = ['FaceClusteringIndexer']
 
 # Cell
-from ..facerecognition.facerecognition_indexer import *
+from ..facerecognition.model import *
 from .models import *
 from .utils import *
 from ...data.basic import *
