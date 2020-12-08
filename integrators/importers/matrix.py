@@ -14,13 +14,13 @@ import time
 class Matrix:
 
     def __init__(self, url, hostname, user, data_dir, client, my_uid, my_gid):
-        self.url = url
-        self.hostname = hostname
-        self.user = user
-        self.dir = data_dir
-        self.client = client
-        self.my_uid = my_uid
-        self.my_gid = my_gid
+        self.url = url # Matrix url
+        self.hostname = hostname # Matrix hostname
+        self.user = user # Matrix username
+        self.dir = data_dir # the directory for configuration files
+        self.client = client # docker client
+        self.my_uid = my_uid # non-root user uid
+        self.my_gid = my_gid # non-root user gid
 
         assert self.url is not None
         assert self.hostname is not None
@@ -31,6 +31,8 @@ class Matrix:
         assert self.client is not None
 
     def config_matrix(self):
+        """Generate and update configuration files"""
+        # generate files
         self.client.containers.run(
             "matrixdotorg/synapse:latest",
             auto_remove=True,
@@ -42,6 +44,7 @@ class Matrix:
         while not os.path.exists(f"{self.dir}/homeserver.yaml"):
             time.sleep(5)
 
+        # configure files
         find_replace = {
             "#enable_registration: false": "enable_registration: true",
             "#app_service_config_files:": "app_service_config_files:",
@@ -59,6 +62,7 @@ class Matrix:
         os.rename(f"{self.dir}/homeserver-bak.yaml", f"{self.dir}/homeserver.yaml")
 
     def run_matrix(self, networkname):
+        """Run Matrix homeserver"""
         self.client.containers.run(
             "matrixdotorg/synapse:latest",
             detach=True,
@@ -72,6 +76,7 @@ class Matrix:
         time.sleep(5)
 
     def upload_configs(self, pod_client):
+        """Upload config files to the Pod, can be used for re-installation"""
         matrix_importer = Importer(externalId=self.hostname, name="matrix")
         pod_client.create(matrix_importer)
 
@@ -88,6 +93,7 @@ class Matrix:
         pod_client.create_edges(matrix_importer.get_all_edges())
 
     def register_user(self, password, pod_client):
+        """Register an account with Matrix, store the username and token in the Pod"""
         body = {"username": self.user, "password": password, "auth": {"type":"m.login.dummy"}}
         result = requests.post(f"{self.url}/_matrix/client/r0/register", json=body)
         json = result.json()

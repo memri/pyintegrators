@@ -47,14 +47,13 @@ def get_random_alphanumeric_string(length):
 class MautrixWhatsapp:
 
     def __init__(self, hostname, bridge, user, data_dir, client, my_uid, my_gid):
-
-        self.hostname = hostname
-        self.bridge = bridge
-        self.user = user
-        self.dir = data_dir
-        self.client = client
-        self.my_uid = my_uid
-        self.my_gid = my_gid
+        self.hostname = hostname # Matrix homeserver hostname
+        self.bridge = bridge # bridge domain
+        self.user = user # matrix username
+        self.dir = data_dir # directory for configuration files
+        self.client = client # docker client
+        self.my_uid = my_uid # non-root user uid
+        self.my_gid = my_gid # non-root user gid
 
         assert self.hostname is not None
         assert self.bridge is not None
@@ -65,6 +64,7 @@ class MautrixWhatsapp:
         assert self.my_gid is not None
 
     def config_whatsapp_bridge(self):
+        """Generate config files for whatsapp bridge"""
         AS_TOKEN = get_random_alphanumeric_string(64)
         HS_TOKEN = get_random_alphanumeric_string(64)
         SENDER_L = get_random_alphanumeric_string(32)
@@ -98,6 +98,7 @@ class MautrixWhatsapp:
                     fout.write(line)
 
     def run_bridge(self, networkname):
+        """Launch whatsapp bridge"""
         self.client.containers.run(
             "dock.mau.dev/tulir/mautrix-whatsapp:latest",
             detach=True,
@@ -126,9 +127,9 @@ class WhatsAppImporter(ImporterBase):
         self.dir = None
         self.matrix_acc = None
         self.matrix_token = None
-        self.acc_idx = {}
-        self.msgchan_idx = {}
-        self.msg_idx = {}
+        self.acc_idx = {} # helper dict for contacts
+        self.msgchan_idx = {} # helper dict for chats
+        self.msg_idx = {} # helper dict for messages
 
     def set_matrix_client(self, pod_client, importer_run):
         """Set Matrix client instance and other parameters from importer_run"""
@@ -355,7 +356,7 @@ class WhatsAppImporter(ImporterBase):
 
         all_rooms = self.matrix_client.get_joined_rooms()
         notified = False
-        while not len(all_rooms) > 1:
+        while not len(all_rooms) > 1: # wait for web authentication
             if not notified:
                 self.update_run_status(pod_client, importer_run, "waiting for web authentication")
                 print(f"Please login to {self.matrix_address} with username {self.username} and password {self.password}, and invite {self.bot_name} to a new room.")
