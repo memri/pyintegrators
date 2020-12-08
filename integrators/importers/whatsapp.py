@@ -7,7 +7,7 @@ from hashlib import sha256
 from ..data.schema import *
 from ..imports import *
 from .importer import ImporterBase
-from .matrix import MatrixClient
+from .matrix import *
 from ..pod.client import PodClient
 from nbdev.showdoc import show_doc
 import docker
@@ -46,9 +46,9 @@ def get_random_alphanumeric_string(length):
 # Cell
 class MautrixWhatsapp:
 
-    def __init__(self, server, bridge, user, data_dir, client, my_uid, my_gid):
+    def __init__(self, hostname, bridge, user, data_dir, client, my_uid, my_gid):
 
-        self.server = server
+        self.hostname = hostname
         self.bridge = bridge
         self.user = user
         self.dir = data_dir
@@ -56,7 +56,7 @@ class MautrixWhatsapp:
         self.my_uid = my_uid
         self.my_gid = my_gid
 
-        assert self.server is not None
+        assert self.hostname is not None
         assert self.bridge is not None
         assert self.user is not None
         assert self.dir is not None
@@ -71,7 +71,7 @@ class MautrixWhatsapp:
 
         find_replace = {
             "localhost": f"{self.bridge}",
-            "example.com": f"{self.server}",
+            "example.com": f"{self.hostname}",
             "as_token:": f"as_token: {AS_TOKEN}",
             "hs_token:": f"hs_token: {HS_TOKEN}",
         }
@@ -83,7 +83,7 @@ class MautrixWhatsapp:
                             line = line.replace(key, find_replace[key])
                     fout.write(line)
         find_replace = {
-            "localhost": f"{self.server}",
+            "localhost": f"{self.hostname}",
             "example.com": f"{self.bridge}",
             "as_token:": f"as_token: {AS_TOKEN}",
             "hs_token:": f"hs_token: {HS_TOKEN}",
@@ -104,7 +104,7 @@ class MautrixWhatsapp:
             network=networkname,
             restart_policy={'Name': 'on-failure'},
             ports={'29318': '29318'},
-            volumes={DIR: {'bind': '/data', 'mode': 'rw'}},
+            volumes={self.dir: {'bind': '/data', 'mode': 'rw'}},
             environment=[f"UID={self.my_uid}", f"GID={self.my_gid}"],
             name=self.bridge
         )
@@ -122,14 +122,13 @@ class WhatsAppImporter(ImporterBase):
         self.prefix_service = None
         self.bot_name = None
         self.username = None
+        self.password = None
         self.dir = None
         self.matrix_acc = None
         self.matrix_token = None
         self.acc_idx = {}
         self.msgchan_idx = {}
         self.msg_idx = {}
-        self.my_uid = os.getuid()
-        self.my_gid = os.getgid()
 
     def set_matrix_client(self, pod_client, importer_run):
         """Set Matrix client instance and other parameters from importer_run"""
@@ -139,6 +138,7 @@ class WhatsAppImporter(ImporterBase):
         self.prefix_service = get_g_attr(importer_run, 'prefix', 'string', None)
         self.bot_name = get_g_attr(importer_run, 'bot', 'string', None)
         self.username = importer_run.username
+        self.password = importer_run.password
         self.dir = f"{os.getcwd()}/../{self.username}_matrix_data"
 
         assert self.hostname is not None
@@ -146,54 +146,51 @@ class WhatsAppImporter(ImporterBase):
         assert self.prefix_service is not None
         assert self.bot_name is not None
 
-        # configure WhatsApp bridge
-        self.mautrix = MautrixWhatsapp(self.hostname, self.bridgename, self.username, client, self.my_uid, self.my_uid)
-        self.mautrix.config_whatsapp_bridge()
+        # create docker network bridge
         client = docker.from_env()
-
-        # create docker bridge
         network_name = 'matrix-net'
         if not client.networks.list(network_name):
             client.networks.create(network_name, driver='bridge')
 
+        # configure WhatsApp bridge
+        if not os.path.exists(self.dir):
+            os.makedirs(self.dir)
+        self.mautrix = MautrixWhatsapp(self.hostname, self.bridgename, self.username, self.dir, client, os.getuid(), os.getgid())
+        self.mautrix.config_whatsapp_bridge()
+
         # check if matrix is already running
         if not client.containers.list(filters={'name': self.hostname}): # matrix is NOT running
-            matrix_item = pod_client.search_by_fields(json.dumps({"externalId": self.hostname}))
-            if matrix_item is None:
-                self.matrix = Matrix(self.hostname, self.username, self.dir, client, self.my_uid, self.my_gid)
+            matrix_item = pod_client.search_by_fields({"externalId": self.hostname})
+            self.matrix = Matrix(self.matrix_address, self.hostname, self.username, self.dir, client, os.getuid(), os.getgid())
+            if len(matrix_item) == 0:
                 self.matrix.config_matrix()
-                password = get_random_alphanumeric_string(10)
-                self.matrix.register_user(password, pod_client)
-                self.matrix.upload_matrix(self.hostname, pod_client)
+                self.matrix.upload_configs(pod_client)
             else:
-                # TODO: find a way to rename files
+                # TODO: find a way to download files
                 print("Need to download config files")
-                os.mkdir(self.dir)
-                os.chdir(self.dir)
-                edges = matrix_item.get_edges("sharedWith")
-                for e in edges:
-                    readable_hash = e.sha256
-                    file_data = pod_client.get_file(readable_hash)
 
-            # run matrix
+            # run matrix and register
             self.matrix.run_matrix(network_name)
+            self.matrix.register_user(self.password, pod_client)
 
         # retreave matrix account and token
-        account_item = pod_client.search_by_fields(json.dumps({"externalId": self.username}))
-        self.matrix_acc = account_item["displayName"]
-        self.matrix_token = account_item["importJson"]
+        items = pod_client.search_by_fields({"externalId": self.username})
+        account_item = items[0]
+        self.matrix_acc = account_item.displayName
+        self.matrix_token = account_item.importJson
 
         # run whatsapp bridge
         self.mautrix.run_bridge(network_name)
 
         # create MatrixClient
-        self.matrix_client = MatrixClient(self.matrix_address, self.matrix_acc, self.matrix_token)
+        self.matrix_client = MatrixClient(self.matrix_address, self.matrix_token)
 
     def get_receivers(self, room):
         """Fetch message receivers of a room"""
         joined_members = self.matrix_client.get_joined_members(room)
         joined_members = list(joined_members.keys())
-        joined_members.remove(self.username) # except the Matrix user
+        if self.username in joined_members: # except the Matrix user
+            joined_members.remove(self.username)
         # get associated Account item for each user
         receivers = [self.acc_idx[m] for m in joined_members]
         return receivers
@@ -216,7 +213,7 @@ class WhatsAppImporter(ImporterBase):
         """Fetch a list of contacts from whatsappbot's response"""
         room_id = self.get_bot_room_id(all_rooms)
         event_id = self.bot_list_contacts(room_id)
-        time.sleep(1) # wait for whatsappbot's reply
+        time.sleep(2) # wait for whatsappbot's reply
         contact_list = self.matrix_client.get_event_context(room_id, event_id)
         contacts = contact_list[0]["content"]["body"].split("\n")
         numbers = [self.get_phone_number(c) for c in contacts]
@@ -240,7 +237,6 @@ class WhatsAppImporter(ImporterBase):
         if "avatar_url" in profile:
             avatar_url = profile["avatar_url"]
         account = Account(externalId=user_id, displayName=profile["displayname"], avatarUrl=avatar_url, service="whatsapp")
-        self.acc_idx[user_id] = account
         return account
 
     def create_message_channel(self, room_id, member_accounts):
@@ -254,7 +250,6 @@ class WhatsAppImporter(ImporterBase):
             if s["type"] == "m.room.topic":
                 room_topic == s["content"]["topic"]
         message_channel = MessageChannel(externalId=room_id, name=room_name, topic=room_topic)
-        self.msgchan_idx[room_id] = message_channel
         for m in member_accounts:
             message_channel.add_edge("receiver", m) # link with Account
         return message_channel
@@ -262,7 +257,10 @@ class WhatsAppImporter(ImporterBase):
     def create_message(self, event, room):
         """Create Message item for each event, link with MessageChannel and Account"""
         message = Message(externalId=event["event_id"], importJson=json.dumps(event["content"]), service="whatsapp")
-        self.msg_idx[event["event_id"]] = message
+        if not event["sender"] in self.acc_idx:
+            account = self.create_account(event["sender"])
+            self.acc_idx[event["sender"]] = account
+            pod_client.create(account)
         message.add_edge("messageChannel", self.msgchan_idx[room]) # link with MessageChannel
         message.add_edge("sender", self.acc_idx[event["sender"]]) # link with Account
 
@@ -293,7 +291,7 @@ class WhatsAppImporter(ImporterBase):
         # Create File item
         file = File(externalId=content["body"], sha256=sha_file)
         pod_client.create(file)
-        # TODO: upload file
+        pod_client.upload_file(binaries)
 
         if content["msgtype"] == "m.image":
             photo = Photo(externalId=content["url"])
@@ -322,6 +320,7 @@ class WhatsAppImporter(ImporterBase):
         for n in users:
             if not n in self.acc_idx:
                 account = self.create_account(n)
+                self.acc_idx[n] = account
                 pod_client.create(account) # upload to Pod
 
     def import_all_messagechannels(self, all_rooms):
@@ -330,18 +329,21 @@ class WhatsAppImporter(ImporterBase):
             if not r in self.msgchan_idx:
                 member_accounts = self.get_receivers(r)
                 message_channel = self.create_message_channel(r, member_accounts)
+                self.msgchan_idx[r] = message_channel
                 pod_client.create(message_channel) # upload to Pod
                 pod_client.create_edges(message_channel.get_all_edges())
 
     def import_all_messages(self, next_batch):
         """Import all created Message items to Pod"""
         sync_events = self.matrix_client.sync_events(next_batch)
+        # messages from joined rooms
         joined_rooms = sync_events["rooms"]["join"]
         for r in joined_rooms:
             room_events = sync_events["rooms"]["join"][r]["timeline"]["events"]
             for e in room_events:
                 if not e["event_id"] in self.msg_idx:
                     message = self.create_message(e, r)
+                    self.msg_idx[e["event_id"]] = message
                     pod_client.create(message) # upload to Pod
                     pod_client.create_edges(message.get_all_edges())
         return sync_events["next_batch"]
@@ -352,6 +354,15 @@ class WhatsAppImporter(ImporterBase):
         self.update_run_status(pod_client, importer_run, "running")
 
         all_rooms = self.matrix_client.get_joined_rooms()
+        notified = False
+        while not len(all_rooms) > 1:
+            if not notified:
+                self.update_run_status(pod_client, importer_run, "waiting for web authentication")
+                print(f"Please login to {self.matrix_address} with username {self.username} and password {self.password}, and invite {self.bot_name} to a new room.")
+                notified = True
+            time.sleep(10)
+            all_rooms = self.matrix_client.get_joined_rooms()
+
         users = self.get_contacts(all_rooms)
         next_batch = "s9_7_0_1_1_1"
 
