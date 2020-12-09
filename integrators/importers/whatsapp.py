@@ -240,7 +240,7 @@ class WhatsAppImporter(ImporterBase):
         account = Account(externalId=user_id, displayName=profile["displayname"], avatarUrl=avatar_url, service="whatsapp")
         return account
 
-    def create_message_channel(self, room_id, member_accounts):
+    def create_message_channel(self, room_id):
         """Create MessageChannel item for each room, link with Account items"""
         room_state = self.matrix_client.get_room_state(room_id)
         room_name = None
@@ -251,6 +251,7 @@ class WhatsAppImporter(ImporterBase):
             if s["type"] == "m.room.topic":
                 room_topic == s["content"]["topic"]
         message_channel = MessageChannel(externalId=room_id, name=room_name, topic=room_topic)
+        member_accounts = self.get_receivers(room_id)
         for m in member_accounts:
             message_channel.add_edge("receiver", m) # link with Account
         return message_channel
@@ -262,6 +263,10 @@ class WhatsAppImporter(ImporterBase):
             account = self.create_account(event["sender"])
             self.acc_idx[event["sender"]] = account
             pod_client.create(account)
+        if not room in self.msgchan_idx:
+            msgchan = self.create_message_channel(room)
+            self.msgchan_idx[room] = msgchan
+            pod_client.create(msgchan)
         message.add_edge("messageChannel", self.msgchan_idx[room]) # link with MessageChannel
         message.add_edge("sender", self.acc_idx[event["sender"]]) # link with Account
 
@@ -328,8 +333,7 @@ class WhatsAppImporter(ImporterBase):
         """Import all created MessageChannel items to Pod"""
         for r in all_rooms:
             if not r in self.msgchan_idx:
-                member_accounts = self.get_receivers(r)
-                message_channel = self.create_message_channel(r, member_accounts)
+                message_channel = self.create_message_channel(r)
                 self.msgchan_idx[r] = message_channel
                 pod_client.create(message_channel) # upload to Pod
                 pod_client.create_edges(message_channel.get_all_edges())
@@ -366,6 +370,7 @@ class WhatsAppImporter(ImporterBase):
 
         users = self.get_contacts(all_rooms)
         next_batch = "s9_7_0_1_1_1"
+        time.sleep(5)
 
         while True: # polling for new contacts, chats and messages
             all_rooms = self.matrix_client.get_joined_rooms()
