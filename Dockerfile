@@ -1,4 +1,4 @@
-FROM python:3 as memri-pyintegrators
+FROM python:3.7 as memri-pyintegrators
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y libgl1-mesa-glx
