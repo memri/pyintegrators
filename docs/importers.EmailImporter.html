@@ -68,6 +68,30 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
+<h2 id="IMAPClient" class="doc_header"><code>class</code> <code>IMAPClient</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/email.py#L22" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IMAPClient</code>(<strong><code>username</code></strong>, <strong><code>app_pw</code></strong>, <strong><code>host</code></strong>=<em><code>'imap.gmail.com'</code></em>, <strong><code>port</code></strong>=<em><code>993</code></em>, <strong><code>inbox</code></strong>=<em><code>'"[Gmail]/All Mail"'</code></em>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
 <h4 id="IMAPClient.list_mailboxes" class="doc_header"><code>IMAPClient.list_mailboxes</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/importers/email.py#L30" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>IMAPClient.list_mailboxes</code>()</p>
 </blockquote>
 <p>Lists all available mailboxes</p>
@@ -196,7 +220,7 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="EmailImporter.get_content" class="doc_header"><code>EmailImporter.get_content</code><a href="__main__.py#L43" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>EmailImporter.get_content</code>(<strong><code>message</code></strong>)</p>
+<h4 id="EmailImporter.get_content" class="doc_header"><code>EmailImporter.get_content</code><a href="__main__.py#L44" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>EmailImporter.get_content</code>(<strong><code>message</code></strong>)</p>
 </blockquote>
 <p>Extracts content from a python email message</p>
 
@@ -221,7 +245,7 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="EmailImporter.create_item_from_mail" class="doc_header"><code>EmailImporter.create_item_from_mail</code><a href="__main__.py#L66" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>EmailImporter.create_item_from_mail</code>(<strong><code>mail</code></strong>, <strong><code>thread_id</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="EmailImporter.create_item_from_mail" class="doc_header"><code>EmailImporter.create_item_from_mail</code><a href="__main__.py#L67" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>EmailImporter.create_item_from_mail</code>(<strong><code>mail</code></strong>, <strong><code>thread_id</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Creates a schema-item from an existing mail</p>
 
@@ -246,7 +270,7 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="EmailImporter.run" class="doc_header"><code>EmailImporter.run</code><a href="__main__.py#L109" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>EmailImporter.run</code>(<strong><code>importer_run</code></strong>, <strong><code>pod_client</code></strong>=<em><code>None</code></em>, <strong><code>verbose</code></strong>=<em><code>True</code></em>)</p>
+<h4 id="EmailImporter.run" class="doc_header"><code>EmailImporter.run</code><a href="__main__.py#L110" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>EmailImporter.run</code>(<strong><code>importer_run</code></strong>, <strong><code>pod_client</code></strong>=<em><code>None</code></em>, <strong><code>verbose</code></strong>=<em><code>True</code></em>)</p>
 </blockquote>
 <p>This is the main function of the Email importer. It runs the importer given information
 provided in the importer run. if you pass a pod client it will add the new items to the graph.</p>
@@ -414,65 +438,6 @@ RUN STATUS: done
 </pre></div>
 
     </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Calling-the-importer-from-the-pod">Calling the importer from the pod<a class="anchor-link" href="#Calling-the-importer-from-the-pod"> </a></h3>
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># This cell is meant to be able to call the importer locally (simulating the front-end)</span>
-
-<span class="n">pod_client</span> <span class="o">=</span> <span class="n">PodClient</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://0.0.0.0:3030&#39;</span><span class="p">)</span>
-<span class="n">pod_client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">importer_run</span><span class="p">)</span>
-<span class="n">pod_client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">importer</span><span class="p">)</span>
-<span class="n">pod_client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">host_item</span><span class="p">)</span>
-<span class="n">pod_client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">port_item</span><span class="p">)</span>
-<span class="n">pod_client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">max_number_item</span><span class="p">)</span>
-<span class="n">pod_client</span><span class="o">.</span><span class="n">create_edges</span><span class="p">(</span><span class="n">importer_run</span><span class="o">.</span><span class="n">get_all_edges</span><span class="p">())</span>
-
-<span class="n">json</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;databaseKey&#39;</span><span class="p">:</span><span class="n">pod_client</span><span class="o">.</span><span class="n">database_key</span><span class="p">,</span>
-            <span class="s1">&#39;payload&#39;</span><span class="p">:{</span>
-                 <span class="s1">&#39;uid&#39;</span><span class="p">:</span><span class="n">importer_run</span><span class="o">.</span><span class="n">uid</span><span class="p">,</span>
-                 <span class="s1">&#39;servicePayload&#39;</span><span class="p">:</span> <span class="p">{</span>
-                     <span class="s1">&#39;databaseKey&#39;</span><span class="p">:</span><span class="n">pod_client</span><span class="o">.</span><span class="n">database_key</span><span class="p">,</span>
-                     <span class="s1">&#39;ownerKey&#39;</span><span class="p">:</span><span class="n">pod_client</span><span class="o">.</span><span class="n">owner_key</span>
-                 <span class="p">}</span>
-            <span class="p">}</span>
-       <span class="p">}</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">importer_run</span><span class="o">.</span><span class="n">uid</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;http://0.0.0.0:3030/v2/</span><span class="si">{</span><span class="n">pod_client</span><span class="o">.</span><span class="n">owner_key</span><span class="si">}</span><span class="s1">/run_importer&#39;</span><span class="p">,</span>
-                   <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">)</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>UsageError: Line magic function `%nbdev_slow_test` not found.
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 

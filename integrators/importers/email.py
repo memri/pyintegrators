@@ -117,6 +117,7 @@ from .importer import ImporterBase
 class EmailImporter(ImporterBase):
     """Imports emails over imap."""
     def __init__(self, *args, **kwargs):
+        self.private = ["imap_client"]
         super().__init__(*args, **kwargs)
         self.imap_client = None
 

@@ -11,15 +11,18 @@
   "Indexers": {
     "Overview": "indexers.indexer.html",
     "GeoIndexer": "indexers.GeoIndexer.html",
-    "FaceRecognitionIndexer": "indexers.FaceRecognitionIndexer.html",
     "": {
+      "Facerecognition": {
+        "Face Detection & Verification": "indexers.FaceRecognitionIndexer.html",
+        "FaceClustering Indexer ": "indexers.FaceClusteringIndexer.indexer.html",
+        "Photos": "indexers.FacerecognitionIndexer.Photo.html"
+      }
+    },
+    "empty1": {
       "NoteListIndexer": {
         "Parser": "indexers.NoteListIndexer.Parser.html",
         "Data": "indexers.NoteListIndexer.NoteList.html"
       }
     }
-  },
-  "Downloaders": {
-    "Overview": "indexers.indexer.html"
   }
 }
