@@ -33,10 +33,19 @@ entries:
     - output: web,pdf
       title: GeoIndexer
       url: indexers.GeoIndexer.html
-    - output: web,pdf
-      title: FaceRecognitionIndexer
-      url: indexers.FaceRecognitionIndexer.html
       subfolders:
+      - output: web
+        subfolderitems:
+        - output: web,pdf
+          title: Face Detection & Verification
+          url: indexers.FaceRecognitionIndexer.html
+        - output: web,pdf
+          title: 'FaceClustering Indexer '
+          url: indexers.FaceClusteringIndexer.indexer.html
+        - output: web,pdf
+          title: Photos
+          url: indexers.FacerecognitionIndexer.Photo.html
+        title: Facerecognition
       - output: web
         subfolderitems:
         - output: web,pdf
@@ -48,11 +57,5 @@ entries:
         title: NoteListIndexer
     output: web
     title: Indexers
-  - folderitems:
-    - output: web,pdf
-      title: Overview
-      url: indexers.indexer.html
-    output: web
-    title: Downloaders
   output: web
   title: Sidebar

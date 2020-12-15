@@ -12,15 +12,15 @@ We start by listing the existing indexers and their functionalities, make sure t
 
 | Integrator | Description | Tests passing |
 |------------|-------------|---------------|
-|`FaceRecognitionIndexer`|Recognizes photos from faces.| ![Build passing](https://gitlab.memri.io/memri/pyintegrators/-/raw/prod/assets/build-passing.svg "Build passing")|
+|`EmailImporter`|Imports emails over imap.| ![Build passing](https://gitlab.memri.io/memri/pyintegrators/-/raw/prod/assets/build-passing.svg "Build passing")|
+|`FaceClusteringIndexer`|Clusters faces on photos.| ![Build passing](https://gitlab.memri.io/memri/pyintegrators/-/raw/prod/assets/build-passing.svg "Build passing")|
 |`GeoIndexer`|Adds Countries and Cities to items with a location.| ![Build passing](https://gitlab.memri.io/memri/pyintegrators/-/raw/prod/assets/build-passing.svg "Build passing")|
-|`GmailImporter`|Imports email from GMail.| ![Build passing](https://gitlab.memri.io/memri/pyintegrators/-/raw/prod/assets/build-passing.svg "Build passing")|
 |`NotesListIndexer`|Extracts lists from notes and categorizes them.| ![Build passing](https://gitlab.memri.io/memri/pyintegrators/-/raw/prod/assets/build-passing.svg "Build passing")|
 
 
 
 
-Integrators for Memri have a single repository per language, this repository is the one for Python, but others exist for [Node.js](https://gitlab.memri.io/memri/nodeintegrators) and [Rust](https://gitlab.memri.io/memri/rustintegrators). This repository makes use of [nbdev](https://github.com/fastai/nbdev), which means all code, documentation and tests are made in Jupyter Notebooks and exported to a Python package, a Jekyll documentation and unit tests.
+Integrators for Memri have a single repository per language, this repository is the one for Python, but there is also a [Node.js version](https://gitlab.memri.io/memri/nodeintegrators). This repository makes use of [nbdev](https://github.com/fastai/nbdev), which means all code, documentation and tests are made in Jupyter Notebooks and exported to a Python package, a Jekyll documentation and unit tests.
 
 ## Using Docker 
 Integrators are invoked by the Pod by launching a Docker container. To build the images for these containers, run:

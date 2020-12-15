@@ -56,7 +56,9 @@ def parse_base_item_json(json):
 
 # Cell
 class Edge():
-    """Makes a link between two `ItemBase` Items"""
+    """Edges makes a link between two `ItemBase` Items. You won't use this class a lot in practice, as edges are
+    abstracted away for normal users. When items are retrieved from the database, the edges are parsed automatically.
+    When you add an edge between to items within pyintegrators, you will often use `ItemBase.add_edge`"""
     def __init__(self, source, target, _type, label=None, sequence=None, created=False, reverse=True):
         self.source   = source
         self.target   = target
@@ -90,7 +92,8 @@ class Edge():
          and self._type == other._type
 
     def traverse(self, start):
-        """traverse an edge starting from the source to the target or vice versa."""
+        """We can traverse an edge starting from the source to the target or vice versa. In practice we often call
+        item.some_edge_type, which calls item.traverse(edgetype), which in turn calls this function."""
         if start == self.source:
             return self.target
         elif start == self.target:
@@ -139,7 +142,8 @@ class ItemBase():
         self.__setattr__(name, res)
 
     def is_expanded(self):
-        """returns whether the node is expanded. An expanded node retrieved nodes that are *directly* connected to it
+        """returns whether the node is expanded. An expanded node retrieved nodes that are
+        *directly* connected to it
         from the pod, and stored their values via edges in the object."""
         return len(self.get_all_edges()) > 0
 
@@ -214,8 +218,8 @@ class ItemBase():
         return res
 
     def inherit_funcs(self, other):
-        """This function can be used to inherit new functionalities from a subclass. This is a patch to solve the fact
-        that python does provide extensions of classes that are defined in a different file that are dynamic enough for
-        our use case."""
+        """This function can be used to inherit new functionalities from a subclass. This is a patch to solve
+        the fact that python does provide extensions of classes that are defined in a different file that are
+        dynamic enough for our use case."""
         assert issubclass(other, self.__class__)
         self.__class__ = other
