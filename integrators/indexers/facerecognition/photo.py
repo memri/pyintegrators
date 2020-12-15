@@ -4,6 +4,7 @@ __all__ = ['show_images', 'get_size', 'resize', 'get_height_width_channels', 'IP
 
 # Cell
 from ...data.schema import *
+from ...data.basic import *
 from insightface.utils import face_align
 from matplotlib.pyplot import imshow
 from matplotlib import patches
@@ -32,7 +33,6 @@ def show_images(images, cols = 3, titles = None):
     fig.set_size_inches(np.array(fig.get_size_inches()) * n_images)
     plt.show()
 
-# Cell
 def get_size(img, maxsize):
     s = img.shape
     assert len(s) > 1
@@ -48,6 +48,7 @@ def get_height_width_channels(img):
     if len(s) == 2: return s[0], s[1], 1
     else: return img.shape
 
+# Cell
 class IPhoto(Photo):
 
     def __init__(self, data=None, embedding=None,path=None, *args, **kwargs):
@@ -63,6 +64,8 @@ class IPhoto(Photo):
         fig.set_figwidth(15)
         ax.axis('off')
         imshow(self.data[:,:,::-1])
+        fig.set_size_inches((6,6))
+        plt.show()
 
     def draw_boxes(self, boxes):
         print(f"Plotting {len(boxes)} face boundingboxes")
@@ -80,19 +83,22 @@ class IPhoto(Photo):
             rect = self.box_to_rect(b)
             ax.add_patch(rect)
             ps.append(rect)
+        fig.set_size_inches((6,6))
         plt.show()
+
+    def get_crop(self, box, landmark=None):
+        b = [max(0, int(x)) for x in box]
+        if landmark is not None:
+            return face_align.norm_crop(self.data, landmark=landmark)
+        else:
+            return self.data[b[1]:b[3], b[0]:b[2], :]
 
     def get_crops(self, boxes, landmarks=None):
         crops = []
         if landmarks is None:
             print("you are getting unnormalized crops, which are lower quality for recognition")
         for i, b in enumerate(boxes):
-            b = [max(0, int(x)) for x in b]
-
-            if landmarks is not None:
-                crop = face_align.norm_crop(self.data, landmark = landmarks[i])
-            else:
-                crop = self.data[b[1]:b[3], b[0]:b[2], :]
+            crop = self.get_crop(b, landmarks[i] if landmarks is not None else None)
             crops.append(crop)
         return crops
 
