@@ -77,8 +77,8 @@ class Matrix:
 
     def upload_configs(self, pod_client):
         """Upload config files to the Pod, can be used for re-installation"""
-        matrix_importer = Importer(externalId=self.hostname, name="matrix")
-        pod_client.create(matrix_importer)
+        matrix_network = Network(externalId=self.hostname, name="Matrix")
+        pod_client.create(matrix_network)
 
         os.chdir(self.dir)
         for filename in os.listdir(os.getcwd()):
@@ -88,9 +88,9 @@ class Matrix:
                 file = File(externalId=filename, sha256=readable_hash)
                 pod_client.create(file)
                 pod_client.upload_file(data)
-                matrix_importer.add_edge("sharedWith", file)
+                matrix_network.add_edge("resource", file)
                 f.close()
-        pod_client.create_edges(matrix_importer.get_all_edges())
+        pod_client.create_edges(matrix_network.get_all_edges())
 
     def register_user(self, password, pod_client):
         """Register an account with Matrix, store the username and token in the Pod"""

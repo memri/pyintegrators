@@ -127,11 +127,12 @@ class WhatsAppImporter(ImporterBase):
         self.dir = None
         self.matrix_acc = None
         self.matrix_token = None
+        self.wa_network = None
         self.acc_idx = {} # helper dict for contacts
         self.msgchan_idx = {} # helper dict for chats
         self.msg_idx = {} # helper dict for messages
 
-    def set_matrix_client(self, pod_client, importer_run):
+    def set_matrix_client(self, pod_client, importer_run, wa_network):
         """Set Matrix client instance and other parameters from importer_run"""
         self.hostname = get_g_attr(importer_run, 'host', 'string', None)
         self.bridgename = get_g_attr(importer_run, 'bridge', 'string', None)
@@ -141,11 +142,17 @@ class WhatsAppImporter(ImporterBase):
         self.username = importer_run.username
         self.password = importer_run.password
         self.dir = f"{os.getcwd()}/../{self.username}_matrix_data"
+        self.wa_network = wa_network
 
         assert self.hostname is not None
+        assert self.bridgename is not None
         assert self.matrix_address is not None
         assert self.prefix_service is not None
         assert self.bot_name is not None
+        assert self.username is not None
+        assert self.password is not None
+        assert self.dir is not None
+        assert self.wa_network is not None
 
         # create docker network bridge
         client = docker.from_env()
@@ -190,8 +197,8 @@ class WhatsAppImporter(ImporterBase):
         """Fetch message receivers of a room"""
         joined_members = self.matrix_client.get_joined_members(room)
         joined_members = list(joined_members.keys())
-        if self.username in joined_members: # except the Matrix user
-            joined_members.remove(self.username)
+        if self.matrix_acc in joined_members: # except the Matrix user
+            joined_members.remove(self.matrix_acc)
         # get associated Account item for each user
         receivers = [self.acc_idx[m] for m in joined_members]
         return receivers
@@ -234,10 +241,11 @@ class WhatsAppImporter(ImporterBase):
     def create_account(self, user_id):
         """Create Account item for each user_id"""
         profile = self.matrix_client.get_profile(user_id)
-        avatar_url = None
-        if "avatar_url" in profile:
-            avatar_url = profile["avatar_url"]
-        account = Account(externalId=user_id, displayName=profile["displayname"], avatarUrl=avatar_url, service="whatsapp")
+        account = Account(externalId=user_id, displayName=profile["displayname"], service="whatsapp")
+        person = Person(firstName=profile["displayname"])
+        pod_client.create(person)
+        account.add_edge("belongsTo", person)
+        account.add_edge("organization", self.wa_network)
         return account
 
     def create_message_channel(self, room_id):
@@ -249,7 +257,7 @@ class WhatsAppImporter(ImporterBase):
             if s["type"] == "m.room.name":
                 room_name = s["content"]["name"]
             if s["type"] == "m.room.topic":
-                room_topic == s["content"]["topic"]
+                room_topic = s["content"]["topic"]
         message_channel = MessageChannel(externalId=room_id, name=room_name, topic=room_topic)
         member_accounts = self.get_receivers(room_id)
         for m in member_accounts:
@@ -258,11 +266,12 @@ class WhatsAppImporter(ImporterBase):
 
     def create_message(self, event, room):
         """Create Message item for each event, link with MessageChannel and Account"""
-        message = Message(externalId=event["event_id"], importJson=json.dumps(event["content"]), service="whatsapp")
+        message = Message(externalId=event["event_id"], content=event["content"]["body"], dateSent=event["origin_server_ts"], service="whatsapp")
         if not event["sender"] in self.acc_idx:
             account = self.create_account(event["sender"])
             self.acc_idx[event["sender"]] = account
             pod_client.create(account)
+            pod_client.create_edges(account.get_all_edges())
         if not room in self.msgchan_idx:
             msgchan = self.create_message_channel(room)
             self.msgchan_idx[room] = msgchan
@@ -328,6 +337,7 @@ class WhatsAppImporter(ImporterBase):
                 account = self.create_account(n)
                 self.acc_idx[n] = account
                 pod_client.create(account) # upload to Pod
+                pod_client.create_edges(account.get_all_edges())
 
     def import_all_messagechannels(self, all_rooms):
         """Import all created MessageChannel items to Pod"""
@@ -346,7 +356,7 @@ class WhatsAppImporter(ImporterBase):
         for r in joined_rooms:
             room_events = sync_events["rooms"]["join"][r]["timeline"]["events"]
             for e in room_events:
-                if not e["event_id"] in self.msg_idx:
+                if not e["event_id"] in self.msg_idx and e["type"] == "m.room.message":
                     message = self.create_message(e, r)
                     self.msg_idx[e["event_id"]] = message
                     pod_client.create(message) # upload to Pod
@@ -355,7 +365,10 @@ class WhatsAppImporter(ImporterBase):
 
     def run(self, importer_run, pod_client=None, verbose=True):
         """This is the main function of WhatsAppImporter, which runs based on the information of importer_run."""
-        self.set_matrix_client(pod_client, importer_run)
+        wa_network = Network(name="WhatsApp")
+        pod_client.create(wa_network)
+
+        self.set_matrix_client(pod_client, importer_run, wa_network)
         self.update_run_status(pod_client, importer_run, "running")
 
         all_rooms = self.matrix_client.get_joined_rooms()
@@ -373,16 +386,16 @@ class WhatsAppImporter(ImporterBase):
         time.sleep(5)
 
         while True: # polling for new contacts, chats and messages
-            all_rooms = self.matrix_client.get_joined_rooms()
+        all_rooms = self.matrix_client.get_joined_rooms()
 
-            self.update_progress_message(pod_client, importer_run, "importing contacts", verbose=verbose)
-            self.import_all_accounts(all_rooms, users)
+        self.update_progress_message(pod_client, importer_run, "importing contacts", verbose=verbose)
+        self.import_all_accounts(all_rooms, users)
 
-            self.update_progress_message(pod_client, importer_run, "importing chats", verbose=verbose)
-            self.import_all_messagechannels(all_rooms)
+        self.update_progress_message(pod_client, importer_run, "importing chats", verbose=verbose)
+        self.import_all_messagechannels(all_rooms)
 
-            self.update_progress_message(pod_client, importer_run, "importing messages", verbose=verbose)
-            next_batch = self.import_all_messages(next_batch)
+        self.update_progress_message(pod_client, importer_run, "importing messages", verbose=verbose)
+        next_batch = self.import_all_messages(next_batch)
 
-            self.update_run_status(pod_client, importer_run, "polling")
-            time.sleep(2)
+        self.update_run_status(pod_client, importer_run, "polling")
+        time.sleep(2)
