@@ -2,11 +2,13 @@
 
 title: Itembase
 
+
 keywords: fastai
 sidebar: home_sidebar
 
 
 
+nb_path: "nbs/itembase.ipynb"
 ---
 <!--
 
@@ -29,18 +31,11 @@ sidebar: home_sidebar
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Any data class in pyintegrators inherits from <a href="/integrators/itembase#ItemBase"><code>ItemBase</code></a>. As its name suggests it is a base class for items with some handy functionalities to create new items and edges, retrieve all edges to other items, and sync with the pod.</p>
+<p>Any data class in pyintegrators inherits from <a href="/integrators/itembase.html#ItemBase"><code>ItemBase</code></a>. As its name suggests it is a base class for items with some handy functionalities to create new items and edges, retrieve all edges to other items, and sync with the pod.</p>
 
 </div>
 </div>
 </div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -54,9 +49,9 @@ sidebar: home_sidebar
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="Edge" class="doc_header"><code>class</code> <code>Edge</code><a href="https://gitlab.memri.io/memri/integrators/tree/master/integrators/data/itembase.py#L58" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Edge</code>(<strong><code>source</code></strong>, <strong><code>target</code></strong>, <strong><code>_type</code></strong>, <strong><code>label</code></strong>=<em><code>None</code></em>, <strong><code>sequence</code></strong>=<em><code>None</code></em>, <strong><code>created</code></strong>=<em><code>False</code></em>, <strong><code>reverse</code></strong>=<em><code>True</code></em>)</p>
 </blockquote>
-<p>Edges makes a link between two <a href="/integrators/itembase#ItemBase"><code>ItemBase</code></a> Items. You won't use this class a lot in practice, as edges are
+<p>Edges makes a link between two <a href="/integrators/itembase.html#ItemBase"><code>ItemBase</code></a> Items. You won't use this class a lot in practice, as edges are
 abstracted away for normal users. When items are retrieved from the database, the edges are parsed automatically.
-When you add an edge between to items within pyintegrators, you will often use <a href="/integrators/itembase#ItemBase.add_edge"><code>ItemBase.add_edge</code></a></p>
+When you add an edge between to items within pyintegrators, you will often use <a href="/integrators/itembase.html#ItemBase.add_edge"><code>ItemBase.add_edge</code></a></p>
 
 </div>
 
@@ -64,6 +59,13 @@ When you add an edge between to items within pyintegrators, you will often use <
 
 </div>
 </div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}
@@ -98,13 +100,6 @@ item.some_edge_type, which calls item.traverse(edgetype), which in turn calls th
     
 <div class="cell border-box-sizing code_cell rendered">
 
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
 <div class="output_wrapper">
 <div class="output">
 
@@ -123,6 +118,13 @@ basic functionality for consistency and to enable easier usage.</p>
 
 </div>
 </div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}
@@ -239,7 +241,7 @@ dynamic enough for our use case.</p>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>With the <a href="/integrators/itembase#ItemBase"><code>ItemBase</code></a> and <a href="/integrators/itembase#Edge"><code>Edge</code></a> classes we can create an item and its surrounding graph. The schema is defined in schema.py, in general we want to use the from_data staticmethod to generate new items, because it ensures that edges are linked from both the source and the target object. Let's make an email item and create it in the pod.</p>
+<p>With the <a href="/integrators/itembase.html#ItemBase"><code>ItemBase</code></a> and <a href="/integrators/itembase.html#Edge"><code>Edge</code></a> classes we can create an item and its surrounding graph. The schema is defined in schema.py, in general we want to use the from_data staticmethod to generate new items, because it ensures that edges are linked from both the source and the target object. Let's make an email item and create it in the pod.</p>
 
 </div>
 </div>
