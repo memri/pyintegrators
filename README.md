@@ -15,7 +15,7 @@ pip install -e . && nbdev_install_git_hooks
 The last commands automatically cleans metadata from your notebooks before a commit.
 
 ## Install with Docker 
-Integrators are invoked by the Pod by launching a Docker container. To build the image for this container, run:
+The normal flow to run an integrator is from client, by calling the [pods](https://gitlab.memri.io/memri/pod) `run_integrator` api. Integrators are invoked by the Pod by launching a Docker container. To build the image for this container, run:
 ```bash
 docker build -t memri-pyintegrators .
 ```
