@@ -31,6 +31,38 @@ nb_path: "nbs/index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>Integrators for Memri have a single repository per language, this repository is for Python integrators. Memri also has <a href="https://gitlab.memri.io/memri/nodeintegrators">Node.js integrators</a>. This repository makes use of <a href="https://github.com/fastai/nbdev">nbdev</a>, which means that the repo structure is different from a normal python project, the documentation for this repo is hosted on <a href="https://pyintegrators.memri.io/integrators/">https://pyintegrators.memri.io/integrators/</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Installing">Installing<a class="anchor-link" href="#Installing"> </a></h1><p>Pyintegrators can be installed in two ways: 1) For local development we recommend to install using pip 2) For deployment we recommend to install using docker. <strong>Currently, the only way to call integrators from the <a href="https://gitlab.memri.io/memri/browser-application">memri</a> <a href="(https://gitlab.memri.io/memri/ios-application">clients</a>)  is using docker, this will change soon.</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Install-with-pip">Install with pip<a class="anchor-link" href="#Install-with-pip"> </a></h2><p>To install the Python package, and correctly setup nbdev for development run:</p>
+<div class="highlight"><pre><span></span>pip install -e . <span class="o">&amp;&amp;</span> nbdev_install_git_hooks
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Install-with-Docker">Install with Docker<a class="anchor-link" href="#Install-with-Docker"> </a></h2><p>Integrators are invoked by the Pod by launching a Docker container. To build the image for this container, run:</p>
+<div class="highlight"><pre><span></span>docker build -t memri-pyintegrators .
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Overview">Overview<a class="anchor-link" href="#Overview"> </a></h1><p>We start by listing the existing indexers and their functionalities, make sure to check out their pages for usage examples.</p>
 
 </div>
@@ -90,55 +122,22 @@ nb_path: "nbs/index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Integrators for Memri have a single repository per language, this repository is the one for Python, but there is also a <a href="https://gitlab.memri.io/memri/nodeintegrators">Node.js version</a>. This repository makes use of <a href="https://github.com/fastai/nbdev">nbdev</a>, which means all code, documentation and tests are made in Jupyter Notebooks and exported to a Python package, a Jekyll documentation and unit tests.</p>
+<h1 id="Nbdev-&amp;-Jupyter-Notebooks">Nbdev &amp; Jupyter Notebooks<a class="anchor-link" href="#Nbdev-&amp;-Jupyter-Notebooks"> </a></h1><p>The Python integrators are written in <a href="https://nbdev.fast.ai/">nbdev</a> (<a href="https://www.youtube.com/watch?v=9Q6sLbz37gk&amp;t=1301s">video</a>). With nbdev, all code is written in 
+<a href="https://jupyter.readthedocs.io/en/latest/install/notebook-classic.html">Jupyter Notebooks</a>. Therefore all the notebooks in <code>/nbs</code> and the python code in <code>/integrators</code> are synced, tests are written side by side with the code in the notebooks, and documentation is automatically generated from the notebooks in the <code>/docs</code> folder. Check out the <a href="wiki/quickstart">nbdev quickstart</a> for an introduction, or see the <a href="https://nbdev.fast.ai/">nbdev documentation</a> for a all functionalities and tutorials.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Using-Docker">Using Docker<a class="anchor-link" href="#Using-Docker"> </a></h2><p>Integrators are invoked by the Pod by launching a Docker container. To build the images for these containers, run:</p>
-<div class="highlight"><pre><span></span>docker build -t memri-pyintegrators .
-</pre></div>
+<h2 id="Contributing">Contributing<a class="anchor-link" href="#Contributing"> </a></h2><p>When you make a merge request, make sure that you used all the nbdev commands specified in the <a href="wiki/quickstart">quickstart</a>.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Local-build">Local build<a class="anchor-link" href="#Local-build"> </a></h2><h3 id="Install">Install<a class="anchor-link" href="#Install"> </a></h3><p>To install the Python package:</p>
-<div class="highlight"><pre><span></span>pip install -e .
-</pre></div>
-<p>If you want to contribute, you have to clean the Jupyter Notebooks every time before you push code to prevent conflicts 
-in the Notebooks' metadata. A script to do so can be installed using:</p>
-<div class="highlight"><pre><span></span>nbdev_install_git_hooks
-</pre></div>
-<h3 id="Jupyter-Notebooks">Jupyter Notebooks<a class="anchor-link" href="#Jupyter-Notebooks"> </a></h3><p>The Python integrators are written in nbdev. With nbdev, you write all code in 
-<a href="https://jupyter.readthedocs.io/en/latest/install/notebook-classic.html">Jupyter Notebooks</a>, and generate the library, documentation and tests using the nbdev CLI.</p>
-<h3 id="nbdev">nbdev<a class="anchor-link" href="#nbdev"> </a></h3><p>With nbdev we create the code in Notebooks, where we specify the use off cells using special tags. See the <a href="https://nbdev.fast.ai/">nbdev documentation</a> for a all functionalities and tutorials, the most important tags are listed below.</p>
-<h4 id="nbdev-tags">nbdev tags<a class="anchor-link" href="#nbdev-tags"> </a></h4><ul>
-<li>Notebooks that start their name with an underscore, are ignored by nbdev completely</li>
-<li>Add <code>#default_exp &lt;packagename&gt;.&lt;modulename&gt;</code> to the top of your notebook to define the Python module to export to</li>
-<li>Add <code>#export</code> to the cells that define functions to include in the Python modules.</li>
-<li>All cells without the <code>#export</code> tag, are tests by default</li>
-<li>All cells are included in the documentation, unless you add the keyword <code>#hide</code></li>
-</ul>
-<h4 id="nbdev-CLI">nbdev CLI<a class="anchor-link" href="#nbdev-CLI"> </a></h4><p>After developing your code in Notebooks, you can use the nbdev CLI:</p>
-<ul>
-<li><code>nbdev_build_lib</code> to convert the Notebooks to the library and tests </li>
-<li><code>nbdev_test_nbs</code> to run the tests</li>
-<li><code>nbdev_build_docs</code> to generate the docs</li>
-<li><code>nbdev_clean_nbs</code> to clean the Notebooks' metadata to prevent Git conflicts</li>
-</ul>
-<h3 id="Contributing">Contributing<a class="anchor-link" href="#Contributing"> </a></h3><p>Before you make a merge request, make sure that you used all the nbdev commands specified above, or GitLab's CI won't pass.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Docs">Docs<a class="anchor-link" href="#Docs"> </a></h2><p>Find the online docs at <a href="https://pyintegrators.docs.memri.io/">pyintegrators.docs.memri.io</a>.</p>
-<h3 id="Render-documentation-locally">Render documentation locally<a class="anchor-link" href="#Render-documentation-locally"> </a></h3><p>New documentation will be deployed automatically when a new version is released to the <code>prod</code>  branch. To inspect the documentation beforehand, you can run it local machine by <a href="https://jekyllrb.com/docs/installation/">installing Jekyll</a>.</p>
+<h1 id="Render-documentation-locally">Render documentation locally<a class="anchor-link" href="#Render-documentation-locally"> </a></h1><p>New documentation will be deployed automatically when a new version is released to the <code>prod</code>  branch. To inspect the documentation beforehand, you can run it local machine by <a href="https://jekyllrb.com/docs/installation/">installing Jekyll</a>.</p>
 <p>To build the documentation:</p>
 <div class="highlight"><pre><span></span><span class="nb">cd</span> docs
 gem update --system 
