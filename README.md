@@ -2,27 +2,27 @@
 > Integrators connect the information in your Pod. They **import your data from external services** using *Importers* (Gmail, WhatsApp, etc.), **connect new data to the existing data** using *indexers* (face recognition, spam detection, object detection), and **execute actions** (sending messages, uploading files).
 
 
-Integrators for Memri have a single repository per language, this repository is for Python integrators. Memri also has [Node.js integrators](https://gitlab.memri.io/memri/nodeintegrators). This repository makes use of [nbdev](https://github.com/fastai/nbdev), which means that the repo structure is different from a normal python project, the documentation for this repo is hosted on [https://pyintegrators.memri.io/integrators/](https://pyintegrators.memri.io/integrators/).
+Integrators for Memri have a single repository per language, this is the repository for Python integrators. Memri also has [Node.js integrators](https://gitlab.memri.io/memri/nodeintegrators). This repository makes use of [nbdev](https://github.com/fastai/nbdev), which means that the repo structure has a few differences compared to a regular python project. The documentation for this repo is hosted on [https://pyintegrators.memri.io/integrators/](https://pyintegrators.memri.io/integrators/).
 
 # Installing
-Pyintegrators can be installed in two ways: 1) For local development we recommend to install using pip 2) For deployment we recommend to install using docker. **Currently, the only way to call integrators from the [memri](https://gitlab.memri.io/memri/browser-application) [clients](https://gitlab.memri.io/memri/ios-application)  is using docker, this will change soon.**
+Pyintegrators can be installed for two purposes: 1) For local development we recommend to install using pip 2) For deployment we recommend to install using docker. **Currently, the only way to call integrators from the [memri](https://gitlab.memri.io/memri/browser-application) [clients](https://gitlab.memri.io/memri/ios-application)  is using docker, this will change soon.**
 
 ## Install with pip
 To install the Python package, and correctly setup nbdev for development run:
 ```bash
 pip install -e . && nbdev_install_git_hooks
 ```
-The last commands automatically cleans metadata from your notebooks before a commit.
+The last command configures git to automatically cleans metadata from your notebooks before a commit.
 
 ## Install with Docker 
-The normal flow to run an integrator is from client, by calling the [pods](https://gitlab.memri.io/memri/pod) `run_integrator` api. Integrators are invoked by the Pod by launching a Docker container. To build the image for this container, run:
+The normal flow to run an integrator is from client, by calling the [pods](https://gitlab.memri.io/memri/pod) `run_integrator` api. Subsequently, the Integrator is invoked by the Pod by launching a Docker container. To build the image for this container, run:
 ```bash
 docker build -t memri-pyintegrators .
 ```
 
 
 # Overview
-We start by listing the existing indexers and their functionalities, make sure to check out their pages for usage examples.
+Pyintegrators currently provides the following integrators. Make sure to check out the documentation for tutorials and usage instructions.
 
 
 
@@ -39,8 +39,8 @@ We start by listing the existing indexers and their functionalities, make sure t
 
 
 # Nbdev & Jupyter Notebooks
-The Python integrators are written in [nbdev](https://nbdev.fast.ai/) ([video](https://www.youtube.com/watch?v=9Q6sLbz37gk&t=1301s)). With nbdev, it is necouraged to write code in 
-[Jupyter Notebooks](https://jupyter.readthedocs.io/en/latest/install/notebook-classic.html). Nbdev syncs all the notebooks in `/nbs` and the python code in `/integrators`. Tests are written side by side with the code in the notebooks, and documentation is automatically generated from the notebooks and exported into the `/docs` folder. Check out the [nbdev quickstart](wiki/nbdev_quickstart.md) for an introduction, **watch the video linked above**, or see the [nbdev documentation](https://nbdev.fast.ai/) for a all functionalities and tutorials.
+The Python integrators are written in [nbdev](https://nbdev.fast.ai/) ([video](https://www.youtube.com/watch?v=9Q6sLbz37gk&t=1301s)). With nbdev, it is encouraged to write code in 
+[Jupyter Notebooks](https://jupyter.readthedocs.io/en/latest/install/notebook-classic.html). Nbdev syncs all the notebooks in `/nbs` with the python code in `/integrators`. Tests are written side by side with the code in the notebooks, and documentation is automatically generated from the code and markdown in the notebooks and exported into the `/docs` folder. Check out the [nbdev quickstart](wiki/nbdev_quickstart.md) for an introduction, **watch the video linked above**, or see the [nbdev documentation](https://nbdev.fast.ai/) for a all functionalities and tutorials.
 
 ## Contributing
 When you make a merge request, make sure that you used all the nbdev commands specified in the [quickstart](wiki/nbdev_quickstart.md).
