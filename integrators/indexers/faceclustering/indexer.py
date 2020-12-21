@@ -3,18 +3,16 @@
 __all__ = ['FaceClusteringIndexer']
 
 # Cell
-from ..facerecognition.model import *
 from .models import *
 from .utils import *
+from ..facerecognition.photo import *
+from ..indexer import *
 from ...data.basic import *
 from ...data.schema import *
 from ...imports import *
-from ..facerecognition.photo import *
-from ..indexer import *
 from ...pod.client import PodClient, DEFAULT_POD_ADDRESS
 
 # Cell
-from fastprogress.fastprogress import progress_bar
 from mmcv.runner import load_checkpoint
 from collections import Counter
 import cv2
@@ -24,16 +22,10 @@ import torch
 # Cell
 class FaceClusteringIndexer(IndexerBase):
     """Clusters faces on photos."""
-    model_fname = "pretrained_gcn_v_ms1m.pth"
-    model_path = MODEL_DIR / model_fname
-    model_s3_url = f"{MEMRI_S3}/{model_fname}"
 
     def __init__(self, *args, **kwargs):
-        self.rec_model = FaceRecognitionModel()
-        self.model = GCN_V(feature_dim=256, nhid=512, nclass=1, dropout=0.0)
-        download_file(self.model_s3_url, self.model_path)
-        load_checkpoint(self.model, str(self.model_path), map_location="cpu", strict=True);
-        self.model.eval()
+        self.private = ["clustering_model"]
+        self.clustering_model = FaceClusteringModel()
         super().__init__(*args, **kwargs)
 
     def get_data(self, client, indexer_run):
@@ -41,20 +33,6 @@ class FaceClusteringIndexer(IndexerBase):
         for p in photos: client._load_photo_data(p, size=640)
         photos = [p for p in photos if p.data is not None]
         return IndexerData(photos=photos)
-
-    def get_clusters(self, pred_confs, dataset):
-        pred_dist2peak, pred_peaks = confidence_to_peaks(dataset.dists, dataset.nbrs,pred_confs, max_conn=1)
-        pred_labels = peaks_to_labels(pred_peaks, pred_dist2peak, tau=0.4, inst_num=dataset.inst_num)
-        # original tau: 0.65
-        return pred_labels
-
-    def get_predictions(self, features):
-        dataset = GCNVDataset(features)
-        features = torch.FloatTensor(dataset.features)
-        adj = sparse_mx_to_torch_sparse_tensor(dataset.adj)
-        pred_confs, _ = self.model((features, adj), output_feat=True)
-        clusters = self.get_clusters(pred_confs.detach().numpy(), dataset)
-        return clusters
 
     def create_cluster_items(self, crop_photos, pred_labels, min_cluster_size=2):
         c2p = {c: Person(firstName="unknown person") for c in set(pred_labels)
@@ -67,16 +45,10 @@ class FaceClusteringIndexer(IndexerBase):
         people = list(c2p.values())
         return people
 
-    def get_crops(self, photos):
-        return self.rec_model.get_crops(photos)
-
     def index(self, data, *args, **kwargs):
         photos = data.photos
         print(f"Indexing {len(photos)} photos")
-        crop_photos = self.get_crops(photos)
+        crop_photos, cluster_labels = self.clustering_model.run(photos)
         files = [c.file[0] for c in crop_photos]
-        for c in progress_bar(crop_photos): c.embedding = self.rec_model.get_embedding(c)
-        features = np.stack([x.embedding[256:] for x in crop_photos])
-        pred_labels = self.get_predictions(features)
-        people = self.create_cluster_items(crop_photos, pred_labels)
+        people = self.create_cluster_items(crop_photos, cluster_labels)
         return crop_photos + people + files
