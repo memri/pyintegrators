@@ -12,7 +12,7 @@ To install the Python package, and correctly setup nbdev for development run:
 ```bash
 pip install -e . && nbdev_install_git_hooks
 ```
-Here, the last commands cleans up metadata in our notebooks before we commit to git.
+The last commands automatically cleans metadata from your notebooks before a commit.
 
 ## Install with Docker 
 Integrators are invoked by the Pod by launching a Docker container. To build the image for this container, run:
