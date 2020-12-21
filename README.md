@@ -5,7 +5,7 @@
 Integrators for Memri have a single repository per language, this repository is for Python integrators. Memri also has [Node.js integrators](https://gitlab.memri.io/memri/nodeintegrators). This repository makes use of [nbdev](https://github.com/fastai/nbdev), which means that the repo structure is different from a normal python project, the documentation for this repo is hosted on [https://pyintegrators.memri.io/integrators/](https://pyintegrators.memri.io/integrators/).
 
 # Installing
-Pyintegrators can be installed in two ways: 1) For local development we recommend to install using pip 2) For deployment we recommend to install using docker. **Currently, the only way to call integrators from the [memri](https://gitlab.memri.io/memri/browser-application) [clients]((https://gitlab.memri.io/memri/ios-application))  is using docker, this will change soon.**
+Pyintegrators can be installed in two ways: 1) For local development we recommend to install using pip 2) For deployment we recommend to install using docker. **Currently, the only way to call integrators from the [memri](https://gitlab.memri.io/memri/browser-application) [clients](https://gitlab.memri.io/memri/ios-application)  is using docker, this will change soon.**
 
 ## Install with pip
 To install the Python package, and correctly setup nbdev for development run:
