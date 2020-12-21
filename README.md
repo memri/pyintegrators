@@ -39,10 +39,10 @@ We start by listing the existing indexers and their functionalities, make sure t
 
 # Nbdev & Jupyter Notebooks
 The Python integrators are written in [nbdev](https://nbdev.fast.ai/) ([video](https://www.youtube.com/watch?v=9Q6sLbz37gk&t=1301s)). With nbdev, all code is written in 
-[Jupyter Notebooks](https://jupyter.readthedocs.io/en/latest/install/notebook-classic.html). Therefore all the notebooks in `/nbs` and the python code in `/integrators` are synced, tests are written side by side with the code in the notebooks, and documentation is automatically generated from the notebooks in the `/docs` folder. Check out the [nbdev quickstart](wiki/quickstart) for an introduction, or see the [nbdev documentation](https://nbdev.fast.ai/) for a all functionalities and tutorials.
+[Jupyter Notebooks](https://jupyter.readthedocs.io/en/latest/install/notebook-classic.html). Therefore all the notebooks in `/nbs` and the python code in `/integrators` are synced, tests are written side by side with the code in the notebooks, and documentation is automatically generated from the notebooks in the `/docs` folder. Check out the [nbdev quickstart](/wiki/quickstart) for an introduction, or see the [nbdev documentation](https://nbdev.fast.ai/) for a all functionalities and tutorials.
 
 ## Contributing
-When you make a merge request, make sure that you used all the nbdev commands specified in the [quickstart](wiki/quickstart).
+When you make a merge request, make sure that you used all the nbdev commands specified in the [quickstart](/wiki/quickstart).
 
 # Render documentation locally
 New documentation will be deployed automatically when a new version is released to the `prod`  branch. To inspect the documentation beforehand, you can run it local machine by [installing Jekyll](https://jekyllrb.com/docs/installation/).
