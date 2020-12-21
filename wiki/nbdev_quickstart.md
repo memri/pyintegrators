@@ -1,34 +1,31 @@
-# nbdev quickstart nbdev
+# nbdev quickstart
 With nbdev we create the code in Notebooks, where we specify the use off cells using special tags. We list the most widely used tags here to get you started quickly
 
 ## Tags
-Add `#default_exp <packagename>.<modulename>` to the top of your notebook to define the Python module to export to. For example, if we have a notebook file `nbs/data.email.ipynb`, with as first line:
+When you create a new notebook, add `#default_exp <packagename>.<modulename>` to the top of your notebook to define the Python module to export to. For example, if you have a notebook file `nbs/data.email.ipynb`, with as first line:
 ```
 #default_exp data.email
 ```
-The notebook will write to a file called `integrators/data/email.py` when nbdev is commanded to sync.
+The notebook will write to a file called `integrators/data/email.py` when nbdev is commanded to sync using `nbdev_build_lib`.
 
-All cells `#export` will be wirtten to the outputfile, e.g.
+All cells `#export` will be converted to code in the outputfile, e.g.
 ```
 # export
 def times_two(i): return i*2
 ```
-Will be written to the file specified in #default_exp. 
+Will be written to the file specified in #default_exp. All cells without the `#export` tag, will be converted to tests by default. 
 
-
-- All cells without the `#export` tag, are tests by default. 
-
-All cells are included in the documentation, unless you add the keyword `#hide`, e.g.
+By default, all cells are included in the documentation, unless you add the keyword `#hide`, e.g.
 ```
 # hide
 for i in range(1000000):
     print(i)
 ```
 
-Lastly, Notebooks that start their name with an underscore, are ignored by nbdev completely. Nbdev has many other functionalities, see the [nbdev docs](https://nbdev.fast.ai/) for more information.
+Will not appear in the documentation. Lastly, Notebooks with a name that start with an underscore, are ignored by nbdev completely. Nbdev has many other functionalities, see the [nbdev docs](https://nbdev.fast.ai/) for more information.
 
 
-#### nbdev CLI 
+## CLI 
 After developing your code in Notebooks, you can use the nbdev CLI:
 - `nbdev_build_lib` to convert the Notebooks `/nbs` to the library in `/integrators`
 - `nbdev_test_nbs` to run the tests (all cells without #export tags)
