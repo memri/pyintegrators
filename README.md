@@ -1,5 +1,5 @@
 # pyintegrators
-> Integrators connect the information in your Pod. They **import your data from external services** using *Importers* (Gmail, WhatsApp, etc.), **connect new data to the existing data** in your pod using *indexers* (face recognition, spam detection, etc.), and **execute actions** (sending messages, uploading files, etc.).
+> Integrators connect the information in your Pod. They **import your data from external services** using *Importers* (Gmail, WhatsApp, etc.), **connect new data to the existing data** using *indexers* (face recognition, spam detection, etc.), and **execute actions** (sending messages, uploading files, etc.).
 
 
 Integrators for Memri have a single repository per language, this repository is for Python integrators. Memri also has [Node.js integrators](https://gitlab.memri.io/memri/nodeintegrators). This repository makes use of [nbdev](https://github.com/fastai/nbdev), which means that the repo structure is different from a normal python project, the documentation for this repo is hosted on [https://pyintegrators.memri.io/integrators/](https://pyintegrators.memri.io/integrators/).
