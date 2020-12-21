@@ -39,8 +39,8 @@ We start by listing the existing indexers and their functionalities, make sure t
 
 
 # Nbdev & Jupyter Notebooks
-The Python integrators are written in [nbdev](https://nbdev.fast.ai/) ([video](https://www.youtube.com/watch?v=9Q6sLbz37gk&t=1301s)). With nbdev, all code is written in 
-[Jupyter Notebooks](https://jupyter.readthedocs.io/en/latest/install/notebook-classic.html). Therefore all the notebooks in `/nbs` and the python code in `/integrators` are synced, tests are written side by side with the code in the notebooks, and documentation is automatically generated from the notebooks in the `/docs` folder. Check out the [nbdev quickstart](wiki/nbdev_quickstart.md) for an introduction, or see the [nbdev documentation](https://nbdev.fast.ai/) for a all functionalities and tutorials.
+The Python integrators are written in [nbdev](https://nbdev.fast.ai/) ([video](https://www.youtube.com/watch?v=9Q6sLbz37gk&t=1301s)). With nbdev, it is necouraged to write code in 
+[Jupyter Notebooks](https://jupyter.readthedocs.io/en/latest/install/notebook-classic.html). Nbdev syncs all the notebooks in `/nbs` and the python code in `/integrators`. Tests are written side by side with the code in the notebooks, and documentation is automatically generated from the notebooks and exported into the `/docs` folder. Check out the [nbdev quickstart](wiki/nbdev_quickstart.md) for an introduction, **watch the video linked above**, or see the [nbdev documentation](https://nbdev.fast.ai/) for a all functionalities and tutorials.
 
 ## Contributing
 When you make a merge request, make sure that you used all the nbdev commands specified in the [quickstart](wiki/nbdev_quickstart.md).
