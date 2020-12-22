@@ -1,5 +1,5 @@
 # pyintegrators
-> Integrators connect the information in your Pod. They **import your data from external services** using *Importers* (Gmail, WhatsApp, etc.), **connect new data to the existing data** using *indexers* (face recognition, spam detection, object detection), and **execute actions** (sending messages, uploading files).
+> Integrators connect the information in your Pod. They <b>import your data from external services</b> using <i>Importers</i> (Gmail, WhatsApp, etc.), <b>connect new data to the existing data</b> using <i>indexers</i> (face recognition, spam detection, object detection), and <b>execute actions</b> (sending messages, uploading files).
 
 
 [![Gitlab pipeline status (self-hosted)](https://img.shields.io/gitlab/pipeline/memri/pyintegrators/dev?gitlab_url=https%3A%2F%2Fgitlab.memri.io)](https://gitlab.memri.io/memri/pyintegrators/-/pipelines/latest)
@@ -7,7 +7,7 @@
 [![Discourse status](https://img.shields.io/discourse/status?logo=Discourse&server=https%3A%2F%2Fdiscourse.memri.io)](https://discourse.memri.io) 
 [![Twitter URL](https://img.shields.io/twitter/url?label=YourMemri&url=https%3A%2F%2Ftwitter.com%2FYourMemri)](https://twitter.com/YourMemri)
 
-Integrators for Memri have a single repository per language, this is the repository for Python integrators. Memri also has [Node.js integrators](https://gitlab.memri.io/memri/nodeintegrators). This repository makes use of [nbdev](https://github.com/fastai/nbdev), which means that the repo structure has a few differences compared to a regular python project. The documentation for this repo is hosted on [https://pyintegrators.memri.io/integrators/](https://pyintegrators.memri.io/integrators/).
+Integrators for Memri have a single repository per language, this is the repository for Python integrators. Memri also has [Node.js integrators](https://gitlab.memri.io/memri/nodeintegrators). This repository is built with [nbdev](https://github.com/fastai/nbdev), which means that the repo structure has a few differences compared to a standard python repo. The documentation for this repo is hosted on [https://pyintegrators.memri.io/integrators/](https://pyintegrators.memri.io/integrators/).
 
 # Installing
 Pyintegrators can be installed for two purposes: 1) For local development we recommend to install using pip 2) For deployment we recommend to install using docker. **Currently, the only way to call integrators from the [memri](https://gitlab.memri.io/memri/browser-application) [clients](https://gitlab.memri.io/memri/ios-application)  is using docker, this will change soon.**
