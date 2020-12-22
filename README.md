@@ -5,7 +5,7 @@
 [![Gitlab pipeline status (self-hosted)](https://img.shields.io/gitlab/pipeline/memri/pyintegrators/dev?gitlab_url=https%3A%2F%2Fgitlab.memri.io)](https://gitlab.memri.io/memri/pyintegrators/-/pipelines/latest)
 [![GitHub last commit](https://img.shields.io/github/last-commit/memri/pyintegrators)](https://gitlab.memri.io/memri/pyintegrators/-/commits/dev)
 [![Discourse status](https://img.shields.io/discourse/status?logo=Discourse&server=https%3A%2F%2Fdiscourse.memri.io)](https://discourse.memri.io) 
-[![Twitter URL](https://img.shields.io/twitter/url?label=YourMemri&url=https%3A%2F%2Ftwitter.com%2FYourMemri)](https://twitter.com/YourMemri)
+[![Twitter URL](https://img.shields.io/twitter/url?label=%40YourMemri&logo=twitter&style=plastic&url=https%3A%2F%2Ftwitter.com%2FYourMemri)](https://twitter.com/YourMemri)
 
 Integrators for Memri have a single repository per language, this is the repository for Python integrators. Memri also has [Node.js integrators](https://gitlab.memri.io/memri/nodeintegrators). This repository is built with [nbdev](https://github.com/fastai/nbdev), which means that the repo structure has a few differences compared to a standard python repo. The documentation for this repo is hosted on [https://pyintegrators.memri.io/integrators/](https://pyintegrators.memri.io/integrators/).
 
