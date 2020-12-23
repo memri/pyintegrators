@@ -1,3 +1,223 @@
+
+
+
+/* CUSTOM THEME MEMRI */
+
+
+@font-face {
+    font-family: 'Frutiger Neue LT';
+    src: url('/fonts/FrutigerNeueLT.woff') format('woff');
+    font-weight: 400;
+    font-style: normal; 
+  }
+  
+  @font-face {
+    font-family: 'Frutiger Neue LT';
+    src: url('/fonts/FrutigerNeueLTLight.woff') format('woff');
+    font-weight: 100;
+  }
+  
+  @font-face {
+    font-family: 'Frutiger Neue LT';
+    src: url('/fonts/FrutigerNeueLTBook.woff') format('woff');
+    font-weight: 300;
+  }
+  
+  @font-face {
+    font-family: 'Frutiger Neue LT';
+    src: url('/fonts/FrutigerNeueLTBold.woff') format('woff');
+    font-weight: 500;
+  }
+  
+  @font-face {
+    font-family: 'Frutiger Neue LT';
+    src: url('/fonts/FrutigerNeueLTHeavy.woff') format('woff');
+    font-weight: 600;
+  }
+
+
+
+#tg-sb-content h1{
+    font-family: "Frutiger Neue LT" !important;
+    font-style: normal;
+    font-weight: medium;
+    font-size: 32px;
+    line-height: 33px;
+
+    letter-spacing: 0.03em;
+    color: #554C63;
+}
+
+#mysidebar .firstLevelHeader {
+    text-transform: uppercase;
+    font-style: normal;
+    font-weight: book;
+    font-size: 16px;
+    /* background-color: white !important; */
+    background-color: #F8F3FF !important;
+    color: #554C63 !important;
+}
+
+.nav > li.active > a{
+    background-color: #F8F3FF !important;
+    color: #6458A1 !important;
+}
+
+.nav a:hover, .nav li.active > a{
+    color: #6458A1 !important;
+    background-color: white !important;
+}
+
+.nav ul li a{
+    color: #554C63 !important;
+    background-color: white !important;
+    font-style: normal;
+    font-weight: book;
+    font-size: 16px;
+    width: 15vw !important;
+}
+
+@media (min-width: 1200px){
+    .container {
+        width: 90vw;
+    }
+} 
+.navbar{
+background: linear-gradient(90.31deg, #FFFEFF 22.52%, #F7F2FE 96.73%);
+box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.25);
+border-bottom: none;
+font-family: "Frutiger Neue LT";
+}
+
+.memri-back-button{
+    font-family: Frutiger Neue LT;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 32px;
+    line-height: 40px;
+    color: rgba(85, 76, 99, 0.9);
+    text-decoration: none; /* no underline */
+}
+
+
+#tg-sb-content p h1 h2{
+    color: #554C63 !important;
+}
+#tg-sb-content p, #tg-sb-content h1, #tg-sb-content h2, #tg-sb-content h3{
+    color: #554C63 !important;
+}
+
+#mysidebar{
+    font-family: Frutiger Neue LT !important;
+}
+
+.memri-back-button:hover, .memri-back-button:visited, .memri-back-button:active, .memri-back-button:link{
+    text-decoration: none; /* no underline */
+    color: rgba(85, 76, 99, 0.9);
+}
+
+#tg-sb-content h2{
+    border-top: 3px solid #8F8FC5 !important;
+}
+
+.navbar-header{
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+#gitlab-img{
+    display: inline-block;
+}
+
+#sidebar-title{
+    display: inline-block;
+    vertical-align: bottom;
+    font-family: Frutiger Neue LT;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 21px;
+    letter-spacing: 0.03em;
+    color: #665E73 !important;
+}
+
+#sidebar-title a{
+    color: #665E73 !important;
+}
+
+#sidebar-title a:hover{
+    color: #8F8FC5 !important;
+}
+
+.nav ul li a {
+    border-top: none !important;
+    border-bottom: none !important;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.nav > li > a{
+    padding: 0px 10px !important;
+}
+
+.navbar-right{
+    padding: 16px 0px !important;
+}
+
+#main{
+    font-family: Frutiger Neue LT !important;
+}
+
+.navbar-brand{
+    color: #554C63 !important;
+}
+
+/* .projectTitle{
+    font-family: "Frutiger Neue LT" !important;
+    display: inline-block; 
+    font-size: 32px;
+    line-height: 40px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 40px;
+} */
+
+/* #memri-logo{
+    height: 28px;
+} */
+
+/* #pythonImage{
+    display: inline-block; 
+    height: 28px;
+} */
+
+#nodeIntegrators{
+    color:rgba(119, 112, 130, 0.9) !important;
+    font-size: 18px;
+    line-height: 40px;
+}
+
+
+#docs-link{
+    font-size: 13px;
+    line-height: 40px;
+    color: #8F8FC5;
+}
+#docs-link a{
+    color: #8F8FC5 !important;
+}
+
+#docs-link a:hover{
+    color: #7474e4 !important;
+}
+
+/* #suffix-docs-link{
+    font-size: 13px;
+    color: rgba(137, 136, 136, 0.7);
+} */
+
+/* END CUSTOM THEME MEMRI */
+
+
 .anchor-link {
     display: none;
 }
@@ -350,7 +570,6 @@ li.dropdownActive a {
 
 .navbar-inverse .navbar-nav > li > a {
     background-color: transparent;
-    margin-top:10px;
 }
 
 .post-content .rssfeedLink {
@@ -438,7 +657,7 @@ background-color: #347DBE;
 
 .nav > li > a {
     font-size: 14px;
-    line-height: 20px;
+    line-height: 29px;
     padding: 4px 10px;
 }
 
@@ -485,8 +704,8 @@ ul#mysidebar {
 }
 
 span.projectTitle {
-    font-family: Helvetica;
-    font-weight: bold;
+    /* font-family: Helvetica; */
+    /* font-weight: bold; */
 }
 
 .footer {
