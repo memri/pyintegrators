@@ -2,13 +2,11 @@
 
 title: pyintegrators
 
-
 keywords: fastai
 sidebar: home_sidebar
 
 summary: "Integrators connect the information in your Pod. They <b>import your data from external services</b> using <i>Importers</i> (Gmail, WhatsApp, etc.), <b>connect new data to the existing data</b> using <i>indexers</i> (face recognition, spam detection, object detection), and <b>execute actions</b> (sending messages, uploading files)."
 description: "Integrators connect the information in your Pod. They <b>import your data from external services</b> using <i>Importers</i> (Gmail, WhatsApp, etc.), <b>connect new data to the existing data</b> using <i>indexers</i> (face recognition, spam detection, object detection), and <b>execute actions</b> (sending messages, uploading files)."
-nb_path: "nbs/index.ipynb"
 ---
 <!--
 
@@ -41,7 +39,7 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Integrators for Memri have a single repository per language, this is the repository for Python integrators. Memri also has <a href="https://gitlab.memri.io/memri/nodeintegrators">Node.js integrators</a>. This repository is built with <a href="https://github.com/fastai/nbdev">nbdev</a>, which means that the repo structure has a few differences compared to a standard python repo. The documentation for this repo is hosted on <a href="https://pyintegrators.memri.io/integrators/">https://pyintegrators.memri.io/integrators/</a>.</p>
+<p>Integrators for Memri have a single repository per language, this is the repository for Python integrators. Memri also has <a href="https://gitlab.memri.io/memri/nodeintegrators">Node.js integrators</a>. This repository is built with <a href="https://github.com/fastai/nbdev">nbdev</a>, which means that the repo structure has a few differences compared to a standard python repo. The documentation for this repository is available on <a href="https://pyintegrators.memri.io">pyintegrators.memri.io</a>.</p>
 
 </div>
 </div>
@@ -65,7 +63,7 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Install-with-Docker">Install with Docker<a class="anchor-link" href="#Install-with-Docker"> </a></h2><p>The normal flow to run an integrator is from the client, by calling the <a href="https://gitlab.memri.io/memri/pod">pods</a> <a href="&quot;&quot;indexers.indexer.html#run_integrator"><code>run_integrator</code></a> api. Subsequently, the Integrator is invoked by the Pod by launching a Docker container. To build the image for this container, run:</p>
+<h2 id="Install-with-Docker">Install with Docker<a class="anchor-link" href="#Install-with-Docker"> </a></h2><p>The normal flow to run an integrator is from the client, by calling the <a href="https://gitlab.memri.io/memri/pod">pods</a> <a href="&quot;&quot;indexers.indexer#run_integrator"><code>run_integrator</code></a> api. Subsequently, the Integrator is invoked by the Pod by launching a Docker container. To build the image for this container, run:</p>
 <div class="highlight"><pre><span></span>docker build -t memri-pyintegrators .
 </pre></div>
 
