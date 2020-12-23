@@ -8,21 +8,29 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> {{site.topnav_title}}</span></a>
+            <a class="memri-back-button" href="https://memri.io" target="_blank">memri</a>
+            <!-- <a class="fa fa-lg navbar-brand" href="https://memri.cloud"><img src="{{ "/images/company_crop.png"  | prepend: site.baseurl }}" id="memri-logo"></a>
+            <a class="fa fa-lg navbar-brand" href="index.html"><img src="{{ "/images/110px-Python-logo-notext.png"  | prepend: site.baseurl }}" id="pythonImage">&nbsp;<span class="projectTitle"> {{site.topnav_title}}</span></a> -->
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <!-- toggle sidebar button -->
-                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li> -->
                 <!-- entries without drop-downs appear here -->
 
-{% assign topnav = site.data[page.topnav] %}
-{% assign topnav_dropdowns = site.data[page.topnav].topnav_dropdowns %}
+                <li>
+                    <a id="nodeIntegrators" href="https://gitlab.memri.io/memri/nodeintegrators" target="_blank">
+                        <img src="/images/nodejs-icon.svg" height="14">&nbsp integrators
+                    </a>
+                </li>
+
+                {% assign topnav = site.data[page.topnav] %}
+                {% assign topnav_dropdowns = site.data[page.topnav].topnav_dropdowns %}
 
                 {% for entry in topnav.topnav %}
                 {% for item in entry.items %}
                 {% if item.external_url %}
-                <li><a href="{{item.external_url}}" target="_blank">{{item.title}}</a></li>
+                <!-- <li><a href="{{item.external_url}}" target="_blank">{{item.title}}</a></li> -->
                 {% elsif page.url contains item.url %}
                 <li class="active"><a href="{{item.url | remove: "/"}}">{{item.title}}</a></li>
                 {% else %}
@@ -57,6 +65,6 @@
                 {% endif %}
             </ul>
         </div>
-        </div>
+    </div>
         <!-- /.container -->
 </nav>
