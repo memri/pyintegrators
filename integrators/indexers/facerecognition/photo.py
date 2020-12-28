@@ -11,6 +11,8 @@ from matplotlib import patches
 from matplotlib.collections import PatchCollection
 from numpy.linalg import norm
 from hashlib import sha256
+from PIL import Image
+from io import BytesIO
 import cv2
 import matplotlib.pyplot as plt
 import math
@@ -127,6 +129,11 @@ class IPhoto(Photo):
         file = File.from_data(sha256=sha256(data.tobytes()).hexdigest())
         res.add_edge("file", file)
         return res
+
+    @classmethod
+    def from_bytes(cls, _bytes):
+        img = cv2.imdecode(np.frombuffer(_bytes, np.uint8), cv2.IMREAD_COLOR)
+        return cls.from_np(img)
 
     @staticmethod
     def box_to_rect(box):
