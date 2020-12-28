@@ -13,9 +13,10 @@
     "GeoIndexer": "indexers.GeoIndexer.html",
     "": {
       "Facerecognition": {
-        "Face Detection & Verification": "indexers.FaceRecognitionIndexer.html",
-        "FaceClustering Indexer ": "indexers.FaceClusteringIndexer.indexer.html",
-        "Photos": "indexers.FacerecognitionIndexer.Photo.html"
+        "Detecting and comparing faces": "indexers.FaceRecognitionIndexer.html",
+        "Clustering cropped faces": "indexers.FaceClusteringIndexer.Models.html",
+        "Faceclustering Indexer": "indexers.FaceClusteringIndexer.indexer.html",
+        "Photos & Utils": "indexers.FacerecognitionIndexer.Photo.html"
       }
     },
     "empty1": {
