@@ -37,13 +37,16 @@ entries:
       - output: web
         subfolderitems:
         - output: web,pdf
-          title: Face Detection & Verification
+          title: Detecting and comparing faces
           url: indexers.FaceRecognitionIndexer.html
         - output: web,pdf
-          title: 'FaceClustering Indexer '
+          title: Clustering cropped faces
+          url: indexers.FaceClusteringIndexer.Models.html
+        - output: web,pdf
+          title: Faceclustering Indexer
           url: indexers.FaceClusteringIndexer.indexer.html
         - output: web,pdf
-          title: Photos
+          title: Photos & Utils
           url: indexers.FacerecognitionIndexer.Photo.html
         title: Facerecognition
       - output: web
