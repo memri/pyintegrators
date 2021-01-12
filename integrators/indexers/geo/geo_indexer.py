@@ -87,4 +87,4 @@ class GeoIndexer(IndexerBase):
 
             # indexer_run.set_progress(client, progress)
 
-        return items_with_location, new_nodes
+        return new_nodes + items_with_location

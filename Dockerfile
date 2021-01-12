@@ -1,4 +1,4 @@
-FROM python:3 as memri-pyintegrators
+FROM python:3.7 as memri-pyintegrators
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y libgl1-mesa-glx
@@ -22,9 +22,11 @@ COPY ./MANIFEST.in ./MANIFEST.in
 COPY ./README.md ./README.md
 COPY ./tools ./tools
 COPY ./integrators ./integrators
+COPY ./nbs ./nbs
+COPY ./test ./test
 
 # Build the final image
 
 RUN pip3 install --editable .
-CMD ["python3", "tools/run_integrator.py"]
+# CMD ["python3", "tools/run_integrator.py"]
 
