@@ -181,7 +181,7 @@ class WhatsAppImporter(ImporterBase):
             self.matrix.run_matrix(network_name)
             self.matrix.register_user(self.password, pod_client)
 
-        # retreave matrix account and token
+        # retrieve matrix account and token
         items = pod_client.search_by_fields({"externalId": self.username})
         account_item = items[0]
         self.matrix_acc = account_item.displayName
@@ -386,16 +386,16 @@ class WhatsAppImporter(ImporterBase):
         time.sleep(5)
 
         while True: # polling for new contacts, chats and messages
-        all_rooms = self.matrix_client.get_joined_rooms()
+            all_rooms = self.matrix_client.get_joined_rooms()
 
-        self.update_progress_message(pod_client, importer_run, "importing contacts", verbose=verbose)
-        self.import_all_accounts(all_rooms, users)
+            self.update_progress_message(pod_client, importer_run, "importing contacts", verbose=verbose)
+            self.import_all_accounts(all_rooms, users)
 
-        self.update_progress_message(pod_client, importer_run, "importing chats", verbose=verbose)
-        self.import_all_messagechannels(all_rooms)
+            self.update_progress_message(pod_client, importer_run, "importing chats", verbose=verbose)
+            self.import_all_messagechannels(all_rooms)
 
-        self.update_progress_message(pod_client, importer_run, "importing messages", verbose=verbose)
-        next_batch = self.import_all_messages(next_batch)
+            self.update_progress_message(pod_client, importer_run, "importing messages", verbose=verbose)
+            next_batch = self.import_all_messages(next_batch)
 
-        self.update_run_status(pod_client, importer_run, "polling")
-        time.sleep(2)
+            self.update_run_status(pod_client, importer_run, "polling")
+            time.sleep(2)
