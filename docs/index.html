@@ -48,7 +48,7 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Installing">Installing<a class="anchor-link" href="#Installing"> </a></h1><p>Pyintegrators can be installed for two purposes: 1) For local development we recommend to install using pip 2) For deployment we recommend to install using docker. <strong>Currently, the only way to call integrators from the <a href="https://gitlab.memri.io/memri/browser-application">memri</a> <a href="https://gitlab.memri.io/memri/ios-application">clients</a>  is using docker, this will change soon.</strong></p>
+<h1 id="Installing">Installing<a class="anchor-link" href="#Installing"> </a></h1><p>Pyintegrators can be installed for two purposes: 1) For local development, installation using pip is recommended 2) For deployment, installion using docker is recommended. <strong>Currently, the only way to call integrators from the <a href="https://gitlab.memri.io/memri/browser-application">memri</a> <a href="https://gitlab.memri.io/memri/ios-application">clients</a>  is using docker, this will change soon.</strong></p>
 
 </div>
 </div>
@@ -74,7 +74,7 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Overview">Overview<a class="anchor-link" href="#Overview"> </a></h2><p>Pyintegrators currently provides the following integrators. Make sure to check out the documentation for tutorials and usage instructions.</p>
+<h1 id="Overview">Overview<a class="anchor-link" href="#Overview"> </a></h1><p>Pyintegrators currently provides the following integrators. Make sure to check out the documentation for tutorials and usage instructions.</p>
 
 </div>
 </div>
@@ -133,7 +133,7 @@ nb_path: "nbs/index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Nbdev-&amp;-Jupyter-Notebooks">Nbdev &amp; Jupyter Notebooks<a class="anchor-link" href="#Nbdev-&amp;-Jupyter-Notebooks"> </a></h2><p>The Python integrators are written in <a href="https://nbdev.fast.ai/">nbdev</a> (<a href="https://www.youtube.com/watch?v=9Q6sLbz37gk&amp;t=1301s">video</a>). With nbdev, it is encouraged to write code in 
+<h1 id="Nbdev-&amp;-Jupyter-Notebooks">Nbdev &amp; Jupyter Notebooks<a class="anchor-link" href="#Nbdev-&amp;-Jupyter-Notebooks"> </a></h1><p>The Python integrators are written in <a href="https://nbdev.fast.ai/">nbdev</a> (<a href="https://www.youtube.com/watch?v=9Q6sLbz37gk&amp;t=1301s">video</a>). With nbdev, it is encouraged to write code in 
 <a href="https://jupyter.readthedocs.io/en/latest/install/notebook-classic.html">Jupyter Notebooks</a>. Nbdev syncs all the notebooks in <code>/nbs</code> with the python code in <code>/integrators</code>. Tests are written side by side with the code in the notebooks, and documentation is automatically generated from the code and markdown in the notebooks and exported into the <code>/docs</code> folder. Check out the <a href="wiki/nbdev_quickstart.md">nbdev quickstart</a> for an introduction, <strong>watch the video linked above</strong>, or see the <a href="https://nbdev.fast.ai/">nbdev documentation</a> for a all functionalities and tutorials.</p>
 
 </div>
@@ -141,20 +141,30 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Contributing">Contributing<a class="anchor-link" href="#Contributing"> </a></h3><p>When you make a merge request, make sure that you used all the nbdev commands specified in the <a href="wiki/nbdev_quickstart.md">quickstart</a>.</p>
+<h2 id="Contributing">Contributing<a class="anchor-link" href="#Contributing"> </a></h2><p>When you make a merge request, make sure that you used all the nbdev commands specified in the <a href="wiki/nbdev_quickstart.md">quickstart</a>.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Render-documentation-locally">Render documentation locally<a class="anchor-link" href="#Render-documentation-locally"> </a></h2><p>New documentation will be deployed automatically when a new version is released to the <code>prod</code>  branch. To inspect the documentation beforehand, you can run it local machine by <a href="https://jekyllrb.com/docs/installation/">installing Jekyll</a>.</p>
-<p>To build the documentation:</p>
+<h1 id="Requesting-Integrators">Requesting Integrators<a class="anchor-link" href="#Requesting-Integrators"> </a></h1><p>If you are using memri, you can share which integrators you are currently missing the most. There is a <a href="https://discourse.memri.io/c/plugins-requests/11">topic</a> on the <a href="https://discourse.memri.io/">memri forum</a> in which you can request new integrators by posting a description, or upvote pending requests. Requests with upvotes will be prioritized.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Docs">Docs<a class="anchor-link" href="#Docs"> </a></h1><p>New documentation will be deployed automatically when a new version is released to the <code>prod</code>  branch. The CI will generate html files using:</p>
+
+<pre><code>nbdev_build_docs</code></pre>
+<h2 id="Rendering-Locally">Rendering Locally<a class="anchor-link" href="#Rendering-Locally"> </a></h2><p>To inspect changes in the documentation locally, you can render it on your local machine using <a href="https://jekyllrb.com/docs/installation/">installing Jekyll</a>.</p>
+<p>To build the documentation run:</p>
 <div class="highlight"><pre><span></span><span class="nb">cd</span> docs
 gem update --system 
 bundle install
 </pre></div>
-<p>To serve the documentation:</p>
+<p>To serve the documentation run:</p>
 <div class="highlight"><pre><span></span>bundle <span class="nb">exec</span> jekyll serve
 </pre></div>
 

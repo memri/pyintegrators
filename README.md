@@ -10,7 +10,7 @@
 Integrators for Memri have a single repository per language, this is the repository for Python integrators. Memri also has [Node.js integrators](https://gitlab.memri.io/memri/nodeintegrators). This repository is built with [nbdev](https://github.com/fastai/nbdev), which means that the repo structure has a few differences compared to a standard python repo. The documentation for this repository is available on [pyintegrators.memri.io](https://pyintegrators.memri.io).
 
 # Installing
-Pyintegrators can be installed for two purposes: 1) For local development we recommend to install using pip 2) For deployment we recommend to install using docker. **Currently, the only way to call integrators from the [memri](https://gitlab.memri.io/memri/browser-application) [clients](https://gitlab.memri.io/memri/ios-application)  is using docker, this will change soon.**
+Pyintegrators can be installed for two purposes: 1) For local development, installation using pip is recommended 2) For deployment, installion using docker is recommended. **Currently, the only way to call integrators from the [memri](https://gitlab.memri.io/memri/browser-application) [clients](https://gitlab.memri.io/memri/ios-application)  is using docker, this will change soon.**
 
 ## Install with pip
 To install the Python package, and correctly setup nbdev for development run:
@@ -25,7 +25,7 @@ The normal flow to run an integrator is from the client, by calling the [pods](h
 docker build -t memri-pyintegrators .
 ```
 
-## Overview
+# Overview
 Pyintegrators currently provides the following integrators. Make sure to check out the documentation for tutorials and usage instructions.
 
 
@@ -42,24 +42,35 @@ Pyintegrators currently provides the following integrators. Make sure to check o
 
 
 
-## Nbdev & Jupyter Notebooks
+# Nbdev & Jupyter Notebooks
 The Python integrators are written in [nbdev](https://nbdev.fast.ai/) ([video](https://www.youtube.com/watch?v=9Q6sLbz37gk&t=1301s)). With nbdev, it is encouraged to write code in 
 [Jupyter Notebooks](https://jupyter.readthedocs.io/en/latest/install/notebook-classic.html). Nbdev syncs all the notebooks in `/nbs` with the python code in `/integrators`. Tests are written side by side with the code in the notebooks, and documentation is automatically generated from the code and markdown in the notebooks and exported into the `/docs` folder. Check out the [nbdev quickstart](wiki/nbdev_quickstart.md) for an introduction, **watch the video linked above**, or see the [nbdev documentation](https://nbdev.fast.ai/) for a all functionalities and tutorials.
 
-### Contributing
+## Contributing
 When you make a merge request, make sure that you used all the nbdev commands specified in the [quickstart](wiki/nbdev_quickstart.md).
 
-## Render documentation locally
-New documentation will be deployed automatically when a new version is released to the `prod`  branch. To inspect the documentation beforehand, you can run it local machine by [installing Jekyll](https://jekyllrb.com/docs/installation/).
+# Requesting Integrators
 
-To build the documentation:
+If you are using memri, you can share which integrators you are currently missing the most. There is a [topic](https://discourse.memri.io/c/plugins-requests/11) on the [memri forum](https://discourse.memri.io/) in which you can request new integrators by posting a description, or upvote pending requests. Requests with upvotes will be prioritized.
+
+# Docs
+New documentation will be deployed automatically when a new version is released to the `prod`  branch. The CI will generate html files using:
+
+```
+nbdev_build_docs
+```
+
+## Rendering Locally
+To inspect changes in the documentation locally, you can render it on your local machine using [installing Jekyll](https://jekyllrb.com/docs/installation/).
+
+To build the documentation run:
 ```bash
 cd docs
 gem update --system 
 bundle install
 ```
 
-To serve the documentation:
+To serve the documentation run:
 ```bash
 bundle exec jekyll serve
 ```
