@@ -10,11 +10,6 @@ from .importer import ImporterBase
 from .matrix import *
 from ..pod.client import PodClient
 from nbdev.showdoc import show_doc
-import docker
-import string
-import subprocess
-import sys
-import time
 
 # Cell
 
