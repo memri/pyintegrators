@@ -376,7 +376,7 @@ class WhatsAppImporter(ImporterBase):
         while not len(all_rooms) > 1: # wait for web authentication
             if not notified:
                 self.update_run_status(pod_client, importer_run, "waiting for web authentication")
-                print(f"Please login to {self.matrix_address} with username {self.username} and password {self.password}, and invite {self.bot_name} to a new room.")
+                print(f"Please go to https://app.element.io/#/login, first change the homeserver addrss to {self.matrix_address}, then login with username {self.username} and password {self.password}, and invite {self.bot_name} to a new room.")
                 notified = True
             time.sleep(10)
             all_rooms = self.matrix_client.get_joined_rooms()
