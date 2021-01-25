@@ -118,7 +118,7 @@ modules = ["data/basic.py",
            "data/itembase.py",
            "pod/client.py"]
 
-doc_url = "http://memri.docs.memri.io/"
+doc_url = "http://memri.docs.memri.io/pyintegrators/"
 
 git_url = "https://gitlab.memri.io/memri/pyintegrators/tree/prod/"
 

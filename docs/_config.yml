@@ -1,4 +1,4 @@
-baseurl: /
+baseurl: /pyintegrators/
 collections:
   tooltips:
     output: false
