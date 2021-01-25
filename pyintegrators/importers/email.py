@@ -5,13 +5,13 @@ __all__ = ['IMAPClient', 'part_to_str', 'DEFAULT_GMAIL_HOST', 'DEFAULT_GMAIL_INB
 
 # Cell
 import imaplib, email, math
-from integrators.data.schema import Account, EmailMessage, MessageChannel
-from integrators.pod.client import PodClient
-from integrators.importers.util import *
-from integrators.data.basic import *
+from ..data.schema import Account, EmailMessage, MessageChannel
+from ..pod.client import PodClient
+from .util import *
+from ..data.basic import *
 from email import policy
 from email.utils import getaddresses
-from integrators.imports import *
+from ..imports import *
 from nbdev.showdoc import show_doc
 
 # Cell
@@ -108,10 +108,10 @@ def get_g_attr(item, name, data_type, default_value=None):
 
 # Cell
 
-from integrators.data.schema import *
-from integrators.imports import *
-from integrators.indexers.indexer import test_registration
-from integrators.importers.importer import ImporterBase
+from ..data.schema import *
+from ..imports import *
+from ..indexers.indexer import test_registration
+from .importer import ImporterBase
 
 
 class EmailImporter(ImporterBase):

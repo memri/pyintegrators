@@ -3,10 +3,10 @@
 __all__ = ['DEFAULT_POD_ADDRESS', 'POD_VERSION', 'PodClient']
 
 # Cell
-from integrators.data.itembase import Edge, ItemBase
-from integrators.indexers.facerecognition.photo import resize
-from integrators.data.schema import *
-from integrators.imports import *
+from ..data.itembase import Edge, ItemBase
+from ..indexers.facerecognition.photo import resize
+from ..data.schema import *
+from ..imports import *
 from hashlib import sha256
 
 # Cell
@@ -258,7 +258,7 @@ class PodClient:
     @staticmethod
     def _get_schema_type(node):
         for cls in node.__class__.mro():
-            if cls.__module__ == "integrators.data.schema" and cls.__name__ != "ItemBase":
+            if cls.__module__ == "pyintegrators.data.schema" and cls.__name__ != "ItemBase":
                 return cls.__name__
         raise ValueError
 

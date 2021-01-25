@@ -3,14 +3,14 @@
 __all__ = ['NotesListIndexer', 'ListTypePredictor']
 
 # Cell
-from integrators.indexers.notelist.util import *
-from integrators.indexers.notelist.notelist import *
-from integrators.indexers.indexer import *
-from integrators.indexers.notelist.parser import *
-from integrators.data.schema import *
-from integrators.data.basic import *
-from integrators.imports import *
-from integrators.pod.client import PodClient
+from .util import *
+from .notelist import *
+from ..indexer import *
+from .parser import *
+from ...data.schema import *
+from ...data.basic import *
+from ...imports import *
+from ...pod.client import PodClient
 
 # Cell
 import spacy

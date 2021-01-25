@@ -3,14 +3,14 @@
 __all__ = ['FaceClusteringIndexer']
 
 # Cell
-from integrators.indexers.faceclustering.models import *
-from integrators.indexers.faceclustering.utils import *
-from integrators.indexers.facerecognition.photo import *
-from integrators.indexers.indexer import *
-from integrators.data.basic import *
-from integrators.data.schema import *
-from integrators.imports import *
-from integrators.pod.client import PodClient, DEFAULT_POD_ADDRESS
+from .models import *
+from .utils import *
+from ..facerecognition.photo import *
+from ..indexer import *
+from ...data.basic import *
+from ...data.schema import *
+from ...imports import *
+from ...pod.client import PodClient, DEFAULT_POD_ADDRESS
 
 # Cell
 from mmcv.runner import load_checkpoint

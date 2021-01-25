@@ -3,11 +3,11 @@
 __all__ = ['GeoIndexer', 'LOCATION_EDGE']
 
 # Cell
-from integrators.data.schema import *
-from integrators.data.itembase import *
-from integrators.pod.client import PodClient
-from integrators.indexers.indexer import IndexerBase, get_indexer_run_data, IndexerData, test_registration
-from integrators.indexers import *
+from ...data.schema import *
+from ...data.itembase import *
+from ...pod.client import PodClient
+from ..indexer import IndexerBase, get_indexer_run_data, IndexerData, test_registration
+from .. import *
 import pycountry, requests
 import reverse_geocoder as rg
 

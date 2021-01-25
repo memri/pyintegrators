@@ -5,9 +5,9 @@ __all__ = ['IndexerBase', 'IndexerData', 'get_indexer_run_data', 'test_registrat
            'run_integrator_from_run_uid', 'run_integrator', 'generate_test_env']
 
 # Cell
-from integrators.data.schema import *
-from integrators.pod.client import PodClient, DEFAULT_POD_ADDRESS
-from integrators.imports import *
+from ..data.schema import *
+from ..pod.client import PodClient, DEFAULT_POD_ADDRESS
+from ..imports import *
 
 # Cell
 POD_FULL_ADDRESS_ENV    = 'POD_FULL_ADDRESS'
@@ -66,14 +66,14 @@ def get_indexer_run_data(client, indexer_run):
 def test_registration(integrator):
     """Check whether an integrator is registred. Registration is necessary to be able to load the right indexer
     when retrieving it from the database."""
-    import integrators.integrator_registry as registry
+    import pyintegrators.integrator_registry as registry
     assert integrator.__name__ in dir(registry), f"Add {integrator.__name__} to integrators/integrator_registry.py"
 
 # Cell
 # export
 
 def run_importer(importer_run, client):
-    from integrators.integrator_registry import EmailImporter
+    from ..integrator_registry import EmailImporter
 
     importer = importer_run.importer[0]
     # data = indexer.get_data(client, indexer_run)

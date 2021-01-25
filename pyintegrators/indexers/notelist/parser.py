@@ -5,11 +5,11 @@ __all__ = ['HTMLListParser']
 # Cell
 import bs4
 import random
-from integrators.indexers.notelist.util import *
-from integrators.indexers.notelist.notelist import *
-from integrators.data.schema import *
-from integrators.data.basic import *
-from integrators.imports import *
+from .util import *
+from .notelist import *
+from ...data.schema import *
+from ...data.basic import *
+from ...imports import *
 
 # Cell
 class HTMLListParser():

@@ -3,10 +3,10 @@
 __all__ = ['MeanAggregator', 'GraphConv', 'GCN_V', 'GCNVDataset', 'FaceClusteringModel']
 
 # Cell
-from integrators.indexers.faceclustering.utils import *
-from integrators.indexers.facerecognition.model import *
-from integrators.indexers.facerecognition.photo import *
-from integrators.data.basic import *
+from .utils import *
+from ..facerecognition.model import *
+from ..facerecognition.photo import *
+from ...data.basic import *
 
 from collections import Counter
 from pathlib import Path

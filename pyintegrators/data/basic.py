@@ -4,7 +4,7 @@ __all__ = ['read_file', 'read_json', 'write_json', 'download_file', 'unzip', 'PY
            'MODEL_DIR', 'MEMRI_S3']
 
 # Cell
-from integrators.imports import *
+from ..imports import *
 from urllib.request import urlretrieve
 import requests
 from tqdm import tqdm

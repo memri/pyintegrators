@@ -3,8 +3,8 @@
 __all__ = ['show_images', 'get_size', 'resize', 'get_height_width_channels', 'IPhoto']
 
 # Cell
-from integrators.data.schema import *
-from integrators.data.basic import *
+from ...data.schema import *
+from ...data.basic import *
 from insightface.utils import face_align
 from matplotlib.pyplot import imshow
 from matplotlib import patches

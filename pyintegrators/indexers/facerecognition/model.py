@@ -3,14 +3,14 @@
 __all__ = ['arcface_r100_v1', 'retinaface_r50_v1', 'RETINAFACE_URL', 'ARCFACE_URL', 'FaceEmbeddingModel']
 
 # Cell
-from integrators.data.schema import *
-from integrators.data.basic import *
-from integrators.data.itembase import *
-from integrators.pod.client import PodClient
-from integrators.indexers.indexer import IndexerBase, get_indexer_run_data, IndexerData, test_registration
-from integrators.indexers import *
-from integrators.imports import *
-from integrators.indexers.facerecognition.photo import *
+from ...data.schema import *
+from ...data.basic import *
+from ...data.itembase import *
+from ...pod.client import PodClient
+from ..indexer import IndexerBase, get_indexer_run_data, IndexerData, test_registration
+from .. import *
+from ...imports import *
+from .photo import *
 from fastprogress.fastprogress import progress_bar
 
 # Cell

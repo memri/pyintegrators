@@ -3,8 +3,8 @@
 __all__ = ['LIST_CLASSES', 'INote', 'INoteList', 'ULNoteList', 'ISpan', 'get_span']
 
 # Cell
-from integrators.data.schema import *
-from integrators.indexers.notelist.util import *
+from ...data.schema import *
+from .util import *
 
 # Cell
 TODO, TOWATCH, TOREAD, TOLISTEN, TOBUY, UNKOWN = "todo","towatch", "toread", "tolisten", "tobuy", "unknown"
