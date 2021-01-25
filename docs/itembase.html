@@ -31,7 +31,7 @@ nb_path: "nbs/itembase.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Any data class in pyintegrators inherits from <code>ItemBase</code>. As its name suggests it is a base class for items with some handy functionalities to create new items and edges, retrieve all edges to other items, and sync with the pod.</p>
+<p>Any data class in pyintegrators inherits from <a href="/itembase.html#ItemBase"><code>ItemBase</code></a>. As its name suggests it is a base class for items with some handy functionalities to create new items and edges, retrieve all edges to other items, and sync with the pod.</p>
 
 </div>
 </div>
@@ -47,11 +47,11 @@ nb_path: "nbs/itembase.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="Edge" class="doc_header"><code>class</code> <code>Edge</code><a href="integrators/data/itembase.py#L58" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Edge</code>(<strong><code>source</code></strong>, <strong><code>target</code></strong>, <strong><code>_type</code></strong>, <strong><code>label</code></strong>=<em><code>None</code></em>, <strong><code>sequence</code></strong>=<em><code>None</code></em>, <strong><code>created</code></strong>=<em><code>False</code></em>, <strong><code>reverse</code></strong>=<em><code>True</code></em>)</p>
+<h2 id="Edge" class="doc_header"><code>class</code> <code>Edge</code><a href="https://gitlab.memri.io/memri/pyintegrators/tree/prod/pyintegrators/data/itembase.py#L58" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Edge</code>(<strong><code>source</code></strong>, <strong><code>target</code></strong>, <strong><code>_type</code></strong>, <strong><code>label</code></strong>=<em><code>None</code></em>, <strong><code>sequence</code></strong>=<em><code>None</code></em>, <strong><code>created</code></strong>=<em><code>False</code></em>, <strong><code>reverse</code></strong>=<em><code>True</code></em>)</p>
 </blockquote>
-<p>Edges makes a link between two <code>ItemBase</code> Items. You won't use this class a lot in practice, as edges are
+<p>Edges makes a link between two <a href="/itembase.html#ItemBase"><code>ItemBase</code></a> Items. You won't use this class a lot in practice, as edges are
 abstracted away for normal users. When items are retrieved from the database, the edges are parsed automatically.
-When you add an edge between to items within pyintegrators, you will often use <code>ItemBase.add_edge</code></p>
+When you add an edge between to items within pyintegrators, you will often use <a href="/itembase.html#ItemBase.add_edge"><code>ItemBase.add_edge</code></a></p>
 
 </div>
 
@@ -81,7 +81,7 @@ When you add an edge between to items within pyintegrators, you will often use <
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Edge.traverse" class="doc_header"><code>Edge.traverse</code><a href="integrators/data/itembase.py#L94" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Edge.traverse</code>(<strong><code>start</code></strong>)</p>
+<h4 id="Edge.traverse" class="doc_header"><code>Edge.traverse</code><a href="https://gitlab.memri.io/memri/pyintegrators/tree/prod/pyintegrators/data/itembase.py#L94" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Edge.traverse</code>(<strong><code>start</code></strong>)</p>
 </blockquote>
 <p>We can traverse an edge starting from the source to the target or vice versa. In practice we often call
 item.some_edge_type, which calls item.traverse(edgetype), which in turn calls this function.</p>
@@ -107,7 +107,7 @@ item.some_edge_type, which calls item.traverse(edgetype), which in turn calls th
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ItemBase" class="doc_header"><code>class</code> <code>ItemBase</code><a href="integrators/data/itembase.py#L106" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ItemBase</code>(<strong><code>uid</code></strong>=<em><code>None</code></em>)</p>
+<h2 id="ItemBase" class="doc_header"><code>class</code> <code>ItemBase</code><a href="https://gitlab.memri.io/memri/pyintegrators/tree/prod/pyintegrators/data/itembase.py#L106" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ItemBase</code>(<strong><code>uid</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Provides a base class for all items. All items in the schema inherit from this class, and it provides some
 basic functionality for consistency and to enable easier usage.</p>
@@ -140,7 +140,7 @@ basic functionality for consistency and to enable easier usage.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ItemBase.add_edge" class="doc_header"><code>ItemBase.add_edge</code><a href="integrators/data/itembase.py#L135" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ItemBase.add_edge</code>(<strong><code>name</code></strong>, <strong><code>val</code></strong>)</p>
+<h4 id="ItemBase.add_edge" class="doc_header"><code>ItemBase.add_edge</code><a href="https://gitlab.memri.io/memri/pyintegrators/tree/prod/pyintegrators/data/itembase.py#L135" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ItemBase.add_edge</code>(<strong><code>name</code></strong>, <strong><code>val</code></strong>)</p>
 </blockquote>
 <p>Creates an edge of type name and makes it point to val</p>
 
@@ -165,7 +165,7 @@ basic functionality for consistency and to enable easier usage.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ItemBase.is_expanded" class="doc_header"><code>ItemBase.is_expanded</code><a href="integrators/data/itembase.py#L144" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ItemBase.is_expanded</code>()</p>
+<h4 id="ItemBase.is_expanded" class="doc_header"><code>ItemBase.is_expanded</code><a href="https://gitlab.memri.io/memri/pyintegrators/tree/prod/pyintegrators/data/itembase.py#L144" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ItemBase.is_expanded</code>()</p>
 </blockquote>
 <p>returns whether the node is expanded. An expanded node retrieved nodes that are
 <em>directly</em> connected to it
@@ -192,7 +192,7 @@ from the pod, and stored their values via edges in the object.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ItemBase.expand" class="doc_header"><code>ItemBase.expand</code><a href="integrators/data/itembase.py#L184" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ItemBase.expand</code>(<strong><code>api</code></strong>)</p>
+<h4 id="ItemBase.expand" class="doc_header"><code>ItemBase.expand</code><a href="https://gitlab.memri.io/memri/pyintegrators/tree/prod/pyintegrators/data/itembase.py#L184" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ItemBase.expand</code>(<strong><code>api</code></strong>)</p>
 </blockquote>
 <p>Expands a node (retrieves all directly connected nodes ands adds to object).</p>
 
@@ -217,7 +217,7 @@ from the pod, and stored their values via edges in the object.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ItemBase.inherit_funcs" class="doc_header"><code>ItemBase.inherit_funcs</code><a href="integrators/data/itembase.py#L220" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ItemBase.inherit_funcs</code>(<strong><code>other</code></strong>)</p>
+<h4 id="ItemBase.inherit_funcs" class="doc_header"><code>ItemBase.inherit_funcs</code><a href="https://gitlab.memri.io/memri/pyintegrators/tree/prod/pyintegrators/data/itembase.py#L220" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ItemBase.inherit_funcs</code>(<strong><code>other</code></strong>)</p>
 </blockquote>
 <p>This function can be used to inherit new functionalities from a subclass. This is a patch to solve
 the fact that python does provide extensions of classes that are defined in a different file that are
@@ -241,7 +241,7 @@ dynamic enough for our use case.</p>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>With the <code>ItemBase</code> and <code>Edge</code> classes we can create an item and its surrounding graph. The schema is defined in schema.py, in general we want to use the from_data staticmethod to generate new items, because it ensures that edges are linked from both the source and the target object. Let's make an email item and create it in the pod.</p>
+<p>With the <a href="/itembase.html#ItemBase"><code>ItemBase</code></a> and <a href="/itembase.html#Edge"><code>Edge</code></a> classes we can create an item and its surrounding graph. The schema is defined in schema.py, in general we want to use the from_data staticmethod to generate new items, because it ensures that edges are linked from both the source and the target object. Let's make an email item and create it in the pod.</p>
 
 </div>
 </div>

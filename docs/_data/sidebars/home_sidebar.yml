@@ -38,7 +38,7 @@ entries:
         subfolderitems:
         - output: web,pdf
           title: Detecting and comparing faces
-          url: indexers.FaceRecognitionIndexer.html
+          url: indexers.FaceRecognitionModel.html
         - output: web,pdf
           title: Clustering cropped faces
           url: indexers.FaceClusteringIndexer.Models.html
