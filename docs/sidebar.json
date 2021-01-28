@@ -13,7 +13,7 @@
     "GeoIndexer": "indexers.GeoIndexer.html",
     "": {
       "Facerecognition": {
-        "Detecting and comparing faces": "indexers.FaceRecognitionIndexer.html",
+        "Detecting and comparing faces": "indexers.FaceRecognitionModel.html",
         "Clustering cropped faces": "indexers.FaceClusteringIndexer.Models.html",
         "Faceclustering Indexer": "indexers.FaceClusteringIndexer.indexer.html",
         "Photos & Utils": "indexers.FacerecognitionIndexer.Photo.html"

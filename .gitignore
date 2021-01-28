@@ -1,6 +1,7 @@
 nbs/_test.ipynb
 
 
+docs/public/
 *.bak
 .gitattributes
 .last_checked

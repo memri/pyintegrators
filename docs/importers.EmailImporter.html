@@ -52,7 +52,7 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="ImapClient">ImapClient<a class="anchor-link" href="#ImapClient"> </a></h2><p>The <code>EmailImporter</code> communicates with email providers over imap. We created a convenience class around pythons imaplib , called the <code>ImapClient</code> that lets you list your mailboxes, retriev your mails and get their content.</p>
+<h2 id="ImapClient">ImapClient<a class="anchor-link" href="#ImapClient"> </a></h2><p>The <a href="/pyintegrators/importers.EmailImporter.html#EmailImporter"><code>EmailImporter</code></a> communicates with email providers over imap. We created a convenience class around pythons imaplib , called the <code>ImapClient</code> that lets you list your mailboxes, retriev your mails and get their content.</p>
 
 </div>
 </div>
@@ -68,7 +68,7 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="IMAPClient" class="doc_header"><code>class</code> <code>IMAPClient</code><a href="integrators/importers/email.py#L22" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IMAPClient</code>(<strong><code>username</code></strong>, <strong><code>app_pw</code></strong>, <strong><code>host</code></strong>=<em><code>'imap.gmail.com'</code></em>, <strong><code>port</code></strong>=<em><code>993</code></em>, <strong><code>inbox</code></strong>=<em><code>'"[Gmail]/All Mail"'</code></em>)</p>
+<h2 id="IMAPClient" class="doc_header"><code>class</code> <code>IMAPClient</code><a href="https://gitlab.memri.io/memri/pyintegrators/tree/prod/pyintegrators/importers/email.py#L22" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IMAPClient</code>(<strong><code>username</code></strong>, <strong><code>app_pw</code></strong>, <strong><code>host</code></strong>=<em><code>'imap.gmail.com'</code></em>, <strong><code>port</code></strong>=<em><code>993</code></em>, <strong><code>inbox</code></strong>=<em><code>'"[Gmail]/All Mail"'</code></em>)</p>
 </blockquote>
 
 </div>
@@ -92,7 +92,7 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="IMAPClient.list_mailboxes" class="doc_header"><code>IMAPClient.list_mailboxes</code><a href="integrators/importers/email.py#L30" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>IMAPClient.list_mailboxes</code>()</p>
+<h4 id="IMAPClient.list_mailboxes" class="doc_header"><code>IMAPClient.list_mailboxes</code><a href="https://gitlab.memri.io/memri/pyintegrators/tree/prod/pyintegrators/importers/email.py#L30" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>IMAPClient.list_mailboxes</code>()</p>
 </blockquote>
 <p>Lists all available mailboxes</p>
 
@@ -117,7 +117,7 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="IMAPClient.get_all_mail_uids" class="doc_header"><code>IMAPClient.get_all_mail_uids</code><a href="integrators/importers/email.py#L34" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>IMAPClient.get_all_mail_uids</code>()</p>
+<h4 id="IMAPClient.get_all_mail_uids" class="doc_header"><code>IMAPClient.get_all_mail_uids</code><a href="https://gitlab.memri.io/memri/pyintegrators/tree/prod/pyintegrators/importers/email.py#L34" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>IMAPClient.get_all_mail_uids</code>()</p>
 </blockquote>
 <p>retrieves all mail uids from the selected mailbox</p>
 
@@ -142,7 +142,7 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="IMAPClient.get_mail" class="doc_header"><code>IMAPClient.get_mail</code><a href="integrators/importers/email.py#L42" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>IMAPClient.get_mail</code>(<strong><code>uid</code></strong>)</p>
+<h4 id="IMAPClient.get_mail" class="doc_header"><code>IMAPClient.get_mail</code><a href="https://gitlab.memri.io/memri/pyintegrators/tree/prod/pyintegrators/importers/email.py#L42" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>IMAPClient.get_mail</code>(<strong><code>uid</code></strong>)</p>
 </blockquote>
 <p>Fetches a mail given a uid, returns (raw_mail, thread_id)</p>
 
@@ -173,7 +173,7 @@ nb_path: "nbs/importers.EmailImporter.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="EmailImporter" class="doc_header"><code>class</code> <code>EmailImporter</code><a href="integrators/importers/email.py#L117" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>EmailImporter</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>) :: <code>ImporterBase</code></p>
+<h2 id="EmailImporter" class="doc_header"><code>class</code> <code>EmailImporter</code><a href="https://gitlab.memri.io/memri/pyintegrators/tree/prod/pyintegrators/importers/email.py#L117" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>EmailImporter</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>) :: <a href="/pyintegrators/importers.Importer.html#ImporterBase"><code>ImporterBase</code></a></p>
 </blockquote>
 <p>Imports emails over imap.</p>
 
