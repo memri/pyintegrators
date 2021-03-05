@@ -11,7 +11,7 @@ from hashlib import sha256
 
 # Cell
 DEFAULT_POD_ADDRESS = "http://localhost:3030"
-POD_VERSION = "v2"
+POD_VERSION = "v3"
 
 # Cell
 class PodClient:
@@ -41,7 +41,10 @@ class PodClient:
         if isinstance(node, Photo) and not self.create_photo_file(node): return False
 
         try:
-            body = {"databaseKey": self.database_key, "payload":self.get_properties_json(node) }
+            properties = self.get_properties_json(node)
+            properties = {k:v for k, v in properties.items() if v != []}
+            body = {"databaseKey": self.database_key, "payload":properties }
+
             result = requests.post(f"{self.base_url}/create_item", json=body)
             if result.status_code != 200:
                 print(result, result.content)
@@ -54,6 +57,34 @@ class PodClient:
         except requests.exceptions.RequestException as e:
             print(e)
             return False
+
+    def add_to_schema(self, node):
+        attributes = self.get_properties_json(node)
+        for k, v in attributes.items():
+            if not isinstance(v, list) and k != "type":
+                if isinstance(v, str):
+                    value_type = "text"
+                elif isinstance(v, int):
+                    value_type = "integer"
+
+                payload = {"type": "ItemPropertySchema", "itemType": attributes["type"],
+                           "propertyName": k, "valueType": value_type}
+                body = {"databaseKey": self.database_key, "payload": payload }
+                try:
+                    result = requests.post(f"{self.base_url}/create_item", json=body)
+
+                    if result.status_code != 200:
+                        print(result, result.content)
+                        return False
+                    else:
+                        uid = int(result.json())
+                        node.uid = uid
+                        ItemBase.add_to_db(node)
+
+                except requests.exceptions.RequestException as e:
+                    print(e)
+                    return False
+        return True
 
     def create_photo_file(self, photo):
         file = photo.file[0]
@@ -248,11 +279,13 @@ class PodClient:
     def get_properties_json(self, node):
         res = dict()
         private = getattr(node, "private", [])
-        for k,v in node.__dict__.items():
-            if k[:1] != '_' and k != "private" and k not in private and not (isinstance(v, list)\
-                            and len(v)>0 and isinstance(v[0], Edge)) and v is not None:
+        for k, v in node.__dict__.items():
+#             if k[:1] != '_' and k != "private" and k not in private and not (isinstance(v, list)\
+#                             and len(v)>0 and isinstance(v[0], Edge)) and v is not None:
+            if k[:1] != '_' and k != "private" and k != "uid" and k not in private and not (isinstance(v, list)) \
+                            and v is not None:
                 res[k] = v
-        res["_type"] = self._get_schema_type(node)
+        res["type"] = self._get_schema_type(node)
         return res
 
     @staticmethod
