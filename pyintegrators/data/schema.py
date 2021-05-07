@@ -37,9 +37,9 @@ def get_constructor(_type, indexer_class=None):
 # Item is the baseclass for all of the data classes.
 class Item(ItemBase):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
-        super().__init__(uid)
+        super().__init__(id)
         self.dateAccessed = dateAccessed
         self.dateCreated = dateCreated
         self.dateModified = dateModified
@@ -59,13 +59,13 @@ class Item(ItemBase):
 # An account or subscription, for instance for some online service, or a bank account or wallet.
 class Account(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  handle=None, displayName=None, service=None, itemType=None, avatarUrl=None, changelog=None,
                  label=None, genericAttribute=None, measure=None, sharedWith=None, belongsTo=None, price=None,
                  location=None, organization=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.handle = handle
         self.displayName = displayName
@@ -88,7 +88,7 @@ class Account(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         handle = json.get("handle", None)
         displayName = json.get("displayName", None)
@@ -130,7 +130,7 @@ class Account(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, handle=handle, displayName=displayName,
+                  version=version, id=id, importJson=importJson, handle=handle, displayName=displayName,
                   service=service, itemType=itemType, avatarUrl=avatarUrl, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, belongsTo=belongsTo,
                   price=price, location=location, organization=organization)
@@ -141,13 +141,13 @@ class Account(Item):
 # A postal address.
 class Address(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  latitude=None, longitude=None, city=None, postalCode=None, state=None, street=None, itemType=None,
                  locationAutoLookupHash=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, country=None, location=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.latitude = latitude
         self.longitude = longitude
@@ -171,7 +171,7 @@ class Address(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         latitude = json.get("latitude", None)
         longitude = json.get("longitude", None)
@@ -210,7 +210,7 @@ class Address(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, latitude=latitude, longitude=longitude, city=city,
+                  version=version, id=id, importJson=importJson, latitude=latitude, longitude=longitude, city=city,
                   postalCode=postalCode, state=state, street=street, itemType=itemType,
                   locationAutoLookupHash=locationAutoLookupHash, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, country=country,
@@ -222,14 +222,14 @@ class Address(Item):
 # An article, for instance from a journal, magazine or newspaper.
 class Article(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
                  writtenBy=None, file=None, recordedAt=None, review=None, comment=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -261,7 +261,7 @@ class Article(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -324,7 +324,7 @@ class Article(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
@@ -337,13 +337,13 @@ class Article(Item):
 # An audio file.
 class Audio(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  bitrate=None, duration=None, endTime=None, fileLocation=None, startTime=None, caption=None,
                  transcript=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
                  file=None, includes=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.bitrate = bitrate
         self.duration = duration
@@ -366,7 +366,7 @@ class Audio(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         bitrate = json.get("bitrate", None)
         duration = json.get("duration", None)
@@ -404,7 +404,7 @@ class Audio(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, bitrate=bitrate, duration=duration,
+                  version=version, id=id, importJson=importJson, bitrate=bitrate, duration=duration,
                   endTime=endTime, fileLocation=fileLocation, startTime=startTime, caption=caption,
                   transcript=transcript, changelog=changelog, label=label, genericAttribute=genericAttribute,
                   measure=measure, sharedWith=sharedWith, file=file, includes=includes)
@@ -415,12 +415,12 @@ class Audio(Item):
 # TBD
 class AuditItem(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  date=None, content=None, action=None, changelog=None, label=None, genericAttribute=None,
                  measure=None, sharedWith=None, appliesTo=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.date = date
         self.content = content
@@ -438,7 +438,7 @@ class AuditItem(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         date = json.get("date", None)
         content = json.get("content", None)
@@ -469,7 +469,7 @@ class AuditItem(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, date=date, content=content, action=action,
+                  version=version, id=id, importJson=importJson, date=date, content=content, action=action,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith, appliesTo=appliesTo)
         for e in res.get_all_edges(): e.source = res
@@ -479,12 +479,12 @@ class AuditItem(Item):
 # TBD
 class CVUStoredDefinition(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  definition=None, domain=None, name=None, query=None, selector=None, itemType=None, changelog=None,
                  label=None, genericAttribute=None, measure=None, sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.definition = definition
         self.domain = domain
@@ -504,7 +504,7 @@ class CVUStoredDefinition(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         definition = json.get("definition", None)
         domain = json.get("domain", None)
@@ -535,7 +535,7 @@ class CVUStoredDefinition(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, definition=definition, domain=domain, name=name,
+                  version=version, id=id, importJson=importJson, definition=definition, domain=domain, name=name,
                   query=query, selector=selector, itemType=itemType, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
@@ -545,14 +545,14 @@ class CVUStoredDefinition(Item):
 # A comment.
 class Comment(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
                  writtenBy=None, file=None, recordedAt=None, review=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -583,7 +583,7 @@ class Comment(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -643,7 +643,7 @@ class Comment(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
@@ -656,12 +656,12 @@ class Comment(Item):
 # A country.
 class Country(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  latitude=None, longitude=None, name=None, changelog=None, label=None, genericAttribute=None,
                  measure=None, sharedWith=None, flag=None, location=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.latitude = latitude
         self.longitude = longitude
@@ -680,7 +680,7 @@ class Country(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         latitude = json.get("latitude", None)
         longitude = json.get("longitude", None)
@@ -714,7 +714,7 @@ class Country(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, latitude=latitude, longitude=longitude, name=name,
+                  version=version, id=id, importJson=importJson, latitude=latitude, longitude=longitude, name=name,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith, flag=flag, location=location)
         for e in res.get_all_edges(): e.source = res
@@ -725,14 +725,14 @@ class Country(Item):
 # etc.
 class CreativeWork(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
                  writtenBy=None, file=None, recordedAt=None, review=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -763,7 +763,7 @@ class CreativeWork(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -823,7 +823,7 @@ class CreativeWork(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
@@ -836,12 +836,12 @@ class CreativeWork(Item):
 # A key used in an cryptography protocol.
 class CryptoKey(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  itemType=None, role=None, key=None, active=None, name=None, changelog=None, label=None,
                  genericAttribute=None, measure=None, sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.itemType = itemType
         self.role = role
@@ -860,7 +860,7 @@ class CryptoKey(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         itemType = json.get("itemType", None)
         role = json.get("role", None)
@@ -890,7 +890,7 @@ class CryptoKey(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, itemType=itemType, role=role, key=key,
+                  version=version, id=id, importJson=importJson, itemType=itemType, role=role, key=key,
                   active=active, name=name, changelog=changelog, label=label, genericAttribute=genericAttribute,
                   measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
@@ -900,12 +900,12 @@ class CryptoKey(Item):
 # A business corporation.
 class Device(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  deviceID=None, make=None, manufacturer=None, model=None, name=None, dateAcquired=None,
                  dateLost=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.deviceID = deviceID
         self.make = make
@@ -926,7 +926,7 @@ class Device(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         deviceID = json.get("deviceID", None)
         make = json.get("make", None)
@@ -958,7 +958,7 @@ class Device(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, deviceID=deviceID, make=make,
+                  version=version, id=id, importJson=importJson, deviceID=deviceID, make=make,
                   manufacturer=manufacturer, model=model, name=name, dateAcquired=dateAcquired, dateLost=dateLost,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith)
@@ -969,7 +969,7 @@ class Device(Item):
 # A strategy of regulating the intake of food to achieve or maintain a specific health-related goal.
 class Diet(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, duration=None, changelog=None, label=None, genericAttribute=None,
                  measure=None, sharedWith=None, audio=None, citation=None, contentLocation=None,
@@ -977,7 +977,7 @@ class Diet(Item):
                  includedProduct=None, excludedProduct=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -1011,7 +1011,7 @@ class Diet(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -1078,7 +1078,7 @@ class Diet(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, duration=duration, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
@@ -1092,11 +1092,11 @@ class Diet(Item):
 # A Downloader is used to download data from an external source, to be imported using an Importer.
 class Downloader(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         
 
@@ -1111,7 +1111,7 @@ class Downloader(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
        
         changelog = []
@@ -1136,7 +1136,7 @@ class Downloader(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                  version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
         return res
@@ -1145,7 +1145,7 @@ class Downloader(Item):
 # A single email message.
 class EmailMessage(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, subject=None, dateSent=None, dateReceived=None, service=None,
                  changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, audio=None,
@@ -1154,7 +1154,7 @@ class EmailMessage(Item):
                  replyTo=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -1195,7 +1195,7 @@ class EmailMessage(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -1277,7 +1277,7 @@ class EmailMessage(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, subject=subject, dateSent=dateSent,
                   dateReceived=dateReceived, service=service, changelog=changelog, label=label,
@@ -1292,13 +1292,13 @@ class EmailMessage(Item):
 # Any kind of event, for instance a music festival or a business meeting.
 class Event(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  audience=None, startTime=None, endTime=None, duration=None, eventStatus=None, changelog=None,
                  label=None, genericAttribute=None, measure=None, sharedWith=None, location=None, review=None,
                  subEvent=None, capacity=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.audience = audience
         self.startTime = startTime
@@ -1321,7 +1321,7 @@ class Event(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         audience = json.get("audience", None)
         startTime = json.get("startTime", None)
@@ -1363,7 +1363,7 @@ class Event(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, audience=audience, startTime=startTime,
+                  version=version, id=id, importJson=importJson, audience=audience, startTime=startTime,
                   endTime=endTime, duration=duration, eventStatus=eventStatus, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, location=location,
                   review=review, subEvent=subEvent, capacity=capacity)
@@ -1375,7 +1375,7 @@ class Event(Item):
 # exercise routines as well as activity prescribed by a clinician.
 class ExercisePlan(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, duration=None, repetitions=None, changelog=None, label=None,
                  genericAttribute=None, measure=None, sharedWith=None, audio=None, citation=None,
@@ -1383,7 +1383,7 @@ class ExercisePlan(Item):
                  review=None, workload=None, frequency=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -1418,7 +1418,7 @@ class ExercisePlan(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -1486,7 +1486,7 @@ class ExercisePlan(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, duration=duration, repetitions=repetitions,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
@@ -1500,12 +1500,12 @@ class ExercisePlan(Item):
 # Any file that can be stored on disk.
 class File(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  sha256=None, nonce=None, key=None, filename=None, changelog=None, label=None, genericAttribute=None,
                  measure=None, sharedWith=None, resource=None, usedBy=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.sha256 = sha256
         self.nonce = nonce
@@ -1525,7 +1525,7 @@ class File(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         sha256 = json.get("sha256", None)
         nonce = json.get("nonce", None)
@@ -1560,7 +1560,7 @@ class File(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, sha256=sha256, nonce=nonce, key=key,
+                  version=version, id=id, importJson=importJson, sha256=sha256, nonce=nonce, key=key,
                   filename=filename, changelog=changelog, label=label, genericAttribute=genericAttribute,
                   measure=measure, sharedWith=sharedWith, resource=resource, usedBy=usedBy)
         for e in res.get_all_edges(): e.source = res
@@ -1570,11 +1570,11 @@ class File(Item):
 # The number of occurrences of a repeating event per measure of time.
 class Frequency(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  occurrences=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.occurrences = occurrences
 
@@ -1589,7 +1589,7 @@ class Frequency(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         occurrences = json.get("occurrences", None)
        
@@ -1615,7 +1615,7 @@ class Frequency(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, occurrences=occurrences, changelog=changelog,
+                  version=version, id=id, importJson=importJson, occurrences=occurrences, changelog=changelog,
                   label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
         return res
@@ -1624,14 +1624,14 @@ class Frequency(Item):
 # Any kind of (video) game, typically rule-governed recreational activities.
 class Game(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
                  writtenBy=None, file=None, recordedAt=None, review=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -1662,7 +1662,7 @@ class Game(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -1722,7 +1722,7 @@ class Game(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
@@ -1735,12 +1735,12 @@ class Game(Item):
 # A generic attribute that can be referenced by an Item.
 class GenericAttribute(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  name=None, boolValue=None, datetimeValue=None, floatValue=None, intValue=None, stringValue=None,
                  changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.name = name
         self.boolValue = boolValue
@@ -1760,7 +1760,7 @@ class GenericAttribute(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         name = json.get("name", None)
         boolValue = json.get("boolValue", None)
@@ -1791,7 +1791,7 @@ class GenericAttribute(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, boolValue=boolValue,
+                  version=version, id=id, importJson=importJson, name=name, boolValue=boolValue,
                   datetimeValue=datetimeValue, floatValue=floatValue, intValue=intValue, stringValue=stringValue,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith)
@@ -1802,14 +1802,14 @@ class GenericAttribute(Item):
 # Instructions that explain how to achieve a result by performing a sequence of steps.
 class HowTo(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
                  writtenBy=None, file=None, recordedAt=None, review=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -1840,7 +1840,7 @@ class HowTo(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -1900,7 +1900,7 @@ class HowTo(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
@@ -1913,12 +1913,12 @@ class HowTo(Item):
 # An Importer is used to import data from an external source to the Pod database.
 class Importer(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  name=None, repository=None, dataType=None, icon=None, bundleImage=None, changelog=None, label=None,
                  genericAttribute=None, measure=None, sharedWith=None, importerRun=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.name = name
         self.repository = repository
@@ -1938,7 +1938,7 @@ class Importer(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         name = json.get("name", None)
         repository = json.get("repository", None)
@@ -1971,7 +1971,7 @@ class Importer(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, repository=repository,
+                  version=version, id=id, importJson=importJson, name=name, repository=repository,
                   dataType=dataType, icon=icon, bundleImage=bundleImage, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, importerRun=importerRun)
         for e in res.get_all_edges(): e.source = res
@@ -1981,13 +1981,13 @@ class Importer(Item):
 # A run of a certain Importer, that defines the details of the specific import.
 class ImporterRun(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  name=None, repository=None, progress=None, dataType=None, username=None, password=None,
                  runStatus=None, errorMessage=None, progressMessage=None, changelog=None, label=None,
                  genericAttribute=None, measure=None, sharedWith=None, importer=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.name = name
         self.repository = repository
@@ -2011,7 +2011,7 @@ class ImporterRun(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         name = json.get("name", None)
         repository = json.get("repository", None)
@@ -2048,7 +2048,7 @@ class ImporterRun(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, repository=repository,
+                  version=version, id=id, importJson=importJson, name=name, repository=repository,
                   progress=progress, dataType=dataType, username=username, password=password, runStatus=runStatus,
                   errorMessage=errorMessage, progressMessage=progressMessage, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, importer=importer)
@@ -2060,13 +2060,13 @@ class ImporterRun(Item):
 # the database.
 class Indexer(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  name=None, repository=None, icon=None, query=None, bundleImage=None, runDestination=None,
                  indexerClass=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
                  indexerRun=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.name = name
         self.repository = repository
@@ -2088,7 +2088,7 @@ class Indexer(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         name = json.get("name", None)
         repository = json.get("repository", None)
@@ -2123,7 +2123,7 @@ class Indexer(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, repository=repository, icon=icon,
+                  version=version, id=id, importJson=importJson, name=name, repository=repository, icon=icon,
                   query=query, bundleImage=bundleImage, runDestination=runDestination, indexerClass=indexerClass,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith, indexerRun=indexerRun)
@@ -2134,13 +2134,13 @@ class Indexer(Item):
 # A run of a certain Indexer.
 class IndexerRun(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  name=None, repository=None, query=None, progress=None, targetDataType=None, runStatus=None,
                  errorMessage=None, progressMessage=None, changelog=None, label=None, genericAttribute=None,
                  measure=None, sharedWith=None, indexer=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.name = name
         self.repository = repository
@@ -2163,7 +2163,7 @@ class IndexerRun(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         name = json.get("name", None)
         repository = json.get("repository", None)
@@ -2199,7 +2199,7 @@ class IndexerRun(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, repository=repository, query=query,
+                  version=version, id=id, importJson=importJson, name=name, repository=repository, query=query,
                   progress=progress, targetDataType=targetDataType, runStatus=runStatus, errorMessage=errorMessage,
                   progressMessage=progressMessage, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, indexer=indexer)
@@ -2210,11 +2210,11 @@ class IndexerRun(Item):
 # A sector that produces goods or related services within an economy.
 class Industry(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  itemType=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.itemType = itemType
 
@@ -2229,7 +2229,7 @@ class Industry(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         itemType = json.get("itemType", None)
        
@@ -2255,7 +2255,7 @@ class Industry(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, itemType=itemType, changelog=changelog,
+                  version=version, id=id, importJson=importJson, itemType=itemType, changelog=changelog,
                   label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
         return res
@@ -2265,12 +2265,12 @@ class Industry(Item):
 # existing data and adding those to the database.
 class Integrator(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  name=None, repository=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.name = name
         self.repository = repository
@@ -2286,7 +2286,7 @@ class Integrator(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         name = json.get("name", None)
         repository = json.get("repository", None)
@@ -2313,7 +2313,7 @@ class Integrator(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, repository=repository,
+                  version=version, id=id, importJson=importJson, name=name, repository=repository,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
@@ -2323,12 +2323,12 @@ class Integrator(Item):
 # A Receipt is a confirmation of a transaction.
 class Invoice(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, file=None,
                  transaction=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.file = file if file is not None else []
         self.transaction = transaction if transaction is not None else []
@@ -2344,7 +2344,7 @@ class Invoice(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
        
         changelog = []
@@ -2375,7 +2375,7 @@ class Invoice(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                  version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, file=file,
                   transaction=transaction)
         for e in res.get_all_edges(): e.source = res
@@ -2385,12 +2385,12 @@ class Invoice(Item):
 # Attached to an Item, to mark it to be something.
 class Label(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  color=None, name=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, comment=None, appliesTo=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.color = color
         self.name = name
@@ -2408,7 +2408,7 @@ class Label(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         color = json.get("color", None)
         name = json.get("name", None)
@@ -2441,7 +2441,7 @@ class Label(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, color=color, name=name, changelog=changelog,
+                  version=version, id=id, importJson=importJson, color=color, name=name, changelog=changelog,
                   label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith,
                   comment=comment, appliesTo=appliesTo)
         for e in res.get_all_edges(): e.source = res
@@ -2451,11 +2451,11 @@ class Label(Item):
 # A potential offer.
 class Lead(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, offer=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.offer = offer if offer is not None else []
 
@@ -2470,7 +2470,7 @@ class Lead(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
        
         changelog = []
@@ -2498,7 +2498,7 @@ class Lead(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                  version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, offer=offer)
         for e in res.get_all_edges(): e.source = res
         return res
@@ -2507,12 +2507,12 @@ class Lead(Item):
 # The location of something.
 class Location(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  latitude=None, longitude=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.latitude = latitude
         self.longitude = longitude
@@ -2528,7 +2528,7 @@ class Location(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         latitude = json.get("latitude", None)
         longitude = json.get("longitude", None)
@@ -2555,7 +2555,7 @@ class Location(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, latitude=latitude, longitude=longitude,
+                  version=version, id=id, importJson=importJson, latitude=latitude, longitude=longitude,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
@@ -2565,12 +2565,12 @@ class Location(Item):
 # A material that an Item is (partially) made from, for instance cotton, paper, steel, etc.
 class Material(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  name=None, defaultQuantity=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, price=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.name = name
         self.defaultQuantity = defaultQuantity
@@ -2587,7 +2587,7 @@ class Material(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         name = json.get("name", None)
         defaultQuantity = json.get("defaultQuantity", None)
@@ -2617,7 +2617,7 @@ class Material(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, defaultQuantity=defaultQuantity,
+                  version=version, id=id, importJson=importJson, name=name, defaultQuantity=defaultQuantity,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith, price=price)
         for e in res.get_all_edges(): e.source = res
@@ -2628,13 +2628,13 @@ class Material(Item):
 # datetime).
 class Measure(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  definition=None, symbol=None, intValue=None, floatValue=None, stringValue=None, datetimeValue=None,
                  boolValue=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
                  unit=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.definition = definition
         self.symbol = symbol
@@ -2656,7 +2656,7 @@ class Measure(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         definition = json.get("definition", None)
         symbol = json.get("symbol", None)
@@ -2691,7 +2691,7 @@ class Measure(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, definition=definition, symbol=symbol,
+                  version=version, id=id, importJson=importJson, definition=definition, symbol=symbol,
                   intValue=intValue, floatValue=floatValue, stringValue=stringValue, datetimeValue=datetimeValue,
                   boolValue=boolValue, changelog=changelog, label=label, genericAttribute=genericAttribute,
                   measure=measure, sharedWith=sharedWith, unit=unit)
@@ -2705,12 +2705,12 @@ class Measure(Item):
 # video (VideoObject), and a high and low bandwidth audio stream (2 AudioObject's).
 class MediaObject(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  bitrate=None, duration=None, endTime=None, fileLocation=None, startTime=None, changelog=None,
                  label=None, genericAttribute=None, measure=None, sharedWith=None, file=None, includes=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.bitrate = bitrate
         self.duration = duration
@@ -2731,7 +2731,7 @@ class MediaObject(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         bitrate = json.get("bitrate", None)
         duration = json.get("duration", None)
@@ -2767,7 +2767,7 @@ class MediaObject(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, bitrate=bitrate, duration=duration,
+                  version=version, id=id, importJson=importJson, bitrate=bitrate, duration=duration,
                   endTime=endTime, fileLocation=fileLocation, startTime=startTime, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, file=file,
                   includes=includes)
@@ -2779,12 +2779,12 @@ class MediaObject(Item):
 # physically or mentally. Includes diseases, injuries, disabilities, disorders, syndromes, etc.
 class MedicalCondition(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  itemType=None, name=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.itemType = itemType
         self.name = name
@@ -2800,7 +2800,7 @@ class MedicalCondition(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         itemType = json.get("itemType", None)
         name = json.get("name", None)
@@ -2827,7 +2827,7 @@ class MedicalCondition(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, itemType=itemType, name=name, changelog=changelog,
+                  version=version, id=id, importJson=importJson, itemType=itemType, name=name, changelog=changelog,
                   label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
         return res
@@ -2836,7 +2836,7 @@ class MedicalCondition(Item):
 # A single message.
 class Message(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, subject=None, dateSent=None, dateReceived=None, service=None,
                  changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, audio=None,
@@ -2844,7 +2844,7 @@ class Message(Item):
                  recordedAt=None, review=None, messageChannel=None, sender=None, receiver=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -2882,7 +2882,7 @@ class Message(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -2955,7 +2955,7 @@ class Message(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, subject=subject, dateSent=dateSent,
                   dateReceived=dateReceived, service=service, changelog=changelog, label=label,
@@ -2970,12 +2970,12 @@ class Message(Item):
 # A chat is a collection of messages.
 class MessageChannel(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  name=None, topic=None, encrypted=None, changelog=None, label=None, genericAttribute=None,
                  measure=None, sharedWith=None, photo=None, receiver=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.name = name
         self.topic = topic
@@ -2994,7 +2994,7 @@ class MessageChannel(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         name = json.get("name", None)
         topic = json.get("topic", None)
@@ -3028,7 +3028,7 @@ class MessageChannel(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, topic=topic, encrypted=encrypted,
+                  version=version, id=id, importJson=importJson, name=name, topic=topic, encrypted=encrypted,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith, photo=photo, receiver=receiver)
         for e in res.get_all_edges(): e.source = res
@@ -3038,11 +3038,11 @@ class MessageChannel(Item):
 # A way of transportation, for instance a bus or airplane.
 class ModeOfTransport(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         
 
@@ -3057,7 +3057,7 @@ class ModeOfTransport(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
        
         changelog = []
@@ -3082,7 +3082,7 @@ class ModeOfTransport(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                  version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
         return res
@@ -3091,14 +3091,14 @@ class ModeOfTransport(Item):
 # Any type of video, for instance a movie, TV show, animation etc.
 class MovingImage(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
                  writtenBy=None, file=None, recordedAt=None, review=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -3129,7 +3129,7 @@ class MovingImage(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -3189,7 +3189,7 @@ class MovingImage(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
@@ -3202,12 +3202,12 @@ class MovingImage(Item):
 # TBD
 class NavigationItem(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, sessionName=None, sequence=None, itemType=None, changelog=None, label=None,
                  genericAttribute=None, measure=None, sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.sessionName = sessionName
@@ -3225,7 +3225,7 @@ class NavigationItem(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         sessionName = json.get("sessionName", None)
@@ -3254,7 +3254,7 @@ class NavigationItem(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, sessionName=sessionName,
+                  version=version, id=id, importJson=importJson, title=title, sessionName=sessionName,
                   sequence=sequence, itemType=itemType, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
@@ -3264,12 +3264,12 @@ class NavigationItem(Item):
 # A group or system of interconnected people or things, for instance a social network.
 class Network(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  name=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
                  organization=None, resource=None, website=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.name = name
         self.organization = organization if organization is not None else []
@@ -3287,7 +3287,7 @@ class Network(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         name = json.get("name", None)
        
@@ -3322,7 +3322,7 @@ class Network(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, changelog=changelog, label=label,
+                  version=version, id=id, importJson=importJson, name=name, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith,
                   organization=organization, resource=resource, website=website)
         for e in res.get_all_edges(): e.source = res
@@ -3332,14 +3332,14 @@ class Network(Item):
 # A file containing a note.
 class Note(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
                  writtenBy=None, file=None, recordedAt=None, review=None, comment=None, noteList=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -3372,7 +3372,7 @@ class Note(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -3438,7 +3438,7 @@ class Note(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
@@ -3452,7 +3452,7 @@ class Note(Item):
 # A list in a note.
 class NoteList(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, category=None, changelog=None, label=None, genericAttribute=None,
                  measure=None, sharedWith=None, audio=None, citation=None, contentLocation=None,
@@ -3460,7 +3460,7 @@ class NoteList(Item):
                  span=None, itemSpan=None, note=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -3495,7 +3495,7 @@ class NoteList(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -3565,7 +3565,7 @@ class NoteList(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, category=category, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
@@ -3579,11 +3579,11 @@ class NoteList(Item):
 # An offer for some transaction, for instance to buy something or to get some service.
 class Offer(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, transaction=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.transaction = transaction if transaction is not None else []
 
@@ -3598,7 +3598,7 @@ class Offer(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
        
         changelog = []
@@ -3626,7 +3626,7 @@ class Offer(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                  version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, transaction=transaction)
         for e in res.get_all_edges(): e.source = res
         return res
@@ -3635,11 +3635,11 @@ class Offer(Item):
 # Hours that an organization is open.
 class OpeningHours(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, timeFrame=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.timeFrame = timeFrame if timeFrame is not None else []
 
@@ -3654,7 +3654,7 @@ class OpeningHours(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
        
         changelog = []
@@ -3682,7 +3682,7 @@ class OpeningHours(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                  version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, timeFrame=timeFrame)
         for e in res.get_all_edges(): e.source = res
         return res
@@ -3691,11 +3691,11 @@ class OpeningHours(Item):
 # An option for some choice, for instance a Vote.
 class Option(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         
 
@@ -3710,7 +3710,7 @@ class Option(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
        
         changelog = []
@@ -3735,7 +3735,7 @@ class Option(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                  version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
         return res
@@ -3744,14 +3744,14 @@ class Option(Item):
 # An organization, for instance an NGO, company or school.
 class Organization(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  name=None, dateFounded=None, areaServed=None, taxId=None, changelog=None, label=None,
                  genericAttribute=None, measure=None, sharedWith=None, address=None, foundingLocation=None,
                  logo=None, review=None, subOrganization=None, performsAt=None, attends=None, organizes=None,
                  openingHours=None, industry=None, buyer=None, seller=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.name = name
         self.dateFounded = dateFounded
@@ -3781,7 +3781,7 @@ class Organization(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         name = json.get("name", None)
         dateFounded = json.get("dateFounded", None)
@@ -3846,7 +3846,7 @@ class Organization(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, name=name, dateFounded=dateFounded,
+                  version=version, id=id, importJson=importJson, name=name, dateFounded=dateFounded,
                   areaServed=areaServed, taxId=taxId, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, address=address,
                   foundingLocation=foundingLocation, logo=logo, review=review, subOrganization=subOrganization,
@@ -3859,14 +3859,14 @@ class Organization(Item):
 # A work of performing art, for instance dance, theater, opera or musical.
 class PerformingArt(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
                  writtenBy=None, file=None, recordedAt=None, review=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -3897,7 +3897,7 @@ class PerformingArt(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -3957,7 +3957,7 @@ class PerformingArt(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
@@ -3970,7 +3970,7 @@ class PerformingArt(Item):
 # A person (alive, dead, undead, or fictional).
 class Person(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  birthDate=None, email=None, deathDate=None, firstName=None, lastName=None, gender=None,
                  sexualOrientation=None, displayName=None, role=None, changelog=None, label=None,
                  genericAttribute=None, measure=None, sharedWith=None, occurence=None, address=None, birthPlace=None,
@@ -3979,7 +3979,7 @@ class Person(Item):
                  performsAt=None, attends=None, organizes=None, founded=None, buyer=None, seller=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.birthDate = birthDate
         self.email = email
@@ -4022,7 +4022,7 @@ class Person(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         birthDate = json.get("birthDate", None)
         email = json.get("email", None)
@@ -4116,7 +4116,7 @@ class Person(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, birthDate=birthDate, email=email,
+                  version=version, id=id, importJson=importJson, birthDate=birthDate, email=email,
                   deathDate=deathDate, firstName=firstName, lastName=lastName, gender=gender,
                   sexualOrientation=sexualOrientation, displayName=displayName, role=role, changelog=changelog,
                   label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith,
@@ -4132,12 +4132,12 @@ class Person(Item):
 # A telephone number.
 class PhoneNumber(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  phoneNumber=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.phoneNumber = phoneNumber
         self.itemType = itemType
@@ -4153,7 +4153,7 @@ class PhoneNumber(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         phoneNumber = json.get("phoneNumber", None)
         itemType = json.get("itemType", None)
@@ -4180,7 +4180,7 @@ class PhoneNumber(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, phoneNumber=phoneNumber, itemType=itemType,
+                  version=version, id=id, importJson=importJson, phoneNumber=phoneNumber, itemType=itemType,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
@@ -4190,13 +4190,13 @@ class PhoneNumber(Item):
 # An image file.
 class Photo(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  bitrate=None, duration=None, endTime=None, fileLocation=None, startTime=None, caption=None,
                  exifData=None, name=None, height=None, width=None, channels=None, changelog=None, label=None,
                  genericAttribute=None, measure=None, sharedWith=None, file=None, includes=None, thumbnail=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.bitrate = bitrate
         self.duration = duration
@@ -4224,7 +4224,7 @@ class Photo(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         bitrate = json.get("bitrate", None)
         duration = json.get("duration", None)
@@ -4269,7 +4269,7 @@ class Photo(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, bitrate=bitrate, duration=duration,
+                  version=version, id=id, importJson=importJson, bitrate=bitrate, duration=duration,
                   endTime=endTime, fileLocation=fileLocation, startTime=startTime, caption=caption, exifData=exifData,
                   name=name, height=height, width=width, channels=channels, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, file=file,
@@ -4281,12 +4281,12 @@ class Photo(Item):
 # Some object that exists in the real world.
 class PhysicalEntity(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None, belongsTo=None,
                  instanceOf=None, location=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.belongsTo = belongsTo if belongsTo is not None else []
         self.instanceOf = instanceOf if instanceOf is not None else []
@@ -4303,7 +4303,7 @@ class PhysicalEntity(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
        
         changelog = []
@@ -4337,7 +4337,7 @@ class PhysicalEntity(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                  version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, belongsTo=belongsTo,
                   instanceOf=instanceOf, location=location)
         for e in res.get_all_edges(): e.source = res
@@ -4347,14 +4347,14 @@ class PhysicalEntity(Item):
 # Any product.
 class Product(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  audience=None, color=None, manufacturer=None, model=None, pattern=None, dateAcquired=None,
                  productCondition=None, dateProduced=None, datePublished=None, service=None, changelog=None,
                  label=None, genericAttribute=None, measure=None, sharedWith=None, material=None, productCode=None,
                  review=None, accessoryOrSparePartFor=None, consumableBy=None, price=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.audience = audience
         self.color = color
@@ -4384,7 +4384,7 @@ class Product(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         audience = json.get("audience", None)
         color = json.get("color", None)
@@ -4437,7 +4437,7 @@ class Product(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, audience=audience, color=color,
+                  version=version, id=id, importJson=importJson, audience=audience, color=color,
                   manufacturer=manufacturer, model=model, pattern=pattern, dateAcquired=dateAcquired,
                   productCondition=productCondition, dateProduced=dateProduced, datePublished=datePublished,
                   service=service, changelog=changelog, label=label, genericAttribute=genericAttribute,
@@ -4450,12 +4450,12 @@ class Product(Item):
 # A code or number used to identify Products, for instance a UPC or GTIN.
 class ProductCode(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  productCodeType=None, productNumber=None, changelog=None, label=None, genericAttribute=None,
                  measure=None, sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.productCodeType = productCodeType
         self.productNumber = productNumber
@@ -4471,7 +4471,7 @@ class ProductCode(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         productCodeType = json.get("productCodeType", None)
         productNumber = json.get("productNumber", None)
@@ -4498,7 +4498,7 @@ class ProductCode(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, productCodeType=productCodeType,
+                  version=version, id=id, importJson=importJson, productCodeType=productCodeType,
                   productNumber=productNumber, changelog=changelog, label=label, genericAttribute=genericAttribute,
                   measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
@@ -4508,12 +4508,12 @@ class ProductCode(Item):
 # A bill that describes money owed for some Transaction.
 class Receipt(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  dateDue=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
                  file=None, transaction=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.dateDue = dateDue
         self.file = file if file is not None else []
@@ -4530,7 +4530,7 @@ class Receipt(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         dateDue = json.get("dateDue", None)
        
@@ -4562,7 +4562,7 @@ class Receipt(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, dateDue=dateDue, changelog=changelog, label=label,
+                  version=version, id=id, importJson=importJson, dateDue=dateDue, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, file=file,
                   transaction=transaction)
         for e in res.get_all_edges(): e.source = res
@@ -4573,7 +4573,7 @@ class Receipt(Item):
 # required.
 class Recipe(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, duration=None, instructions=None, changelog=None, label=None,
                  genericAttribute=None, measure=None, sharedWith=None, audio=None, citation=None,
@@ -4581,7 +4581,7 @@ class Recipe(Item):
                  review=None, ingredient=None, price=None, yields=None, toolRequired=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -4618,7 +4618,7 @@ class Recipe(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -4692,7 +4692,7 @@ class Recipe(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, duration=duration, instructions=instructions,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
@@ -4706,14 +4706,14 @@ class Recipe(Item):
 # A audio performance or production. Can be a single, album, radio show, podcast etc.
 class Recording(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
                  writtenBy=None, file=None, recordedAt=None, review=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -4744,7 +4744,7 @@ class Recording(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -4804,7 +4804,7 @@ class Recording(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
@@ -4817,13 +4817,13 @@ class Recording(Item):
 # Describes a reservation, for instance for a Route or Event, or at a Organization.
 class Reservation(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  dateReserved=None, reservationStatus=None, changelog=None, label=None, genericAttribute=None,
                  measure=None, sharedWith=None, organization=None, route=None, reservedBy=None, reservedFor=None,
                  price=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.dateReserved = dateReserved
         self.reservationStatus = reservationStatus
@@ -4844,7 +4844,7 @@ class Reservation(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         dateReserved = json.get("dateReserved", None)
         reservationStatus = json.get("reservationStatus", None)
@@ -4886,7 +4886,7 @@ class Reservation(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, dateReserved=dateReserved,
+                  version=version, id=id, importJson=importJson, dateReserved=dateReserved,
                   reservationStatus=reservationStatus, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith,
                   organization=organization, route=route, reservedBy=reservedBy, reservedFor=reservedFor, price=price)
@@ -4897,12 +4897,12 @@ class Reservation(Item):
 # A universal resource location
 class Resource(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  url=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
                  usedBy=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.url = url
         self.usedBy = usedBy if usedBy is not None else []
@@ -4918,7 +4918,7 @@ class Resource(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         url = json.get("url", None)
        
@@ -4947,7 +4947,7 @@ class Resource(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, url=url, changelog=changelog, label=label,
+                  version=version, id=id, importJson=importJson, url=url, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, usedBy=usedBy)
         for e in res.get_all_edges(): e.source = res
         return res
@@ -4956,14 +4956,14 @@ class Resource(Item):
 # A review of an Item, for instance a Organization, CreativeWork, or Product.
 class Review(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
                  writtenBy=None, file=None, recordedAt=None, review=None, rating=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -4995,7 +4995,7 @@ class Review(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -5058,7 +5058,7 @@ class Review(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
@@ -5071,13 +5071,13 @@ class Review(Item):
 # A route from one Location to another, using some ModeOfTransport.
 class Route(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  startTime=None, endTime=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, modeOfTransport=None, startLocation=None, endLocation=None, price=None,
                  receipt=None, ticket=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.startTime = startTime
         self.endTime = endTime
@@ -5099,7 +5099,7 @@ class Route(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         startTime = json.get("startTime", None)
         endTime = json.get("endTime", None)
@@ -5144,7 +5144,7 @@ class Route(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, startTime=startTime, endTime=endTime,
+                  version=version, id=id, importJson=importJson, startTime=startTime, endTime=endTime,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith, modeOfTransport=modeOfTransport, startLocation=startLocation,
                   endLocation=endLocation, price=price, receipt=receipt, ticket=ticket)
@@ -5155,12 +5155,12 @@ class Route(Item):
 # A setting, named by a key, specifications in JSON format.
 class Setting(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  key=None, json=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.key = key
         self.json = json
@@ -5176,7 +5176,7 @@ class Setting(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         key = json.get("key", None)
         json = json.get("json", None)
@@ -5203,7 +5203,7 @@ class Setting(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, key=key, json=json, changelog=changelog,
+                  version=version, id=id, importJson=importJson, key=key, json=json, changelog=changelog,
                   label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
         return res
@@ -5212,12 +5212,12 @@ class Setting(Item):
 # A class that represents a position of an element in a string.
 class Span(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  startIdx=None, endIdx=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.startIdx = startIdx
         self.endIdx = endIdx
@@ -5233,7 +5233,7 @@ class Span(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         startIdx = json.get("startIdx", None)
         endIdx = json.get("endIdx", None)
@@ -5260,7 +5260,7 @@ class Span(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, startIdx=startIdx, endIdx=endIdx,
+                  version=version, id=id, importJson=importJson, startIdx=startIdx, endIdx=endIdx,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
@@ -5270,12 +5270,12 @@ class Span(Item):
 # A specified period of time in which something occurs or is planned to take place.
 class TimeFrame(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  startTime=None, endTime=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.startTime = startTime
         self.endTime = endTime
@@ -5291,7 +5291,7 @@ class TimeFrame(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         startTime = json.get("startTime", None)
         endTime = json.get("endTime", None)
@@ -5318,7 +5318,7 @@ class TimeFrame(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, startTime=startTime, endTime=endTime,
+                  version=version, id=id, importJson=importJson, startTime=startTime, endTime=endTime,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
@@ -5328,13 +5328,13 @@ class TimeFrame(Item):
 # An agreement between a buyer and a seller to exchange an asset for payment.
 class Transaction(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  orderStatus=None, orderNumber=None, discountCode=None, dateOrdered=None, dateExecuted=None,
                  changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
                  purchaseLocation=None, product=None, billingAddress=None, payedWithAccount=None, discount=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.orderStatus = orderStatus
         self.orderNumber = orderNumber
@@ -5358,7 +5358,7 @@ class Transaction(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         orderStatus = json.get("orderStatus", None)
         orderNumber = json.get("orderNumber", None)
@@ -5403,7 +5403,7 @@ class Transaction(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, orderStatus=orderStatus, orderNumber=orderNumber,
+                  version=version, id=id, importJson=importJson, orderStatus=orderStatus, orderNumber=orderNumber,
                   discountCode=discountCode, dateOrdered=dateOrdered, dateExecuted=dateExecuted, changelog=changelog,
                   label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith,
                   purchaseLocation=purchaseLocation, product=product, billingAddress=billingAddress,
@@ -5415,12 +5415,12 @@ class Transaction(Item):
 # A trip or journey, consisting of Routes.
 class Trip(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  startTime=None, endTime=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, route=None, startLocation=None, endLocation=None, price=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.startTime = startTime
         self.endTime = endTime
@@ -5440,7 +5440,7 @@ class Trip(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         startTime = json.get("startTime", None)
         endTime = json.get("endTime", None)
@@ -5479,7 +5479,7 @@ class Trip(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, startTime=startTime, endTime=endTime,
+                  version=version, id=id, importJson=importJson, startTime=startTime, endTime=endTime,
                   changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith, route=route, startLocation=startLocation, endLocation=endLocation,
                   price=price)
@@ -5490,12 +5490,12 @@ class Trip(Item):
 # A unit, typically from International System of Units (SI).
 class Unit(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  symbol=None, name=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.symbol = symbol
         self.name = name
@@ -5511,7 +5511,7 @@ class Unit(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         symbol = json.get("symbol", None)
         name = json.get("name", None)
@@ -5538,7 +5538,7 @@ class Unit(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, symbol=symbol, name=name, changelog=changelog,
+                  version=version, id=id, importJson=importJson, symbol=symbol, name=name, changelog=changelog,
                   label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
         return res
@@ -5547,13 +5547,13 @@ class Unit(Item):
 # A video file.
 class Video(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  bitrate=None, duration=None, endTime=None, fileLocation=None, startTime=None, caption=None,
                  exifData=None, name=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, file=None, includes=None, thumbnail=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.bitrate = bitrate
         self.duration = duration
@@ -5578,7 +5578,7 @@ class Video(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         bitrate = json.get("bitrate", None)
         duration = json.get("duration", None)
@@ -5620,7 +5620,7 @@ class Video(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, bitrate=bitrate, duration=duration,
+                  version=version, id=id, importJson=importJson, bitrate=bitrate, duration=duration,
                   endTime=endTime, fileLocation=fileLocation, startTime=startTime, caption=caption, exifData=exifData,
                   name=name, changelog=changelog, label=label, genericAttribute=genericAttribute, measure=measure,
                   sharedWith=sharedWith, file=file, includes=includes, thumbnail=thumbnail)
@@ -5631,14 +5631,14 @@ class Video(Item):
 # A work of visual arts, for instance a painting, sculpture or drawing.
 class VisualArt(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
                  writtenBy=None, file=None, recordedAt=None, review=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -5669,7 +5669,7 @@ class VisualArt(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -5729,7 +5729,7 @@ class VisualArt(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,
@@ -5742,12 +5742,12 @@ class VisualArt(Item):
 # An occasion where a choice is made choose between two or more options, for instance an election.
 class Vote(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  itemType=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
                  option=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.itemType = itemType
         self.option = option if option is not None else []
@@ -5763,7 +5763,7 @@ class Vote(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         itemType = json.get("itemType", None)
        
@@ -5792,7 +5792,7 @@ class Vote(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, itemType=itemType, changelog=changelog,
+                  version=version, id=id, importJson=importJson, itemType=itemType, changelog=changelog,
                   label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith,
                   option=option)
         for e in res.get_all_edges(): e.source = res
@@ -5802,12 +5802,12 @@ class Vote(Item):
 # The act casting a vote.
 class VoteAction(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  dateExecuted=None, changelog=None, label=None, genericAttribute=None, measure=None, sharedWith=None,
                  vote=None, usedBy=None, choice=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.dateExecuted = dateExecuted
         self.vote = vote if vote is not None else []
@@ -5825,7 +5825,7 @@ class VoteAction(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         dateExecuted = json.get("dateExecuted", None)
        
@@ -5860,7 +5860,7 @@ class VoteAction(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, dateExecuted=dateExecuted, changelog=changelog,
+                  version=version, id=id, importJson=importJson, dateExecuted=dateExecuted, changelog=changelog,
                   label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, vote=vote,
                   usedBy=usedBy, choice=choice)
         for e in res.get_all_edges(): e.source = res
@@ -5871,12 +5871,12 @@ class VoteAction(Item):
 # and accessible via URLs.
 class Website(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  itemType=None, url=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.itemType = itemType
         self.url = url
@@ -5892,7 +5892,7 @@ class Website(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         itemType = json.get("itemType", None)
         url = json.get("url", None)
@@ -5919,7 +5919,7 @@ class Website(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, itemType=itemType, url=url, changelog=changelog,
+                  version=version, id=id, importJson=importJson, itemType=itemType, url=url, changelog=changelog,
                   label=label, genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         for e in res.get_all_edges(): e.source = res
         return res
@@ -5928,14 +5928,14 @@ class Website(Item):
 # A written work, for instance a book, article or note. Doesn't have to be published.
 class WrittenWork(Item):
     def __init__(self, dateAccessed=None, dateCreated=None, dateModified=None, deleted=None,
-                 externalId=None, itemDescription=None, starred=None, version=None, uid=None, importJson=None,
+                 externalId=None, itemDescription=None, starred=None, version=None, id=None, importJson=None,
                  title=None, abstract=None, datePublished=None, keyword=None, content=None, textContent=None,
                  transcript=None, itemType=None, changelog=None, label=None, genericAttribute=None, measure=None,
                  sharedWith=None, audio=None, citation=None, contentLocation=None, locationCreated=None, video=None,
                  writtenBy=None, file=None, recordedAt=None, review=None):
         super().__init__(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                          deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                         version=version, uid=uid, importJson=importJson, changelog=changelog, label=label,
+                         version=version, id=id, importJson=importJson, changelog=changelog, label=label,
                          genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith)
         self.title = title
         self.abstract = abstract
@@ -5966,7 +5966,7 @@ class WrittenWork(Item):
         itemDescription = json.get("itemDescription", None)
         starred = json.get("starred", None)
         version = json.get("version", None)
-        uid = json.get("uid", None)
+        id = json.get("id", None)
         importJson = json.get("importJson", None)
         title = json.get("title", None)
         abstract = json.get("abstract", None)
@@ -6026,7 +6026,7 @@ class WrittenWork(Item):
         
         res = cls(dateAccessed=dateAccessed, dateCreated=dateCreated, dateModified=dateModified,
                   deleted=deleted, externalId=externalId, itemDescription=itemDescription, starred=starred,
-                  version=version, uid=uid, importJson=importJson, title=title, abstract=abstract,
+                  version=version, id=id, importJson=importJson, title=title, abstract=abstract,
                   datePublished=datePublished, keyword=keyword, content=content, textContent=textContent,
                   transcript=transcript, itemType=itemType, changelog=changelog, label=label,
                   genericAttribute=genericAttribute, measure=measure, sharedWith=sharedWith, audio=audio,

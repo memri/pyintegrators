@@ -31,25 +31,25 @@ class IMAPClient():
         """Lists all available mailboxes"""
         return self.client.list()
 
-    def get_all_mail_uids(self):
-        """retrieves all mail uids from the selected mailbox"""
-        result, data = self.client.uid('search', None, "ALL") # search and return uids instead
+    def get_all_mail_ids(self):
+        """retrieves all mail ids from the selected mailbox"""
+        result, data = self.client.id('search', None, "ALL") # search and return ids instead
         return data[0].split()
 
-    def get_mails(self, uids):
-        return [self.get_mail(uid) for uid in uids]
+    def get_mails(self, ids):
+        return [self.get_mail(id) for id in ids]
 
-    def get_mail(self, uid):
-        """Fetches a mail given a uid, returns (raw_mail, thread_id)"""
+    def get_mail(self, id):
+        """Fetches a mail given a id, returns (raw_mail, thread_id)"""
         if self.client.host == DEFAULT_GMAIL_HOST:
             # Use Google's threading method, in which every thread has an ID
-            result, (data, _) = self.client.uid('fetch', uid, '(RFC822 X-GM-THRID)')
+            result, (data, _) = self.client.id('fetch', id, '(RFC822 X-GM-THRID)')
             thread_id = data[0].decode("utf-8").split(" ")[2]
             raw_email = data[1]
             return (raw_email, thread_id)
         else:
             # Threading not yet implemented for IMAP threading
-            result, (data, _) = self.client.uid('fetch', uid, '(RFC822)')
+            result, (data, _) = self.client.id('fetch', id, '(RFC822)')
             raw_email = data[1]
             return (raw_email, None)
 
@@ -194,7 +194,7 @@ class EmailImporter(ImporterBase):
         return email_item
 
     def get_mails(self, mail_ids, batch_size=5, importer_run=None, verbose=True, pod_client=None):
-        """Gets mails from a list of mail uids. You can pass an importer run and podclient
+        """Gets mails from a list of mail ids. You can pass an importer run and podclient
         to update the progress of the process"""
         mails = []
         n_batches = math.ceil(len(mail_ids) / batch_size)
@@ -224,7 +224,7 @@ class EmailImporter(ImporterBase):
         stop_early_at = get_g_attr(importer_run, 'max_number', 'int', 10)
 
         self.update_progress_message(pod_client, importer_run, "downloading emails", verbose=verbose)
-        mail_ids = self.imap_client.get_all_mail_uids()
+        mail_ids = self.imap_client.get_all_mail_ids()
         all_mails = self.get_mails(mail_ids[:int(stop_early_at)],
                                    importer_run=importer_run,
                                    pod_client=pod_client)

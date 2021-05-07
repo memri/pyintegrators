@@ -16,21 +16,21 @@ class DB():
         self.nodes = dict()
 
     def add(self, node):
-        uid = node.uid
-        if uid in self.nodes:
-            print(f"Error trying to add node, but node with with UID: {uid} is already in database")
-        self.nodes[uid] = node
+        id = node.id
+        if id in self.nodes:
+            print(f"Error trying to add node, but node with with id: {id} is already in database")
+        self.nodes[id] = node
 
-    def get(self, uid):
-        res = self.nodes.get(uid, None)
+    def get(self, id):
+        res = self.nodes.get(id, None)
         return res
 
     def contains(node):
-        uid = node.get_property("uid")
-        return uid in self.nodes
+        id = node.get_property("id")
+        return id in self.nodes
 
     def create(self, node):
-        existing = self.get(node.properties.get("uid", None))
+        existing = self.get(node.properties.get("id", None))
 
         if existing is not None:
             if not existing._expanded:
@@ -42,7 +42,7 @@ class DB():
             return node
 
 def parse_base_item_json(json):
-    uid = json.get("uid", None)
+    id = json.get("id", None)
     dateAccessed = json.get("dateAccessed", None)
     dateCreated = json.get("dateCreated", None)
     dateModified = json.get("dateModified", None)
@@ -52,7 +52,7 @@ def parse_base_item_json(json):
     starred = json.get("starred", None)
     version = json.get("version", None)
 
-    return uid, dateAccessed, dateCreated, dateModified, deleted, externalId, itemDescription, starred, version, None, None
+    return id, dateAccessed, dateCreated, dateModified, deleted, externalId, itemDescription, starred, version, None, None
 
 # Cell
 class Edge():
@@ -108,14 +108,14 @@ class ItemBase():
     basic functionality for consistency and to enable easier usage."""
     global_db = DB()
 
-    def __init__(self, uid=None):
-        self.uid=uid
+    def __init__(self, id=None):
+        self.id=id
         self.add_to_db(self)
 
     @classmethod
     def add_to_db(cls, node):
-        existing = cls.global_db.get(node.uid)
-        if existing is None and node.uid is not None:
+        existing = cls.global_db.get(node.id)
+        if existing is None and node.id is not None:
             cls.global_db.add(node)
 
     def replace_self(self, other):
@@ -177,14 +177,14 @@ class ItemBase():
                 e.update(api)
 
     def exists(self, api):
-        res = api.search_by_fields({"uid": self.uid})
+        res = api.search_by_fields({"id": self.id})
         if res is None: return False
         return len(res) == 1
 
     def expand(self, api):
         """Expands a node (retrieves all directly connected nodes ands adds to object)."""
         self._expanded = True
-        res = api.get(self.uid, expanded=True)
+        res = api.get(self.id, expanded=True)
         for edge_name in res.get_all_edge_names():
             edges = res.get_edges(edge_name)
             for e in edges:
@@ -195,9 +195,9 @@ class ItemBase():
         return self
 
     def __repr__(self):
-        uid = self.uid
+        id = self.id
         _type = self.__class__.__name__
-        return f"{_type} (#{uid})"
+        return f"{_type} (#{id})"
 
     @classmethod
     def from_data(cls, *args, **kwargs):

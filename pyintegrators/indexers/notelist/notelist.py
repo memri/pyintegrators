@@ -15,10 +15,10 @@ class INote(Note):
 
     def __repr__(self):
         content = self.content[:50] + " ..." if len(self.content) > 20 else self.content
-        return f"INote (#{self.uid}) {content}"
+        return f"INote (#{self.id}) {content}"
 
     def show(self):
-        print(f"INote (#{self.uid}) {self.content}")
+        print(f"INote (#{self.id}) {self.content}")
 
 
 # Cell
@@ -49,7 +49,7 @@ class INoteList(NoteList):
         return f"(INoteList) # {title} {cat_str}\n{self.content}\n\n"
 
     def __eq__(self, other):
-        return self.uid == other.uid
+        return self.id == other.id
 
 
 # Cell
