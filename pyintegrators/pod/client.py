@@ -23,6 +23,8 @@ class PodClient:
         self.database_key=database_key if database_key is not None else self.generate_random_key()
         self.owner_key=owner_key if owner_key is not None else self.generate_random_key()
         self.base_url = f"{url}/{version}/{self.owner_key}"
+        self.auth_json = {"type":"ClientAuth", "databaseKey": self.database_key}
+
 
     @staticmethod
     def generate_random_key():
@@ -43,15 +45,16 @@ class PodClient:
         try:
             properties = self.get_properties_json(node)
             properties = {k:v for k, v in properties.items() if v != []}
-            body = {"databaseKey": self.database_key, "payload":properties }
+            print(properties)
+            body = {"auth": self.auth_json, "payload":properties}
 
             result = requests.post(f"{self.base_url}/create_item", json=body)
             if result.status_code != 200:
                 print(result, result.content)
                 return False
             else:
-                uid = int(result.json())
-                node.uid = uid
+                id = int(result.json())
+                node.id = id
                 ItemBase.add_to_db(node)
                 return True
         except requests.exceptions.RequestException as e:
@@ -63,13 +66,15 @@ class PodClient:
         for k, v in attributes.items():
             if not isinstance(v, list) and k != "type":
                 if isinstance(v, str):
-                    value_type = "text"
+                    value_type = "Text"
                 elif isinstance(v, int):
-                    value_type = "integer"
+                    value_type = "Integer"
 
                 payload = {"type": "ItemPropertySchema", "itemType": attributes["type"],
                            "propertyName": k, "valueType": value_type}
-                body = {"databaseKey": self.database_key, "payload": payload }
+
+                body = {"auth": self.auth_json, "payload": payload }
+
                 try:
                     result = requests.post(f"{self.base_url}/create_item", json=body)
 
@@ -77,8 +82,8 @@ class PodClient:
                         print(result, result.content)
                         return False
                     else:
-                        uid = int(result.json())
-                        node.uid = uid
+                        id = int(result.json())
+                        node.id = id
                         ItemBase.add_to_db(node)
 
                 except requests.exceptions.RequestException as e:
@@ -122,8 +127,8 @@ class PodClient:
             print(e)
             return None
 
-    def get_photo(self, uid, size=640):
-        photo = self.get(uid)
+    def get_photo(self, id, size=640):
+        photo = self.get(id)
         self._load_photo_data(photo, size=size)
         return photo
 
@@ -155,10 +160,10 @@ class PodClient:
         """Create edges between nodes, edges should be of format [{"_type": "friend", "_source": 1, "_target": 2}]"""
         create_edges = []
         for e in edges:
-            src, target = e.source.uid, e.target.uid
+            src, target = e.source.id, e.target.id
 
             if src is None or target is None:
-                print(f"Could not create edge {e} missing source or target uid")
+                print(f"Could not create edge {e} missing source or target id")
                 return False
             data = {"_source": src, "_target": target, "_type": e._type}
             if e.label is not None: data[LABEL] = e.label
@@ -176,8 +181,8 @@ class PodClient:
         return self.bulk_action(create_items=[], update_items=[],create_edges=create_edges)
 
     def delete_items(self, items):
-        uids = [i.uid for i in items]
-        return self.bulk_action(delete_items=uids)
+        ids = [i.id for i in items]
+        return self.bulk_action(delete_items=ids)
 
     def delete_all(self):
         items = self.get_all_items()
@@ -209,16 +214,16 @@ class PodClient:
     def create_edge(self, edge):
         return self.create_edges([edge])
 
-    def get(self, uid, expanded=True):
+    def get(self, id, expanded=True):
         if not expanded:
-            res = self._get_item_with_properties(uid)
+            res = self._get_item_with_properties(id)
         else:
-            res = self._get_item_expanded(uid)
+            res = self._get_item_expanded(id)
         if res is None:
             return None
 
         elif res.deleted == True:
-            print(f"Item with uid {uid} does not exist anymore")
+            print(f"Item with id {id} does not exist anymore")
             return None
         else:
             return res
@@ -242,8 +247,8 @@ class PodClient:
     def filter_deleted(self, items):
         return [i for i in items if not i.deleted == True]
 
-    def _get_item_expanded(self, uid):
-        body = {"payload": [uid],
+    def _get_item_expanded(self, id):
+        body = {"payload": [id],
                 "databaseKey": self.database_key}
         try:
             result = requests.post(f"{self.base_url}/get_items_with_edges",
@@ -260,9 +265,13 @@ class PodClient:
             print(e)
             return None
 
-    def _get_item_with_properties(uid):
+    def _get_item_with_properties(self, id):
         try:
-            result = requests.get(f"{self.base_url}/items/{uid}")
+            body = {"auth": self.auth_json,
+                    "payload": str(id)}
+#             print(f"{self.base_url}/get_item")
+#             print(body)
+            result = requests.post(f"{self.base_url}/get_item", json=body)
             if result.status_code != 200:
                 print(result, result.content)
                 return None
@@ -282,7 +291,7 @@ class PodClient:
         for k, v in node.__dict__.items():
 #             if k[:1] != '_' and k != "private" and k not in private and not (isinstance(v, list)\
 #                             and len(v)>0 and isinstance(v[0], Edge)) and v is not None:
-            if k[:1] != '_' and k != "private" and k != "uid" and k not in private and not (isinstance(v, list)) \
+            if k[:1] != '_' and k != "private" and k != "id" and k not in private and not (isinstance(v, list)) \
                             and v is not None:
                 res[k] = v
         res["type"] = self._get_schema_type(node)
@@ -297,7 +306,7 @@ class PodClient:
 
     def update_item(self, node):
         data = self.get_properties_json(node)
-        uid = data["uid"]
+        id = data["id"]
         body = {"payload": data,
                 "databaseKey": self.database_key}
 
@@ -325,7 +334,7 @@ class PodClient:
         indexer_class = json.get("indexerClass", None)
         constructor = get_constructor(json["_type"], indexer_class)
         new_item = constructor.from_json(json)
-        existing = ItemBase.global_db.get(new_item.uid)
+        existing = ItemBase.global_db.get(new_item.id)
         # TODO: cleanup
         if existing is not None:
             if not existing.is_expanded() and new_item.is_expanded():
@@ -346,11 +355,11 @@ class PodClient:
         if ALL_EDGES in properties: del properties[ALL_EDGES]
         return properties
 
-    def run_importer(self, uid, servicePayload):
+    def run_importer(self, id, servicePayload):
 
         body = dict()
         body["databaseKey"] = servicePayload["databaseKey"]
-        body["payload"] = {"uid": uid, "servicePayload": servicePayload}
+        body["payload"] = {"id": id, "servicePayload": servicePayload}
 
         print(body)
 
